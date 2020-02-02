@@ -1,14 +1,13 @@
-const theme = {
-  background: '#F2F2F2',
-  font: {
-    family: 'Montserrat, sans-serif',
-    color: '#585858',
-    size: '14px'
-  },
-  colors: {
-    primary: '#4391E7',
-    secondary: '#245E8D'
+import { createMuiTheme } from '@material-ui/core/styles';
+import purple from '@material-ui/core/colors/purple';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+    secondary: {
+      main: '#f44336'
+    }
   }
-};
+});
 
 export default theme;

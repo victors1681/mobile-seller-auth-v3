@@ -2,14 +2,25 @@
     "compilerOptions": {
 		  "jsx": "react", 
 		  "module": "commonjs",
-		  "noImplicitAny": true,
+		  "noImplicitAny": false,
 		  "removeComments": true,
 		  "preserveConstEnums": true,
+		  "esModuleInterop": true,
 		"outDir": "./dist/",
 		"stripInternal": true,
 		"target": "es6",
 		"sourceMap": true, 
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"paths": { 
+			"components/*": ["src/components/*"],
+			"layouts/*": ["src/layouts/*"],
+			"hooks/*": ["src/hooks/*"],
+			"contexts/*": ["src/contexts/*"],
+			"common/*": ["src/common/*"],
+			"utils/*": ["src/utils/*"],
+			"assets/*": ["src/assets/*"],
+			},
     },
     "include": [
         "src/**/*"

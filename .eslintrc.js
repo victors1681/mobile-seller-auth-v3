@@ -9,6 +9,13 @@ module.exports = {
     SharedArrayBuffer: "readonly"
   },
   parser: "babel-eslint",
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: "module",
+    ecmaFeatures: {
+        jsx: true
+    }
+  },
   settings: {
     react: {
       version: "16.8"
@@ -26,10 +33,10 @@ module.exports = {
   extends: [
     "airbnb",
     "eslint:recommended",
-    "plugin:prettier/recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
   ],
   plugins: [ 
     "react-hooks"
