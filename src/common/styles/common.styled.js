@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const MainWrapper = styled.div`
-  ${({ theme }) => console.log('THeme', theme)}
   width: 100%;
   height: 100%;
   font-family: ${({ theme }) => theme.typography.fontFamily};

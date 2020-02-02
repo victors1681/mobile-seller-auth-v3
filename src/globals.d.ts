@@ -1,2 +1,3 @@
-declare module "*.png";
-declare module '*.jpg';
+/* eslint-disable */
+declare module '*.png'
+declare module '*.jpg'

@@ -9,8 +9,9 @@ module.exports = {
     SharedArrayBuffer: "readonly"
   },
   parser: "babel-eslint",
-  parserOptions: {
-    ecmaVersion: 6,
+  parserOptions: { 
+   parser: "@typescript-eslint/parser",
+   ecmaVersion: 6,
     sourceType: "module",
     ecmaFeatures: {
         jsx: true
@@ -24,10 +25,6 @@ module.exports = {
       "typescript": {
         "directory": "./tsconfig.json"
       },
-      node: {
-        paths: ["./src"],
-        extensions: [".js", ".jsx", ".ts", ".tsx"]
-      }
     }
   },
   extends: [
@@ -53,6 +50,9 @@ module.exports = {
       }
    ],
     "prettier/prettier": ["error", { "singleQuote": true }],
+    "import/named": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "import/prefer-default-export": "off",
     "react-hooks/rules-of-hooks": "error",
