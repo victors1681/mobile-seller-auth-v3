@@ -8,6 +8,11 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import { useMainApp } from "hooks";
+import { useFormik } from 'formik';
+import * as Yup from "yup";
+
+
 import { makeStyles } from '@material-ui/core/styles';
 
 function Copyright() {
@@ -33,10 +38,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const SigInSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
+    password: Yup.string()
+    .required('Required'),
+});
+
 const LoginForm: FunctionComponent = (): ReactElement => {
   const classes = useStyles();
+
+  const { handleLogin } = useMainApp();
+  
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    onSubmit: ({email, password}) => {
+      handleLogin(email, password);
+    },
+    validationSchema: SigInSchema
+  });
+
   return (
-    <form className={classes.form} noValidate>
+    <form onSubmit={formik.handleSubmit}>
       <TextField
         variant="outlined"
         margin="normal"
@@ -47,6 +74,8 @@ const LoginForm: FunctionComponent = (): ReactElement => {
         name="email"
         autoComplete="email"
         autoFocus
+        onChange={formik.handleChange}
+        value={formik.values.email}
       />
       <TextField
         variant="outlined"
@@ -58,6 +87,8 @@ const LoginForm: FunctionComponent = (): ReactElement => {
         type="password"
         id="password"
         autoComplete="current-password"
+        onChange={formik.handleChange}
+        value={formik.values.password}
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
