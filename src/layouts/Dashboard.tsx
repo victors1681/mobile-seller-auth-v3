@@ -19,13 +19,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications'; 
 import { mainListItems } from "components/dashboard/menu";
+import { any } from 'prop-types';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://mseller.app/">
+        mseller.app
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -35,7 +36,7 @@ function Copyright() {
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
     display: 'flex',
   },
@@ -114,7 +115,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Dashboard() {
+const Dashboard = ({children}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -167,12 +168,7 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-           
-           Content
-            
-             
-          </Grid>
+        {children}
           <Box pt={4}>
             <Copyright />
           </Box>
@@ -181,3 +177,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard;

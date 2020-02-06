@@ -3,7 +3,7 @@ import MainAppContext, { useMainInterface } from "contexts/MainApp";
  
 export const useMainApp = (): useMainInterface => {
  
-    const mainContext = React.useContext<useMainInterface>(MainAppContext);
+    const mainContext:useMainInterface = React.useContext<useMainInterface>(MainAppContext);
     
     return mainContext;
 }

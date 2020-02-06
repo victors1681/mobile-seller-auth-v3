@@ -1,11 +1,10 @@
 import * as React from 'react';
-import Login from 'layouts/Login';
-import { Business, User }  from 'layouts/';
+import { Login, Business, User, Dashboard }  from 'layouts';
 import NotFound from 'components/notFound';
-import { useMainApp} from "hooks/";
+import { useMainApp} from "hooks";
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-const PrivateRoute = ({ children, ...rest }) => {
+const PrivateRoute = ({ children, ...rest }): React.ReactElement => {
   const { isLogged } = useMainApp();
   return (
     <Route
@@ -25,14 +24,22 @@ const PrivateRoute = ({ children, ...rest }) => {
     />
   );
 }
+ 
+export const CommonLayout: React.FunctionComponent<any> =  ({ component: Component}: {component: React.FunctionComponent}): React.ReactElement => {
+  return (
+    <Dashboard>
+     <Component/>
+    </Dashboard>
+  )
+}
 
-const Router = () => {
+const Router: React.FunctionComponent  = (): React.ReactElement => {
   return (
     <Switch>
       <Route path="/" component={Login} exact />
       <Route path="/login" component={Login} />
       <PrivateRoute path="/business">
-        <Business/>
+        <CommonLayout component={Business}></CommonLayout>
       </PrivateRoute>
       <PrivateRoute path="/users">
         <User/>

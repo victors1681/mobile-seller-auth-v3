@@ -8,14 +8,15 @@
 		  "esModuleInterop": true,
 		"outDir": "./dist/",
 		"stripInternal": true,
-		"target": "es6",
+		"target": "es2017",
 		"sourceMap": true, 
-		"allowSyntheticDefaultImports": true,
+		"allowSyntheticDefaultImports": false,
 		"baseUrl": ".",
+		"checkJs": false,
 		"paths": { 
 			"components/*": ["src/components/*"],
-			"layouts/*": ["src/layouts/*"],
-			"hooks/*": ["src/hooks/*"],
+			"layouts": ["src/layouts"],
+			"hooks": ["src/hooks"],
 			"contexts/*": ["src/contexts/*"],
 			"common/*": ["src/common/*"],
 			"utils/*": ["src/utils/*"],
@@ -26,7 +27,8 @@
         "src/**/*"
     ],
     "exclude": [
-        "node_modules",
+		"node_modules",
+		"dist",
         "**/*.spec.ts"
 	]
 }

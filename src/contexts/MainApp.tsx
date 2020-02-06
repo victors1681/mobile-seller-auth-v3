@@ -16,6 +16,9 @@ export interface useMainInterface {
     handleLogin?: (email: string, password: string)=>void;
     isLogged?: boolean;
     user?: User
+    users? :Array<User>
+    business?: Array<Business>
+    requestBusiness?: () => void
 }
 
 export interface Business {
@@ -74,6 +77,8 @@ export interface User {
 export const useMainAppContext = (): useMainInterface => {
     const [isLogged, setLogged] = React.useState(false);
     const [user, setUser] = React.useState<User>();
+    const [users, setUsers] = React.useState<Array<User>>([]);
+    const [business, setBusiness] = React.useState<Array<Business>>([]);
 
     let history = useHistory();
     let location = useLocation();
@@ -145,11 +150,30 @@ export const useMainAppContext = (): useMainInterface => {
 
     }
 
+    const requestBusiness = () => {
+        db.collection("business").get().then((snapshot:firebase.firestore.QuerySnapshot) => {
+
+            let result = [];
+            snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) =>{
+                result.push({ businessId: doc.id, ...doc.data()});
+            });
+
+            setBusiness(result);
+            
+        }).catch((error)=>{
+            console.error(error)
+        })
+    }
+
     return {
         isLogged,
         handleLogin,
         firebase,
         user,
+        users,
+        business,
+        requestBusiness
+
     } 
 
 }

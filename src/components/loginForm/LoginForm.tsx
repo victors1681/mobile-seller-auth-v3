@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import * as React from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -46,7 +46,7 @@ const SigInSchema = Yup.object().shape({
     .required('Required'),
 });
 
-const LoginForm: FunctionComponent = (): ReactElement => {
+const LoginForm: React.FunctionComponent = (): React.ReactElement => {
   const classes = useStyles();
 
   const { handleLogin } = useMainApp();
