@@ -19,6 +19,7 @@ export interface useMainInterface {
     users? :Array<User>
     business?: Array<Business>
     requestBusiness?: () => void
+    requestUsers?: () => void
 }
 
 export interface Business {
@@ -164,6 +165,20 @@ export const useMainAppContext = (): useMainInterface => {
             console.error(error)
         })
     }
+    const requestUsers = () => {
+        db.collection("users").get().then((snapshot:firebase.firestore.QuerySnapshot) => {
+
+            let result = [];
+            snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) =>{
+                result.push({ userId: doc.id, ...doc.data()});
+            });
+
+            setUsers(result);
+            
+        }).catch((error)=>{
+            console.error(error)
+        })
+    }
 
     return {
         isLogged,
@@ -172,7 +187,8 @@ export const useMainAppContext = (): useMainInterface => {
         user,
         users,
         business,
-        requestBusiness
+        requestBusiness,
+        requestUsers
 
     } 
 

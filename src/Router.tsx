@@ -41,8 +41,8 @@ const Router: React.FunctionComponent  = (): React.ReactElement => {
       <PrivateRoute path="/business">
         <CommonLayout component={Business}></CommonLayout>
       </PrivateRoute>
-      <PrivateRoute path="/users">
-        <User/>
+      <PrivateRoute path="/users/:businessId">
+      <CommonLayout component={User}></CommonLayout>
       </PrivateRoute>
       <Route component={NotFound} />
     </Switch>

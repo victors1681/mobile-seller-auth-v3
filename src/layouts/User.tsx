@@ -3,22 +3,19 @@ import { FunctionComponent, ReactElement } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import UserList from "components/userList";
  
+const Business: FunctionComponent = (): ReactElement => {
 
-
-
-const User: FunctionComponent = (): ReactElement => {
- 
   return (
     <Grid container component="main" >
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7}/>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        Users
+      <Grid item xs={12} sm={12} md={12} component={Paper} elevation={0} square>
+      <UserList/>
       </Grid>
     </Grid>
   );
 };
 
-export default User;
+export default Business;
