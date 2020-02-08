@@ -47,7 +47,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     'import/prefer-default-export': 'off',
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     'react/jsx-filename-extension': 'off',
     'import/no-named-as-default': 'off',
     'import/no-named-as-default-member': 'off',

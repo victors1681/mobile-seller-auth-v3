@@ -48,16 +48,15 @@ const columns = [
 ];
 
 const BusinessList = (): React.ReactElement => {
-  const mainApp = useMainApp();
+  const { requestBusiness, business } = useMainApp();
   const history = useHistory();
 
   React.useEffect(() => {
-    console.log('');
-    mainApp.requestBusiness();
-  }, [mainApp]);
+    requestBusiness();
+  }, [requestBusiness]);
 
   const handleClick = (_, { rowIndex }: { rowIndex: number }) => {
-    const dataBusiness: Business = mainApp.business[rowIndex];
+    const dataBusiness: Business = business[rowIndex];
     history.push(`users/${dataBusiness.businessId}`);
   };
 
@@ -66,7 +65,7 @@ const BusinessList = (): React.ReactElement => {
     onRowClick: handleClick
   } as MUIDataTableOptions;
 
-  return <MUIDataTable title="Empresas" data={mainApp.business} columns={columns} options={options} />;
+  return <MUIDataTable title="Empresas" data={business} columns={columns} options={options} />;
 };
 
 export default BusinessList;

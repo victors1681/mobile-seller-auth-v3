@@ -104,18 +104,21 @@ export const useMainAppContext = (): UseMainInterface => {
     [from, history]
   );
 
-  React.useEffect(() => {
+  const performActiveSession = React.useCallback(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         performLogin(user.uid, user.email, user.photoURL);
-        console.error('CURRENT USERRRRRR', user);
       } else {
         // No user is signed in.
         history.replace({ pathname: '/login' });
       }
     });
-  }, [history, performLogin]);
+  }, []);
+
+  React.useEffect(() => {
+    performActiveSession();
+  }, [performActiveSession]);
 
   const handleLogin = (email: string, password: string) => {
     firebase
