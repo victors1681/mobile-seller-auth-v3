@@ -2,8 +2,14 @@ import * as React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
 import MUIDataTable from "mui-datatables";
 import { useMainApp }  from "hooks";
-import { Business as BusinessInterface, Business } from 'contexts/MainApp';
+import { User } from 'contexts/MainApp';
 import { useHistory } from "react-router-dom";
+
+import Dialog from '@material-ui/core/Dialog';
+
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import UserEdit from "../UserEdit";
 
 const columns = [
   {
@@ -49,9 +55,19 @@ const columns = [
  ];
 
 
+ const UserEditModal = ({open, handleClose, userData}: {open: boolean, handleClose: ()=>void, userData: User}) => {
+   
+  return ( <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+  <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+ 
+    <UserEdit userData={userData} handleClose={handleClose}/>
+ 
+</Dialog>)
+ }
+
 
 const Business: FunctionComponent = (): ReactElement => {
-            
+    const [userData, setUserData] = React.useState<User>(null);        
     const mainApp = useMainApp();
     const history = useHistory();
 
@@ -59,11 +75,14 @@ const Business: FunctionComponent = (): ReactElement => {
        mainApp.requestUsers();
     }, [])
 
+const handleClose = () => setUserData(null);
 
 const handleClick= (_, rowMeta: any) => {
  
-  const dataBusiness: BusinessInterface = mainApp.business[rowMeta.rowIndex];
-  history.push(`users/${dataBusiness.businessId}`);
+  const userSelected = mainApp.users[rowMeta.rowIndex] as User;
+  setUserData(userSelected);
+
+  //history.push(`users/${userData}`);
 }
  
 const options = {
@@ -72,6 +91,8 @@ const options = {
 };
 
   return ( 
+    <React.Fragment>
+      <UserEditModal open={!!userData} handleClose={handleClose} userData={userData} />
       <MUIDataTable
         title={"Users"}
         data={mainApp.users}
@@ -79,6 +100,7 @@ const options = {
         options={options}
         selectableRowsOnClick={true}
       /> 
+      </React.Fragment>
   );
 };
 

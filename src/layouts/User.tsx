@@ -3,7 +3,7 @@ import { FunctionComponent, ReactElement } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import UserList from "components/userList";
+import { UserList } from "components/user";
  
 const Business: FunctionComponent = (): ReactElement => {
 

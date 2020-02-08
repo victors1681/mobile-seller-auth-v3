@@ -20,7 +20,7 @@ export const mainListItems = (
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <ShoppingCartIcon />
+      <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Business" />
     </ListItem>
@@ -29,18 +29,6 @@ export const mainListItems = (
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Users" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
     </ListItem>
   </div>
 );
