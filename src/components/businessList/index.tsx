@@ -1,2 +1,3 @@
-import BusinessList from "./BusinessList";
+import BusinessList from './BusinessList';
+
 export default BusinessList;

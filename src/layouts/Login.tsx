@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent, ReactElement } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -9,18 +8,14 @@ import LoginForm from 'components/loginForm';
 import Logo from 'assets/images/logo/Logo.png';
 import styled from 'styled-components';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh'
   },
   image: {
-    backgroundImage:
-      'url(https://source.unsplash.com/collection/962362/desktop-and-tech)',
+    backgroundImage: 'url(https://source.unsplash.com/collection/962362/desktop-and-tech)',
     backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'dark'
-        ? theme.palette.grey[900]
-        : theme.palette.grey[50],
+    backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
     backgroundSize: 'cover',
     backgroundPosition: 'center'
   },
@@ -41,7 +36,7 @@ const LogoContainer = styled.img`
   margin-bottom: 50px;
 `;
 
-const Login: FunctionComponent = (): ReactElement => {
+const Login = (): React.ReactElement => {
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Login, Business, User, Dashboard }  from 'layouts';
+import { Login, Business, User, Dashboard } from 'layouts';
 import NotFound from 'components/notFound';
-import { useMainApp} from "hooks";
+import { useMainApp } from 'hooks';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ children, ...rest }): React.ReactElement => {
@@ -10,12 +10,12 @@ const PrivateRoute = ({ children, ...rest }): React.ReactElement => {
     <Route
       {...rest}
       render={({ location }) =>
-         isLogged ? (
+        isLogged ? (
           children
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: '/login',
               state: { from: location }
             }}
           />
@@ -23,26 +23,26 @@ const PrivateRoute = ({ children, ...rest }): React.ReactElement => {
       }
     />
   );
-}
- 
-export const CommonLayout: React.FunctionComponent<any> =  ({ component: Component}: {component: React.FunctionComponent}): React.ReactElement => {
+};
+
+export const CommonLayout = ({ component: Component }: { component: React.FunctionComponent }): React.ReactElement => {
   return (
     <Dashboard>
-     <Component/>
+      <Component />
     </Dashboard>
-  )
-}
+  );
+};
 
-const Router: React.FunctionComponent  = (): React.ReactElement => {
+const Router: React.FunctionComponent = (): React.ReactElement => {
   return (
     <Switch>
       <Route path="/" component={Login} exact />
       <Route path="/login" component={Login} />
       <PrivateRoute path="/business">
-        <CommonLayout component={Business}></CommonLayout>
+        <CommonLayout component={Business} />
       </PrivateRoute>
       <PrivateRoute path="/users/:businessId">
-      <CommonLayout component={User}></CommonLayout>
+        <CommonLayout component={User} />
       </PrivateRoute>
       <Route component={NotFound} />
     </Switch>

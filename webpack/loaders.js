@@ -3,7 +3,7 @@ const path = require('path');
 const { isDev, isProd } = require('./utils');
 
 const getBabelLoader = () => ({
-  test: /\.(j|t)s(x)?$/,
+  test: /\.(jsx?|ts|tsx?)$/,
   exclude: /node_modules/,
   use: ['babel-loader']
 });
@@ -37,7 +37,7 @@ const getEslintLoader = env => {
 
   return {
     enforce: 'pre',
-    test: /\.js?$/,
+    test: /\.(jsx?|ts|tsx?)$/,
     exclude: [path.resolve(__dirname, '../node_modules')],
     use: [
       {

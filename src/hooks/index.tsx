@@ -1,1 +1,1 @@
-export * from "./useMainApp";
+export * from './useMainApp';
