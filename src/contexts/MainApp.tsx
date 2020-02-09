@@ -18,6 +18,7 @@ export interface UseMainInterface {
   business?: Business[];
   requestBusiness?: () => void;
   requestUsers?: () => void;
+  requestUserById?: (userId: string) => Promise<User>;
 }
 
 export interface Business {
@@ -97,7 +98,6 @@ export const useMainAppContext = (): UseMainInterface => {
             .then((snapshot) => {
               const businessData: any = { ...snapshot.data(), businessId: userData.business };
               setUser({ ...userData, business: businessData });
-              console.error('fromfromfromfromfromfromfrom', location);
               if (location.pathname && !['/', '/login'].includes(location.pathname)) {
                 history.replace(location.pathname);
               } else {
@@ -136,11 +136,6 @@ export const useMainAppContext = (): UseMainInterface => {
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.SESSION)
           .then(function() {
-            // Existing and future Auth states are now persisted in the current
-            // session only. Closing the window would clear any existing state even
-            // if a user forgets to sign out.
-            // ...
-            // New sign-in will be persisted with session persistence.
             return firebase.auth().signInWithEmailAndPassword(email, password);
           })
           .catch(function(error) {
@@ -187,6 +182,18 @@ export const useMainAppContext = (): UseMainInterface => {
       });
   }, []);
 
+  const requestUserById = React.useCallback(async (userId: string) => {
+    const snapshot = await db
+      .collection('users')
+      .doc(userId)
+      .get();
+
+    if (snapshot) {
+      console.error('doc.data()doc.data()', snapshot.data());
+      return { userId: snapshot.id, ...snapshot.data() } as User;
+    }
+  }, []);
+
   return {
     isLogged,
     handleLogin,
@@ -195,7 +202,8 @@ export const useMainAppContext = (): UseMainInterface => {
     users,
     business,
     requestBusiness,
-    requestUsers
+    requestUsers,
+    requestUserById
   };
 };
 
