@@ -16,7 +16,10 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems } from 'components/dashboard/menu';
+import { MainListItems } from 'components/dashboard/menu';
+import mseller from 'assets/images/logo/Logo.png';
+import styled from 'styled-components';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function Copyright() {
   return (
@@ -31,6 +34,12 @@ function Copyright() {
 }
 
 const drawerWidth = 240;
+
+const Logo = styled.img.attrs({ src: mseller })`
+  width: 130px;
+  margin: auto;
+  margin-right: 27px;
+`;
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -112,8 +121,17 @@ const useStyles = makeStyles((theme: any) => ({
 }));
 
 const Dashboard = ({ children }) => {
+  const matches = useMediaQuery('(max-width:600px)');
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
+  React.useEffect(() => {
+    if (matches) {
+      console.error('matchesmatches', matches);
+      setOpen(false);
+    }
+  }, [matches]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -148,11 +166,14 @@ const Dashboard = ({ children }) => {
       >
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
+            <Logo />
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>
+          <MainListItems />
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

@@ -17,7 +17,7 @@ export interface UseMainInterface {
   users?: User[];
   business?: Business[];
   requestBusiness?: () => void;
-  requestUsers?: () => void;
+  requestUsers?: (businessId?: string) => void;
   requestUserById?: (userId: string) => Promise<User>;
 }
 
@@ -166,21 +166,26 @@ export const useMainAppContext = (): UseMainInterface => {
       });
   }, []);
 
-  const requestUsers = React.useCallback(() => {
-    db.collection('users')
-      .get()
-      .then((snapshot: firebase.firestore.QuerySnapshot) => {
-        const result = [];
-        snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-          result.push({ userId: doc.id, ...doc.data() });
-        });
+  const requestUsers = React.useCallback(
+    (businessId: string) => {
+      const bID = businessId ? businessId : user.business.businessId || '';
+      db.collection('users')
+        .where('business', '==', bID)
+        .get()
+        .then((snapshot: firebase.firestore.QuerySnapshot) => {
+          const result = [];
+          snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
+            result.push({ userId: doc.id, ...doc.data() });
+          });
 
-        setUsers(result);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+          setUsers(result);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    [user]
+  );
 
   const requestUserById = React.useCallback(async (userId: string) => {
     const snapshot = await db

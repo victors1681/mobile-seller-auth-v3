@@ -2,7 +2,7 @@ import * as React from 'react';
 import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import { useMainApp } from 'hooks';
 import { User } from 'contexts/MainApp';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const columns = [
   {
@@ -49,11 +49,13 @@ const columns = [
 
 const Business = (): React.ReactElement => {
   const { requestUsers, users } = useMainApp();
+  const { businessId } = useParams();
+
   const history = useHistory();
 
   React.useEffect(() => {
-    requestUsers();
-  }, [requestUsers]);
+    requestUsers(businessId || null);
+  }, [requestUsers, businessId]);
 
   const handleClick = (_, rowMeta: any) => {
     const userSelected = users[rowMeta.rowIndex] as User;
