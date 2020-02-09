@@ -1,5 +1,7 @@
 import * as React from 'react';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebaseConfig from '../firebasekey';
 
@@ -48,7 +50,7 @@ export interface Business {
 }
 
 export interface User {
-  uid: string;
+  userId: string;
   email: string;
   photoURL: string;
   business: Business;
@@ -95,13 +97,18 @@ export const useMainAppContext = (): UseMainInterface => {
             .then((snapshot) => {
               const businessData: any = { ...snapshot.data(), businessId: userData.business };
               setUser({ ...userData, business: businessData });
-              history.replace(from);
+              console.error('fromfromfromfromfromfromfrom', location);
+              if (location.pathname && !['/', '/login'].includes(location.pathname)) {
+                history.replace(location.pathname);
+              } else {
+                history.replace(from);
+              }
             });
         });
 
       setLogged(true);
     },
-    [from, history]
+    [from, history, location]
   );
 
   const performActiveSession = React.useCallback(() => {
@@ -120,7 +127,7 @@ export const useMainAppContext = (): UseMainInterface => {
     performActiveSession();
   }, [performActiveSession]);
 
-  const handleLogin = (email: string, password: string) => {
+  const handleLogin = React.useCallback((email: string, password: string) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -146,9 +153,9 @@ export const useMainAppContext = (): UseMainInterface => {
         setLogged(false);
         console.error('HELLOOOOOO', error);
       });
-  };
+  }, []);
 
-  const requestBusiness = () => {
+  const requestBusiness = React.useCallback(() => {
     db.collection('business')
       .get()
       .then((snapshot: firebase.firestore.QuerySnapshot) => {
@@ -162,8 +169,9 @@ export const useMainAppContext = (): UseMainInterface => {
       .catch((error) => {
         console.error(error);
       });
-  };
-  const requestUsers = () => {
+  }, []);
+
+  const requestUsers = React.useCallback(() => {
     db.collection('users')
       .get()
       .then((snapshot: firebase.firestore.QuerySnapshot) => {
@@ -177,7 +185,7 @@ export const useMainAppContext = (): UseMainInterface => {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, []);
 
   return {
     isLogged,
