@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useParams } from 'react-router-dom';
 import { useMainApp } from 'hooks';
+import { User } from 'contexts/MainApp';
 import styled from 'styled-components';
 
 import SwitchConfig from './SwitchConfig';
@@ -94,9 +95,9 @@ export const UserForm = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const { userId, duplicate } = useParams();
-  const { requestUserById } = useMainApp();
+  const { requestUserById, addUser, isSellerCodeExist } = useMainApp();
 
-  const getUserdata = React.useCallback(async () => {
+  const getUserData = React.useCallback(async () => {
     const result = await requestUserById(userId);
 
     if (duplicate) {
@@ -110,18 +111,30 @@ export const UserForm = () => {
 
   React.useEffect(() => {
     if (userId && userId !== 'new') {
-      getUserdata();
+      getUserData();
     } else {
       setLoading(false);
     }
-  }, [getUserdata, userId]);
+  }, [getUserData, userId]);
+
+  const handleSubmission = async (values: User) => {
+    const exist = await isSellerCodeExist(values.sellerCode);
+
+    console.log('exist', !exist);
+    if (!exist) {
+      console.log('addUser', values);
+      addUser(values);
+    }
+  };
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { ...userData },
     onSubmit: (values) => {
       // handleLogin(email, password);
+
       console.error(values, userData);
+      handleSubmission(values);
     },
     validationSchema: UserSchema
   });
@@ -167,7 +180,7 @@ export const UserForm = () => {
             <TextField required id="sellerCode" name="sellerCode" label="Código" fullWidth autoComplete="sellerCode" onChange={formik.handleChange} value={formik.values.sellerCode} />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <CustomSelect name="type" label="Tipo Usuario" options={userType} handleChange={formik.handleChange} defaultValue={formik.values.type} />
+            <CustomSelect name="userType" label="Tipo Usuario" options={userType} handleChange={formik.handleChange} defaultValue={formik.values.type} />
           </Grid>
           <Grid item xs={12} sm={4}>
             <CustomSelect name="userLevel" label="Nivel de Usuario" options={userRole} handleChange={formik.handleChange} defaultValue={formik.values.userLevel} />

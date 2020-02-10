@@ -19,6 +19,9 @@ export interface UseMainInterface {
   requestBusiness?: () => void;
   requestUsers?: (businessId?: string) => void;
   requestUserById?: (userId: string) => Promise<User>;
+  isSellerCodeExist?: (sellerCode: string) => Promise<boolean>;
+  updateUser?: (dataUser: User) => Promise<boolean>;
+  addUser?: (dataUser: User) => Promise<boolean>;
 }
 
 export interface Business {
@@ -199,6 +202,37 @@ export const useMainAppContext = (): UseMainInterface => {
     }
   }, []);
 
+  const isSellerCodeExist = async (sellerCode: string): Promise<boolean> => {
+    const snapshot = await db
+      .collection('users')
+      .where('sellerCode', '==', sellerCode)
+      .get();
+
+    console.error('isSellerCodeExist', snapshot);
+    return !!snapshot.docs.length;
+  };
+
+  const updateUser = async (userData: User) => {
+    delete userData.userId;
+
+    const snapshot = await db
+      .collection('users')
+      .doc(userData.userId)
+      .update({ ...userData, business: userData.business.businessId });
+
+    console.error('Update User ', snapshot);
+    return true;
+  };
+
+  const addUser = async (userData: User) => {
+    delete userData.userId;
+
+    const snapshot = await db.collection('users').add({ ...userData, business: userData.business.businessId });
+
+    console.error('Update User ', snapshot);
+    return true;
+  };
+
   return {
     isLogged,
     handleLogin,
@@ -208,7 +242,10 @@ export const useMainAppContext = (): UseMainInterface => {
     business,
     requestBusiness,
     requestUsers,
-    requestUserById
+    requestUserById,
+    isSellerCodeExist,
+    updateUser,
+    addUser
   };
 };
 
