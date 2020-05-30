@@ -11,11 +11,8 @@ const getResolve = () => ({
     assets: path.join(__dirname, '..', 'src', 'assets'),
     'react-dom': '@hot-loader/react-dom'
   },
-  extensions: ['.ts', '.tsx', '.js', '.jsx'],
-  modules: [
-    path.resolve(__dirname, '..', 'src'),
-    path.resolve(__dirname, '..', 'node_modules')
-  ]
+  extensions: ['.ts', '.tsx', '.js'],
+  modules: [path.resolve(__dirname, '..', 'src'), path.resolve(__dirname, '..', 'node_modules')]
 });
 
 module.exports.getResolve = getResolve;

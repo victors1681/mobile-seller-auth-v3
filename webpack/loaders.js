@@ -8,13 +8,9 @@ const getBabelLoader = () => ({
   use: ['babel-loader']
 });
 
-const getCssLoader = env => ({
+const getCssLoader = (env) => ({
   test: /\.(sc|c)ss$/,
-  use: [
-    isDev(env) ? 'style-loader' : MiniCssExtractPlugin.loader,
-    'css-loader',
-    'sass-loader'
-  ]
+  use: [isDev(env) ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
 });
 
 const getFileLoader = () => ({
@@ -30,7 +26,7 @@ const getXmlRawLoader = () => ({
   loader: 'raw-loader'
 });
 
-const getEslintLoader = env => {
+const getEslintLoader = (env) => {
   if (isProd(env)) {
     return;
   }
@@ -63,14 +59,12 @@ const getTsLoader = () => ({
   ]
 });
 
-const getLoaders = env =>
-  [
-    getBabelLoader(),
-    getCssLoader(env),
-    getFileLoader(),
-    getXmlRawLoader(),
-    getTsLoader(),
-    getEslintLoader(env)
-  ].filter(loader => loader);
+const getSourceMap = () => ({
+  enforce: 'pre',
+  test: /\.js$/,
+  loader: 'source-map-loader'
+});
+
+const getLoaders = (env) => [getBabelLoader(), getCssLoader(env), getFileLoader(), getXmlRawLoader(), getTsLoader(), getSourceMap(), getEslintLoader(env)].filter((loader) => loader);
 
 module.exports.getLoaders = getLoaders;

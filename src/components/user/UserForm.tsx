@@ -10,7 +10,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useParams } from 'react-router-dom';
 import { useMainApp } from 'hooks';
-import { User } from 'contexts/MainApp';
 import styled from 'styled-components';
 
 import SwitchConfig from './SwitchConfig';
@@ -91,23 +90,24 @@ const CustomSelect = ({ defaultValue, handleChange, name, label, options }: { de
   );
 };
 export const UserForm = () => {
-  const [userData, setUserData] = React.useState();
+  const [userData, setUserData] = React.useState({} as IUser);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const { userId, duplicate } = useParams();
   const { requestUserById, addUser, isSellerCodeExist } = useMainApp();
 
   const getUserData = React.useCallback(async () => {
-    const result = await requestUserById(userId);
+    const result = await requestUserById(userId || '');
 
     if (duplicate) {
-      setUserData({ ...result, email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '' });
+      const user = { ...result, email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '' } as IUser;
+      setUserData(user);
     } else {
-      setUserData(result);
+      setUserData(result as IUser);
     }
     setLoading(false);
     console.error('Result Promise', result);
-  }, []);
+  }, [userId]);
 
   React.useEffect(() => {
     if (userId && userId !== 'new') {
@@ -117,15 +117,18 @@ export const UserForm = () => {
     }
   }, [getUserData, userId]);
 
-  const handleSubmission = async (values: User) => {
-    const exist = await isSellerCodeExist(values.sellerCode);
+  const handleSubmission = React.useCallback(async (values: IUser) => {
+    if (isSellerCodeExist) {
+      const sellerCode = (values && values.sellerCode) || '';
+      const exist = await isSellerCodeExist(sellerCode);
 
-    console.log('exist', !exist);
-    if (!exist) {
-      console.log('addUser', values);
-      addUser(values);
+      console.log('exist', !exist);
+      if (!exist) {
+        console.log('addUser', values);
+        addUser && addUser(values);
+      }
     }
-  };
+  }, []);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -176,13 +179,16 @@ export const UserForm = () => {
           <Grid item xs={12} sm={3}>
             <TextField required id="phone" name="phone" label="Teléfono" fullWidth autoComplete="phone" onChange={formik.handleChange} value={formik.values.phone} />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <TextField required id="sellerCode" name="sellerCode" label="Código" fullWidth autoComplete="sellerCode" onChange={formik.handleChange} value={formik.values.sellerCode} />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
+            <TextField type="number" required id="warehouse" name="warehouse" label="No. Almacén" fullWidth autoComplete="sellerCode" onChange={formik.handleChange} value={formik.values.warehouse} />
+          </Grid>
+          <Grid item xs={12} sm={3}>
             <CustomSelect name="userType" label="Tipo Usuario" options={userType} handleChange={formik.handleChange} defaultValue={formik.values.type} />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <CustomSelect name="userLevel" label="Nivel de Usuario" options={userRole} handleChange={formik.handleChange} defaultValue={formik.values.userLevel} />
           </Grid>
           <SwitchConfig formik={formik} />

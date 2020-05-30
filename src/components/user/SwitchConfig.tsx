@@ -85,23 +85,38 @@ const fields: Field[] = [
   },
   {
     name: 'resetIpad',
-    label: 'Resetear iPad',
+    label: 'Resetear iPad (No recomendada)',
     value: false,
-    note: '',
+    note:
+      'Esta opción permite que el ipad sea reseteada, esta opción solo debe usarse si el código de vendedor es nuevo nunca antes usada. si existe esto causará conflicto con los pedidos previamente registrado por el vendedor.',
     icon: 'WifiIcon'
   },
   {
     name: 'restoreIpad',
-    label: 'Restaurar Ipad',
+    label: 'Restaurar Ipad (Recomendable)',
     value: false,
-    note: '',
+    note: 'Esta opción resetea el ipad luego sincroniza las informaciones de pedidos y cobros con el servidor si existe.',
     icon: 'WifiIcon'
   },
   {
     name: 'testMode',
     label: 'Modo de Prueba',
     value: false,
-    note: '',
+    note: 'Activa modo de pueba, las informaciones capturadas no serán procesadas',
+    icon: 'WifiIcon'
+  },
+  {
+    name: 'defaultClientByRoute',
+    label: 'Mostrar Clientes por Ruta',
+    value: true,
+    note: 'Muestra los clientes por ruta por defecto',
+    icon: 'WifiIcon'
+  },
+  {
+    name: 'updateBankList',
+    label: 'Actualizar Lista de Bancos',
+    value: false,
+    note: 'Forza el ipad a actualizar la lista de bancos',
     icon: 'WifiIcon'
   }
 ];
@@ -110,28 +125,31 @@ export default function SwitchConfig({ formik }: { formik: FormikValues }) {
   const classes = useStyles();
 
   const getToggleValues = () =>
-    Object.keys(formik.values).reduce((acc, currentKey) => {
+    Object.keys(formik.values).reduce((acc: any, currentKey: any) => {
       if (typeof formik.values[currentKey] === 'boolean' && formik.values[currentKey]) {
         return [...acc, currentKey];
       }
       return acc;
     }, []);
 
-  const [checked, setChecked] = React.useState(getToggleValues());
+  const [checked, setChecked] = React.useState(getToggleValues() || []);
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleToggle = React.useCallback(
+    (value) => () => {
+      const currentIndex = checked.indexOf(value);
+      const newChecked = [...checked];
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+      if (currentIndex === -1) {
+        newChecked.push(value);
+      } else {
+        newChecked.splice(currentIndex, 1);
+      }
 
-    formik.setFieldValue(value, newChecked.includes(value));
-    setChecked(newChecked);
-  };
+      formik.setFieldValue(value, newChecked.includes(value));
+      setChecked(newChecked);
+    },
+    [checked]
+  );
 
   enum Column {
     first,

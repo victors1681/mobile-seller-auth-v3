@@ -1,34 +1,30 @@
 {
     "compilerOptions": {
-		  "jsx": "react", 
-		  "module": "commonjs",
-		  "noImplicitAny": false,
-		  "removeComments": true,
-		  "preserveConstEnums": true,
-		  "esModuleInterop": true,
-		"outDir": "./dist/",
-		"stripInternal": true,
-		"target": "es2017",
-		"sourceMap": true, 
-		"allowSyntheticDefaultImports": false,
-		"baseUrl": "./src",
-		"checkJs": false,
+        "target": "esnext",
+        "module": "commonjs",
+        "resolveJsonModule": true, 
+        "moduleResolution": "node",
+        "strict": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "noImplicitAny": false, 
+        "sourceMap": true,
+        "skipLibCheck": true, 
+        "baseUrl": ".",
+        "preserveConstEnums": true,
+        "allowJs": true,
+		"importHelpers": true,
 		"paths": { 
 			"components/*": ["components/*"],
 			"layouts": ["layouts"],
-			"hooks": ["hooks"],
+            "hooks": ["hooks"],
+            "hooks/*": ["hooks/*"],
 			"contexts/*": ["contexts/*"],
 			"common/*": ["common/*"],
 			"utils/*": ["utils/*"],
 			"assets/*": ["assets/*"],
 			},
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-		"node_modules",
-		"dist",
-        "**/*.spec.ts"
-	]
+    "files": ["./globals.d.ts"],
+    "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

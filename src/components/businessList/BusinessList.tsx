@@ -1,7 +1,6 @@
 import * as React from 'react';
 import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import { useMainApp } from 'hooks';
-import { Business } from 'contexts/MainApp';
 import { useHistory } from 'react-router-dom';
 
 const columns = [
@@ -52,20 +51,27 @@ const BusinessList = (): React.ReactElement => {
   const history = useHistory();
 
   React.useEffect(() => {
-    requestBusiness();
+    if (requestBusiness) {
+      requestBusiness();
+    }
   }, [requestBusiness]);
 
-  const handleClick = (_, { rowIndex }: { rowIndex: number }) => {
-    const dataBusiness: Business = business[rowIndex];
-    history.push(`users/${dataBusiness.businessId}`);
-  };
+  const handleClick = React.useCallback(
+    (_, { rowIndex }: { rowIndex: number }) => {
+      if (business) {
+        const dataBusiness = business[rowIndex] as IBusiness;
+        history.push(`users/${dataBusiness.businessId}`);
+      }
+    },
+    [business]
+  );
 
   const options = {
     filterType: 'checkbox',
     onRowClick: handleClick
   } as MUIDataTableOptions;
 
-  return <MUIDataTable title="Empresas" data={business} columns={columns} options={options} />;
+  return <MUIDataTable title="Empresas" data={business as object[]} columns={columns} options={options} />;
 };
 
 export default BusinessList;

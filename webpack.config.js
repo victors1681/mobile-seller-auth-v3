@@ -1,15 +1,15 @@
-const { getEntry } = require("./webpack/entry");
-const { getOutput } = require("./webpack/output");
-const { getResolve } = require("./webpack/resolve");
-const { getDevServer } = require("./webpack/devServer");
-const { getPlugins } = require("./webpack/plugins");
-const { getLoaders } = require("./webpack/loaders");
-const { getOptimization } = require("./webpack/optimization");
-const { isDev } = require("./webpack/utils");
+const { getEntry } = require('./webpack/entry');
+const { getOutput } = require('./webpack/output');
+const { getResolve } = require('./webpack/resolve');
+const { getDevServer } = require('./webpack/devServer');
+const { getPlugins } = require('./webpack/plugins');
+const { getLoaders } = require('./webpack/loaders');
+const { getOptimization } = require('./webpack/optimization');
+const { isDev } = require('./webpack/utils');
 
-module.exports = env => {
+module.exports = (env) => {
   const config = {
-    mode: isDev(env) ? "development" : "production",
+    mode: isDev(env) ? 'development' : 'production',
     entry: getEntry(),
     output: getOutput(env),
     resolve: getResolve(),
@@ -18,7 +18,8 @@ module.exports = env => {
     module: {
       rules: getLoaders(env)
     },
-    optimization: getOptimization()
+    optimization: getOptimization(),
+    devtool: isDev(env) && '#cheap-module-eval-source-map'
   };
   return config;
 };

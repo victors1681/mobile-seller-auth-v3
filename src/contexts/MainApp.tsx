@@ -13,75 +13,22 @@ export interface UseMainInterface {
   firebase?: object;
   handleLogin?: (email: string, password: string) => void;
   isLogged?: boolean;
-  user?: User;
-  users?: User[];
-  business?: Business[];
+  user?: IUser;
+  users?: IUser[];
+  business?: IBusiness[];
   requestBusiness?: () => void;
   requestUsers?: (businessId?: string) => void;
-  requestUserById?: (userId: string) => Promise<User>;
+  requestUserById: (userId: string) => Promise<IUser | undefined>;
   isSellerCodeExist?: (sellerCode: string) => Promise<boolean>;
-  updateUser?: (dataUser: User) => Promise<boolean>;
-  addUser?: (dataUser: User) => Promise<boolean>;
-}
-
-export interface Business {
-  businessId: string;
-  address: {
-    city: string;
-    country: string;
-    street: string;
-  };
-  config: {
-    sandboxPort: string;
-    sandboxUrl: string;
-    serverPort: string;
-    serverUrl: string;
-    testMode: boolean;
-  };
-  contact: string;
-  contactPhone: string;
-  email: string;
-  fax: string;
-  footerMessage: string;
-  footerReceipt: string;
-  name: string;
-  phone: string;
-  rnc: string;
-  sellerLicenses: number;
-  startingDate: Date;
-  status: boolean;
-  website: string;
-}
-
-export interface User {
-  userId: string;
-  email: string;
-  photoURL: string;
-  business: Business;
-  editPrice: boolean;
-  filterClients: boolean;
-  firstName: string;
-  firstTimeLogin: boolean;
-  forceUpdatePassword: boolean;
-  initialConfig: boolean;
-  lastName: string;
-  onlyMyClients: true;
-  onlyProductsSelected: boolean;
-  phone: string;
-  priceCondition: boolean;
-  resetIpad: boolean;
-  restoreIpad: boolean;
-  sellerCode: string;
-  testMode: boolean;
-  type: string;
-  userLevel: string;
+  updateUser?: (dataUser: IUser) => Promise<boolean>;
+  addUser?: (dataUser: IUser) => Promise<boolean>;
 }
 
 export const useMainAppContext = (): UseMainInterface => {
   const [isLogged, setLogged] = React.useState(false);
-  const [user, setUser] = React.useState<User>();
-  const [users, setUsers] = React.useState<User[]>([]);
-  const [business, setBusiness] = React.useState<Business[]>([]);
+  const [user, setUser] = React.useState<IUser>();
+  const [users, setUsers] = React.useState<IUser[]>([]);
+  const [business, setBusiness] = React.useState<IBusiness[]>([]);
 
   const history = useHistory();
   const location = useLocation();
@@ -115,10 +62,12 @@ export const useMainAppContext = (): UseMainInterface => {
   );
 
   const performActiveSession = React.useCallback(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user: any) => {
       if (user) {
         // User is signed in.
-        performLogin(user.uid, user.email, user.photoURL);
+        if (user) {
+          performLogin(user.uid, user.email, user.photoURL);
+        }
       } else {
         // No user is signed in.
         history.replace({ pathname: '/login' });
@@ -134,7 +83,7 @@ export const useMainAppContext = (): UseMainInterface => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(({ user: { photoURL, email, uid } }) => {
+      .then(({ user: { photoURL, email, uid } }: any) => {
         firebase
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -157,9 +106,9 @@ export const useMainAppContext = (): UseMainInterface => {
     db.collection('business')
       .get()
       .then((snapshot: firebase.firestore.QuerySnapshot) => {
-        const result = [];
+        const result = [] as IBusiness[];
         snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-          result.push({ businessId: doc.id, ...doc.data() });
+          result.push({ businessId: doc.id, ...doc.data() } as IBusiness);
         });
 
         setBusiness(result);
@@ -170,15 +119,15 @@ export const useMainAppContext = (): UseMainInterface => {
   }, []);
 
   const requestUsers = React.useCallback(
-    (businessId: string) => {
-      const bID = businessId ? businessId : user.business.businessId || '';
+    (businessId?: string) => {
+      const bID = businessId ? businessId : user?.business.businessId || '';
       db.collection('users')
         .where('business', '==', bID)
         .get()
         .then((snapshot: firebase.firestore.QuerySnapshot) => {
-          const result = [];
+          const result = [] as IUser[];
           snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-            result.push({ userId: doc.id, ...doc.data() });
+            result.push({ userId: doc.id, ...doc.data() } as IUser);
           });
 
           setUsers(result);
@@ -198,7 +147,7 @@ export const useMainAppContext = (): UseMainInterface => {
 
     if (snapshot) {
       console.error('doc.data()doc.data()', snapshot.data());
-      return { userId: snapshot.id, ...snapshot.data() } as User;
+      return { userId: snapshot.id, ...snapshot.data() } as IUser;
     }
   }, []);
 
@@ -212,25 +161,29 @@ export const useMainAppContext = (): UseMainInterface => {
     return !!snapshot.docs.length;
   };
 
-  const updateUser = async (userData: User) => {
-    delete userData.userId;
-
-    const snapshot = await db
-      .collection('users')
-      .doc(userData.userId)
-      .update({ ...userData, business: userData.business.businessId });
-
-    console.error('Update User ', snapshot);
-    return true;
-  };
-
-  const addUser = async (userData: User) => {
+  const addUser = async (userData: IUser) => {
     delete userData.userId;
 
     const snapshot = await db.collection('users').add({ ...userData, business: userData.business.businessId });
 
     console.error('Update User ', snapshot);
     return true;
+  };
+
+  const updateUser = async (userData: IUser) => {
+    try {
+      delete userData.userId;
+
+      const snapshot = await db
+        .collection('users')
+        .doc(userData.userId)
+        .update({ ...userData, business: userData.business.businessId });
+
+      console.error('Update User ', snapshot);
+      return true;
+    } catch (err) {
+      return false;
+    }
   };
 
   return {
@@ -249,7 +202,7 @@ export const useMainAppContext = (): UseMainInterface => {
   };
 };
 
-const MainAppContext = React.createContext<UseMainInterface>({});
+const MainAppContext = React.createContext<UseMainInterface>({} as UseMainInterface);
 
 export default MainAppContext;
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import { useMainApp } from 'hooks';
-import { User } from 'contexts/MainApp';
 import { useHistory, useParams } from 'react-router-dom';
 
 const columns = [
@@ -54,14 +53,21 @@ const Business = (): React.ReactElement => {
   const history = useHistory();
 
   React.useEffect(() => {
-    requestUsers(businessId || null);
+    if (businessId && requestUsers) {
+      requestUsers(businessId || '');
+    }
   }, [requestUsers, businessId]);
 
-  const handleClick = (_, rowMeta: any) => {
-    const userSelected = users[rowMeta.rowIndex] as User;
-    console.error('userSelected', userSelected);
-    history.push(`/user/edit/${userSelected.userId}`);
-  };
+  const handleClick = React.useCallback(
+    (_, rowMeta: any) => {
+      if (users) {
+        const userSelected = users[rowMeta.rowIndex] as IUser;
+        console.error('userSelected', userSelected);
+        history.push(`/user/edit/${userSelected.userId}`);
+      }
+    },
+    [users]
+  );
 
   const options = {
     filterType: 'checkbox',
@@ -70,7 +76,7 @@ const Business = (): React.ReactElement => {
 
   return (
     <React.Fragment>
-      <MUIDataTable title="Users" data={users} columns={columns} options={options} />
+      <MUIDataTable title="Users" data={users as object[]} columns={columns} options={options} />
     </React.Fragment>
   );
 };

@@ -54,7 +54,9 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
       password: ''
     },
     onSubmit: ({ email, password }) => {
-      handleLogin(email, password);
+      if (handleLogin) {
+        handleLogin(email, password);
+      }
     },
     validationSchema: SigInSchema
   });
