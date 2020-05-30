@@ -94,7 +94,9 @@ export const UserForm = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const { userId, duplicate } = useParams();
-  const { requestUserById, addUser, isSellerCodeExist } = useMainApp();
+  const {
+    userHook: { requestUserById, addUser, isSellerCodeExist }
+  } = useMainApp();
 
   const getUserData = React.useCallback(async () => {
     const result = await requestUserById(userId || '');

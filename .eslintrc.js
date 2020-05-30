@@ -79,8 +79,7 @@ module.exports = {
         '@typescript-eslint/adjacent-overload-signatures': 'error',
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/ban-types': 'error',
-        '@typescript-eslint/class-name-casing': 'error',
-        '@typescript-eslint/interface-name-prefix': 'error',
+        '@typescript-eslint/class-name-casing': 'error', 
         '@typescript-eslint/no-angle-bracket-type-assertion': 'error',
         'no-array-constructor': 'off',
         '@typescript-eslint/no-array-constructor': 'error',
@@ -97,7 +96,8 @@ module.exports = {
         '@typescript-eslint/type-annotation-spacing': 'error',
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
         '@typescript-eslint/no-triple-slash-reference': 'off',
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/interface-name-prefix": "off"
       }
     }
   ]

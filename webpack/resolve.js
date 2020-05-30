@@ -2,6 +2,7 @@ const path = require('path');
 
 const getResolve = () => ({
   alias: {
+    root: path.join(__dirname, '..', 'src'),
     components: path.join(__dirname, '..', 'src', 'components'),
     contexts: path.join(__dirname, '..', 'src', 'contexts'),
     hooks: path.join(__dirname, '..', 'src', 'hooks'),

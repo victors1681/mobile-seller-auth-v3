@@ -47,7 +47,9 @@ const columns = [
 ];
 
 const Business = (): React.ReactElement => {
-  const { requestUsers, users } = useMainApp();
+  const {
+    userHook: { requestUsers, users }
+  } = useMainApp();
   const { businessId } = useParams();
 
   const history = useHistory();
