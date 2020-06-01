@@ -105,10 +105,22 @@ export const useUser = (): IUseUser => {
 
   const addUser = async (userData: IUser) => {
     delete userData.userId;
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(userData.email, userData.password)
+      .then((data) => {
+        console.error('User createdd!!', data);
+        //const snapshot = db.collection(USER_COLLECTION).add({ ...userData, business: userData.business.businessId });
 
-    const snapshot = await db.collection(USER_COLLECTION).add({ ...userData, business: userData.business.businessId });
+        //console.error('user added ', snapshot);
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode, ' ', errorMessage);
+      });
 
-    console.error('Update User ', snapshot);
     return true;
   };
 

@@ -11,7 +11,6 @@ import * as Yup from 'yup';
 import { useParams } from 'react-router-dom';
 import { useMainApp } from 'hooks';
 import styled from 'styled-components';
-
 import SwitchConfig from './SwitchConfig';
 
 const AvatarProfile = styled(Avatar)`

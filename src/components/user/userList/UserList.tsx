@@ -2,6 +2,7 @@ import * as React from 'react';
 import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import { useMainApp } from 'hooks';
 import { useHistory, useParams } from 'react-router-dom';
+import { CustomToolbar } from 'common';
 
 const columns = [
   {
@@ -72,8 +73,16 @@ const Business = (): React.ReactElement => {
   );
 
   const options = {
-    filterType: 'checkbox',
-    onRowClick: handleClick
+    filter: false,
+    onRowClick: handleClick,
+    print: false,
+    download: false,
+    viewColumns: false,
+    selectableRows: 'single',
+    responsive: 'stacked',
+    customToolbar: () => {
+      return <CustomToolbar />;
+    }
   } as MUIDataTableOptions;
 
   return (
