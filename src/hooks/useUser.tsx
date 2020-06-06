@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { db, firebase } from 'root/firebaseConnection';
 import { useHistory, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export interface IUseUser {
   user?: IUser;
   users?: IUser[];
-  isSellerCodeExist?: (sellerCode: string) => Promise<boolean>;
+  isSellerCodeExist: (sellerCode: string, businessId?: string, userId?: string) => Promise<boolean>;
   requestUsers?: (businessId?: string) => void;
   requestUserById: (userId: string) => Promise<IUser | undefined>;
   performLogin: (uid: string, email: string, photoURL: string) => void;
-  updateUser?: (dataUser: IUser) => Promise<boolean>;
-  addUser?: (dataUser: IUser) => Promise<boolean>;
+  updateUser: (dataUser: IUser, businessId: string) => Promise<boolean>;
+  addUser: (dataUser: IUser, businessId: string) => Promise<boolean | undefined>;
   isLogged: boolean;
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -87,50 +88,61 @@ export const useUser = (): IUseUser => {
     }
   };
 
-  const updateUser = async (userData: IUser) => {
+  const updateUser = async (userData: IUser, businessId: string) => {
     try {
-      delete userData.userId;
-
-      const snapshot = await db
+      await db
         .collection(USER_COLLECTION)
         .doc(userData.userId)
-        .update({ ...userData, business: userData.business.businessId });
+        .update({ ...userData, business: businessId });
 
-      console.error('Update User ', snapshot);
+      toast('User Updated');
+
       return true;
-    } catch (err) {
+    } catch (error) {
+      toast.error(error.message);
       return false;
     }
   };
 
-  const addUser = async (userData: IUser) => {
-    delete userData.userId;
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(userData.email, userData.password)
-      .then((data) => {
-        console.error('User createdd!!', data);
-        //const snapshot = db.collection(USER_COLLECTION).add({ ...userData, business: userData.business.businessId });
+  const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
+    try {
+      delete userData.userId;
+      delete userData.password;
+      const newUser = await firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
+      const uid = newUser.user?.uid;
+      if (uid) {
+        const newUserConfig = db
+          .collection(USER_COLLECTION)
+          .doc(uid)
+          .set({ ...userData, business: businessId });
 
-        //console.error('user added ', snapshot);
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode, ' ', errorMessage);
-      });
-
-    return true;
+        if (newUserConfig) {
+          toast('User Created');
+          return true;
+        }
+      }
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, ' ', errorMessage);
+      toast.error(errorMessage);
+      return;
+    }
   };
 
-  const isSellerCodeExist = async (sellerCode: string): Promise<boolean> => {
+  const isSellerCodeExist = async (sellerCode: string, businessId?: string, userId?: string): Promise<boolean> => {
     const snapshot = await db
       .collection('users')
       .where('sellerCode', '==', sellerCode)
+      .where('business', '==', businessId && businessId)
       .get();
 
-    console.error('isSellerCodeExist', snapshot);
+    if (!snapshot.empty) {
+      const currentData = snapshot.docs[0].id;
+      return currentData !== userId; //if the user is editing and is the same keep ediging
+    }
+
     return !!snapshot.docs.length;
   };
 

@@ -11,7 +11,7 @@ interface IUser {
     forceUpdatePassword: boolean;
     initialConfig: boolean;
     lastName: string;
-    onlyMyClients: true;
+    onlyMyClients: boolean;
     onlyProductsSelected: boolean;
     phone: string;
     priceCondition: boolean;

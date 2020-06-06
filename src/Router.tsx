@@ -44,7 +44,7 @@ const Router: React.FunctionComponent = (): React.ReactElement => {
       <PrivateRoute path="/users/:businessId?">
         <CommonLayout component={User} />
       </PrivateRoute>
-      <PrivateRoute path="/user/edit/:userId/:duplicate?">
+      <PrivateRoute path="/user/edit/:userId/:businessId/:duplicate?">
         <CommonLayout component={UserEdit} />
       </PrivateRoute>
       <Route component={NotFound} />

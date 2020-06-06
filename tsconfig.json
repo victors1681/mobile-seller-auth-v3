@@ -8,7 +8,7 @@
         "strict": true,
         "esModuleInterop": true,
         "jsx": "react",
-        "noImplicitAny": true, 
+        "noImplicitAny": false, 
         "noImplicitThis": true,
         "strictNullChecks": true,
         "sourceMap": true,

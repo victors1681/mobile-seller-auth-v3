@@ -66,11 +66,13 @@ const Business = (): React.ReactElement => {
       if (users) {
         const userSelected = users[rowMeta.rowIndex] as IUser;
         console.error('userSelected', userSelected);
-        history.push(`/user/edit/${userSelected.userId}`);
+        history.push(`/user/edit/${userSelected.userId}/${businessId}`);
       }
     },
     [users]
   );
+
+  const getCustomToolBarWithId = React.useCallback(() => <CustomToolbar location={`/user/edit/new/${businessId}`} />, [businessId]);
 
   const options = {
     filter: false,
@@ -80,9 +82,7 @@ const Business = (): React.ReactElement => {
     viewColumns: false,
     selectableRows: 'single',
     responsive: 'stacked',
-    customToolbar: () => {
-      return <CustomToolbar />;
-    }
+    customToolbar: getCustomToolBarWithId
   } as MUIDataTableOptions;
 
   return (

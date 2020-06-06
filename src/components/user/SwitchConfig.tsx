@@ -26,7 +26,7 @@ export interface Field {
   note: string;
   icon: string;
 }
-const fields: Field[] = [
+export const fields: Field[] = [
   {
     name: 'editPrice',
     label: 'Editar Precio',
