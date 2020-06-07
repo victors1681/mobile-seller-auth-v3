@@ -2,12 +2,9 @@ import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Switch from '@material-ui/core/Switch';
-import WifiIcon from '@material-ui/icons/Wifi';
 import Grid from '@material-ui/core/Grid';
 import { FormikValues } from 'formik';
 
@@ -162,13 +159,7 @@ export default function SwitchConfig({ formik }: { formik: FormikValues }) {
 
     return fieldSelected.map((field) => (
       <ListItem key={field.name}>
-        <ListItemIcon>
-          <WifiIcon />
-        </ListItemIcon>
-        <ListItemText id="switch-list-label-wifi" primary={field.label} />
-        <ListItemSecondaryAction>
-          <Switch name={field.name} onChange={handleToggle(field.name)} checked={checked.indexOf(field.name) !== -1} />
-        </ListItemSecondaryAction>
+        <FormControlLabel control={<Switch name={field.name} onChange={handleToggle(field.name)} checked={checked.indexOf(field.name) !== -1} />} label={field.label} />
       </ListItem>
     ));
   };

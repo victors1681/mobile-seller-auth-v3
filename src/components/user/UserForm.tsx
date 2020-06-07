@@ -2,16 +2,15 @@ import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Paper, CircularProgress, Avatar, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import Tooltip from '@material-ui/core/Tooltip';
 import SwitchConfig, { fields as defaultFieldValues } from './SwitchConfig';
 
 const AvatarProfile = styled(Avatar)`
@@ -130,6 +129,7 @@ export const UserForm = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [userAction, setUserAction] = React.useState<Actions>(Actions.new);
 
+  const history = useHistory();
   const { userId, businessId, duplicate } = useParams();
   const {
     userHook: { requestUserById, addUser, isSellerCodeExist, updateUser }
@@ -146,7 +146,7 @@ export const UserForm = () => {
     }
     setLoading(false);
     console.error('Result Promise', result);
-  }, [userId]);
+  }, [userId, duplicate]);
 
   React.useEffect(() => {
     if (userId !== Actions.new && duplicate) {
@@ -159,7 +159,7 @@ export const UserForm = () => {
       setUserAction(Actions.new);
       setLoading(false);
     }
-  }, [getUserData, userId]);
+  }, [getUserData, userId, duplicate]);
 
   const handleSubmission = React.useCallback(
     async (values: IUser, resetForm: any) => {
@@ -209,6 +209,11 @@ export const UserForm = () => {
     },
     validationSchema: Yup.object().shape(userAction === Actions.new ? UserSchema : UserSchemaNoPassword)
   });
+
+  const handleDuplication = React.useCallback(() => {
+    history.push(`/user/edit/${userId}/${businessId}/true`);
+  }, [userId, businessId]);
+
   return loading ? (
     <CircularProgress />
   ) : (
@@ -225,7 +230,7 @@ export const UserForm = () => {
             <TextField required id="firstName" name="firstName" label="Nombre" fullWidth onChange={formik.handleChange} value={formik.values.firstName} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField required id="lastName" name="lastName" label="Apollido" fullWidth onChange={formik.handleChange} value={formik.values.lastName} />
+            <TextField required id="lastName" name="lastName" label="Apellido" fullWidth onChange={formik.handleChange} value={formik.values.lastName} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField required id="email" name="email" label="Correo" fullWidth autoComplete="new-password" onChange={formik.handleChange} value={formik.values.email} />
@@ -260,13 +265,26 @@ export const UserForm = () => {
             <CustomSelect required name="userLevel" label="Nivel de Usuario" options={userRole} handleChange={formik.handleChange} defaultValue={formik.values.userLevel} />
           </Grid>
           <SwitchConfig formik={formik} />
-          <Grid item xs={12}>
-            <FormControlLabel control={<Checkbox color="secondary" name="saveAddress" value="yes" />} label="Use this address for payment details" />
+        </Grid>
+
+        <Grid container spacing={6}>
+          <Grid item xs={12} sm={3}>
+            {userAction === Actions.edit && (
+              <Tooltip title="Crea un nuevo usuario utilizando las configuraciones de este usuario" aria-label="">
+                <Button fullWidth color="primary" onClick={handleDuplication} variant="outlined">
+                  Duplicar Usuario
+                </Button>
+              </Tooltip>
+            )}
+          </Grid>
+          <Grid item xs={12} sm={3} />
+          <Grid item xs={12} sm={3} />
+          <Grid item xs={12} sm={3}>
+            <Button type="submit" fullWidth variant="contained" color="primary">
+              {getLabel()}
+            </Button>
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary">
-          {getLabel()}
-        </Button>
       </form>
     </Wrapper>
   );

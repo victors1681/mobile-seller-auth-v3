@@ -1,13 +1,15 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import Fab from '@material-ui/core/Fab';
 
-const useStyles = makeStyles({
-  iconButton: {}
-});
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    margin: theme.spacing(2)
+  }
+}));
 
 const CustomToolbar = ({ location }: { location: string }) => {
   const history = useHistory();
@@ -21,10 +23,10 @@ const CustomToolbar = ({ location }: { location: string }) => {
 
   return (
     <React.Fragment>
-      <Tooltip title="custom icon">
-        <IconButton size="medium" color="primary" className={classes.iconButton} onClick={handleClick}>
-          <AddIcon color="primary" />
-        </IconButton>
+      <Tooltip title="Crear nuevo">
+        <Fab color="primary" className={classes.fab} onClick={handleClick} size="small">
+          <AddIcon />
+        </Fab>
       </Tooltip>
     </React.Fragment>
   );
