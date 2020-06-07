@@ -27,3 +27,9 @@ declare module 'svg-react-loader*' {
 type ComponentPropsWithDefaults<C> = JSX.LibraryManagedAttributes<C, React.ComponentProps<C>>;
 
 type ObjectValues<T> = T[keyof T];
+
+interface SelectOptions {
+    name: string;
+    label: string;
+    value: string;
+  }

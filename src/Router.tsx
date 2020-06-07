@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Login, Business, User, Dashboard, UserEdit } from 'layouts';
+import { Login, Business, User, Dashboard, UserEdit, BusinessEdit } from 'layouts';
 import NotFound from 'components/notFound';
 import { useMainApp } from 'hooks';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -38,8 +38,11 @@ const Router: React.FunctionComponent = (): React.ReactElement => {
     <Switch>
       <Route path="/" component={Login} exact />
       <Route path="/login" component={Login} />
-      <PrivateRoute path="/business">
+      <PrivateRoute exact path="/business">
         <CommonLayout component={Business} />
+      </PrivateRoute>
+      <PrivateRoute path="/business/edit/:businessId?">
+        <CommonLayout component={BusinessEdit} />
       </PrivateRoute>
       <PrivateRoute path="/users/:businessId?">
         <CommonLayout component={User} />

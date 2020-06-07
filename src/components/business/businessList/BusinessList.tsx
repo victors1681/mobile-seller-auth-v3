@@ -2,6 +2,7 @@ import * as React from 'react';
 import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import { useMainApp } from 'hooks';
 import { useHistory } from 'react-router-dom';
+import { CustomToolbar } from 'common';
 
 const columns = [
   {
@@ -47,7 +48,9 @@ const columns = [
 ];
 
 const BusinessList = (): React.ReactElement => {
-  const { requestBusiness, business } = useMainApp();
+  const {
+    businessHook: { requestBusiness, business }
+  } = useMainApp();
   const history = useHistory();
 
   React.useEffect(() => {
@@ -66,9 +69,17 @@ const BusinessList = (): React.ReactElement => {
     [business]
   );
 
+  const getCustomToolBarWithId = React.useCallback(() => <CustomToolbar location="/business/edit/new/" />, []);
+
   const options = {
-    filterType: 'checkbox',
-    onRowClick: handleClick
+    filter: false,
+    onRowClick: handleClick,
+    print: false,
+    download: false,
+    viewColumns: false,
+    responsive: 'stacked',
+    selectableRows: 'none',
+    customToolbar: getCustomToolBarWithId
   } as MUIDataTableOptions;
 
   return <MUIDataTable title="Empresas" data={business as object[]} columns={columns} options={options} />;

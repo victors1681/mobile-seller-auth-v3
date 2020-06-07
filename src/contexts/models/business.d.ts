@@ -25,6 +25,8 @@ interface IBusiness {
     startingDate: Date;
     status: boolean;
     website: string;
+    logoUrl: string;
+    sellingPackaging:false;
   }
   
   

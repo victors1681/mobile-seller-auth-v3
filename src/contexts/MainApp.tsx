@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-import { IUseUser, useUser } from 'hooks';
-import { db, firebase } from 'root/firebaseConnection';
+import { IUseUser, useUser, useBusiness, IUseBusiness } from 'hooks';
+import { firebase } from 'root/firebaseConnection';
 
 export interface UseMainInterface {
   firebase?: object;
@@ -9,15 +9,13 @@ export interface UseMainInterface {
   isLogged: boolean;
   currentUser?: IUser;
   userHook: IUseUser;
-  business?: IBusiness[];
-  requestBusiness?: () => void;
+  businessHook: IUseBusiness;
 }
 
 export const useMainAppContext = (): UseMainInterface => {
   const [currentUser, setCurrentUser] = React.useState<IUser>();
   const userHook = useUser();
-
-  const [business, setBusiness] = React.useState<IBusiness[]>([]);
+  const businessHook = useBusiness();
 
   const history = useHistory();
 
@@ -72,30 +70,13 @@ export const useMainAppContext = (): UseMainInterface => {
     [userHook]
   );
 
-  const requestBusiness = React.useCallback(() => {
-    db.collection('business')
-      .get()
-      .then((snapshot: firebase.firestore.QuerySnapshot) => {
-        const result = [] as IBusiness[];
-        snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-          result.push({ businessId: doc.id, ...doc.data() } as IBusiness);
-        });
-
-        setBusiness(result);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
   return {
     isLogged: userHook.isLogged,
     handleLogin,
     firebase,
     currentUser,
     userHook,
-    business,
-    requestBusiness
+    businessHook
   };
 };
 

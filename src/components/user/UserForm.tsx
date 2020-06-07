@@ -2,7 +2,7 @@ import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Paper, CircularProgress, Avatar, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Paper, CircularProgress, Avatar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,6 +11,7 @@ import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import Tooltip from '@material-ui/core/Tooltip';
+import { CustomSelect } from 'common';
 import SwitchConfig, { fields as defaultFieldValues } from './SwitchConfig';
 
 const AvatarProfile = styled(Avatar)`
@@ -42,11 +43,6 @@ const UserSchema = {
   password: Yup.string().required('Requerido')
 };
 
-interface SelectOptions {
-  name: string;
-  label: string;
-  value: string;
-}
 const userType: SelectOptions[] = [
   {
     name: 'seller',
@@ -77,31 +73,6 @@ const userRole: SelectOptions[] = [
     value: 'S'
   }
 ];
-
-interface ICustomSelect {
-  defaultValue: string;
-  handleChange: any;
-  name: string;
-  label: string;
-  options: SelectOptions[];
-  required: boolean;
-}
-const CustomSelect = ({ defaultValue, handleChange, name, label, options, required }: ICustomSelect) => {
-  return (
-    <FormControl fullWidth>
-      <InputLabel id={name} required={required}>
-        {label}
-      </InputLabel>
-      <Select labelId={name} id={`${name}-${label}`} name={name} value={defaultValue} onChange={handleChange}>
-        {options.map((option: SelectOptions) => (
-          <MenuItem key={option.name} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-};
 
 enum Actions {
   new = 'new',

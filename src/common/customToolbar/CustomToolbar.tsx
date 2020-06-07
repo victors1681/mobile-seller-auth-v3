@@ -14,10 +14,9 @@ const useStyles = makeStyles((theme) => ({
 const CustomToolbar = ({ location }: { location: string }) => {
   const history = useHistory();
 
-  const handleClick = () => {
-    console.log('clicked on icon!');
+  const handleClick = React.useCallback(() => {
     history.push(location);
-  };
+  }, [location]);
 
   const classes = useStyles();
 
