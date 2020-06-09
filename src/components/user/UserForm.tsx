@@ -2,7 +2,7 @@ import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Paper, CircularProgress, Avatar } from '@material-ui/core';
+import { Paper, Avatar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,7 +11,7 @@ import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import Tooltip from '@material-ui/core/Tooltip';
-import { CustomSelect } from 'common';
+import { CustomSelect, Loader } from 'common';
 import SwitchConfig, { fields as defaultFieldValues } from './SwitchConfig';
 
 const AvatarProfile = styled(Avatar)`
@@ -40,7 +40,9 @@ const UserSchemaNoPassword = {
 };
 const UserSchema = {
   ...UserSchemaNoPassword,
-  password: Yup.string().required('Requerido')
+  password: Yup.string()
+    .min(6)
+    .required('Requerido')
 };
 
 const userType: SelectOptions[] = [
@@ -185,10 +187,9 @@ export const UserForm = () => {
     history.push(`/user/edit/${userId}/${businessId}/true`);
   }, [userId, businessId]);
 
-  return loading ? (
-    <CircularProgress />
-  ) : (
+  return (
     <Wrapper>
+      <Loader isLoading={loading} />
       <form onSubmit={formik.handleSubmit}>
         <Header>
           <Typography variant="h6" gutterBottom>
@@ -198,13 +199,44 @@ export const UserForm = () => {
         </Header>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
-            <TextField required id="firstName" name="firstName" label="Nombre" fullWidth onChange={formik.handleChange} value={formik.values.firstName} />
+            <TextField
+              required
+              id="firstName"
+              name="firstName"
+              label="Nombre"
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values.firstName}
+              error={!!formik.errors.firstName && formik.touched.firstName}
+              helperText={formik.errors.firstName}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField required id="lastName" name="lastName" label="Apellido" fullWidth onChange={formik.handleChange} value={formik.values.lastName} />
+            <TextField
+              required
+              id="lastName"
+              name="lastName"
+              label="Apellido"
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values.lastName}
+              error={!!formik.errors.lastName && formik.touched.lastName}
+              helperText={formik.errors.lastName}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField required id="email" name="email" label="Correo" fullWidth autoComplete="new-password" onChange={formik.handleChange} value={formik.values.email} />
+            <TextField
+              required
+              id="email"
+              name="email"
+              label="Correo"
+              fullWidth
+              autoComplete="new-password"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              error={!!formik.errors.email && formik.touched.email}
+              helperText={formik.errors.email}
+            />
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
@@ -215,25 +247,55 @@ export const UserForm = () => {
               name="password"
               label="Clave"
               fullWidth
+              error={!!formik.errors.password && formik.touched.password}
+              helperText={formik.errors.password}
               autoComplete="new-password"
               onChange={formik.handleChange}
               value={formik.values.password}
             />
           </Grid>
           <Grid item xs={12} sm={3}>
-            <TextField required id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />
+            <TextField id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />
           </Grid>
           <Grid item xs={12} sm={3}>
-            <TextField required id="sellerCode" name="sellerCode" label="Código" fullWidth onChange={formik.handleChange} value={formik.values.sellerCode} />
+            <TextField
+              required
+              id="sellerCode"
+              name="sellerCode"
+              label="Código"
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values.sellerCode}
+              error={!!formik.errors.sellerCode && formik.touched.sellerCode}
+              helperText={formik.errors.sellerCode}
+            />
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField type="number" required id="warehouse" name="warehouse" label="No. Almacén" fullWidth onChange={formik.handleChange} value={formik.values.warehouse} />
           </Grid>
           <Grid item xs={12} sm={3}>
-            <CustomSelect required name="type" label="Tipo Usuario" options={userType} handleChange={formik.handleChange} defaultValue={formik.values.type} />
+            <CustomSelect
+              required
+              name="type"
+              label="Tipo Usuario"
+              options={userType}
+              handleChange={formik.handleChange}
+              defaultValue={formik.values.type}
+              error={!!formik.errors.type && formik.touched.type}
+              helperText={formik.errors.type}
+            />
           </Grid>
           <Grid item xs={12} sm={3}>
-            <CustomSelect required name="userLevel" label="Nivel de Usuario" options={userRole} handleChange={formik.handleChange} defaultValue={formik.values.userLevel} />
+            <CustomSelect
+              required
+              name="userLevel"
+              label="Nivel de Usuario"
+              options={userRole}
+              handleChange={formik.handleChange}
+              defaultValue={formik.values.userLevel}
+              error={!!formik.errors.userLevel && formik.touched.userLevel}
+              helperText={formik.errors.userLevel}
+            />
           </Grid>
           <SwitchConfig formik={formik} />
         </Grid>

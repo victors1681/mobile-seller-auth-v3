@@ -2,7 +2,7 @@ import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Paper, CircularProgress, Avatar, Switch, ListItem, FormControlLabel, ListItemText, Divider } from '@material-ui/core';
+import { Paper, Avatar, Switch, ListItem, FormControlLabel, ListItemText, Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,6 +10,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Loader } from 'common';
 
 const AvatarProfile = styled(Avatar)`
   width: ${({ theme }) => theme.spacing(7)};
@@ -49,18 +50,14 @@ const formInit = {
   email: '',
   photoURL: '',
   business: '',
-  firstName: '',
-  lastName: '',
   logoUrl: '',
-  sellerCode: '',
-  type: '',
-  userLevel: '',
-  warehouse: '',
   footerMessage: '',
   footerReceipt: '',
   sellerLicenses: 0,
   contact: '',
   contactPhone: '',
+  fax: '',
+  website: '',
   address: {
     street: '',
     city: '',
@@ -78,33 +75,36 @@ const formInit = {
 };
 
 export const UserForm = () => {
-  const [businessData, setUserData] = React.useState((formInit as unknown) as IBusiness);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [businessData, setBusinessData] = React.useState((formInit as unknown) as IBusiness);
   const [userAction, setUserAction] = React.useState<Actions>(Actions.new);
 
   const history = useHistory();
   const { businessId } = useParams();
   const {
-    businessHook: { addBusiness, updateBusiness }
+    businessHook: { isLoading, addBusiness, updateBusiness, requestBusinessById }
   } = useMainApp();
 
-  const getUserData = React.useCallback(async () => {
-    setUserData((formInit as unknown) as IBusiness);
-
-    setLoading(false);
+  const getBusinessData = React.useCallback(async () => {
+    if (businessId) {
+      const response = await requestBusinessById(businessId);
+      if (response) {
+        setBusinessData((response as unknown) as IBusiness);
+      }
+    }
   }, [businessId]);
 
   React.useEffect(() => {
     if (businessId !== Actions.new) {
       setUserAction(Actions.edit);
-      getUserData();
+      getBusinessData();
     }
-  }, [getUserData, businessId]);
+  }, [getBusinessData, businessId]);
 
   const handleSubmission = React.useCallback(
     async (values: IBusiness, resetForm: any) => {
       if (userAction === Actions.edit && businessId) {
-        updateBusiness(values, businessId);
+        await updateBusiness(values, businessId);
+        history.goBack();
       } else {
         //new or duplicate add new user
         const isCreated = await addBusiness(values);
@@ -114,7 +114,7 @@ export const UserForm = () => {
         }
       }
     },
-    [businessId, userAction]
+    [businessId, userAction, history]
   );
 
   const getLabel = React.useCallback(() => {
@@ -139,10 +139,9 @@ export const UserForm = () => {
     history.push(`/user/edit/${businessId}/${businessId}/true`);
   }, [businessId, businessId]);
 
-  return !loading ? (
-    <CircularProgress />
-  ) : (
+  return (
     <Wrapper>
+      <Loader isLoading={isLoading} />
       <form onSubmit={formik.handleSubmit}>
         <Header>
           <Typography variant="h6" gutterBottom>

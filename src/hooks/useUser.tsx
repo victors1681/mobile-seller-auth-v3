@@ -110,15 +110,17 @@ export const useUser = (): IUseUser => {
 
   const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
     try {
-      delete userData.userId;
-      delete userData.password;
-      const newUser = await firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
+      const password = userData.password;
+
+      const newUser = await firebase.auth().createUserWithEmailAndPassword(userData.email, password);
       const uid = newUser.user?.uid;
       if (uid) {
+        const performData = { ...userData, business: businessId };
+        delete performData.password;
         const newUserConfig = db
           .collection(USER_COLLECTION)
           .doc(uid)
-          .set({ ...userData, business: businessId });
+          .set({ ...performData, business: businessId });
 
         if (newUserConfig) {
           toast('User Created');

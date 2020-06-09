@@ -8,14 +8,17 @@ export interface IUseBusiness {
   requestBusinessById: (businessId: string) => Promise<IBusiness | undefined>;
   updateBusiness: (businessData: IBusiness, businessId: string) => Promise<boolean>;
   addBusiness: (businessData: IBusiness) => Promise<boolean | undefined>;
+  isLoading: boolean;
 }
 
 export const BUSINESS_COLLECTION = 'business';
 
 export const useBusiness = (): IUseBusiness => {
   const [business, setBusiness] = React.useState<IBusiness[]>([]);
+  const [isLoading, setLoading] = React.useState(Boolean);
 
   const requestBusiness = React.useCallback(() => {
+    setLoading(true);
     db.collection('business')
       .get()
       .then((snapshot: firebase.firestore.QuerySnapshot) => {
@@ -25,6 +28,7 @@ export const useBusiness = (): IUseBusiness => {
         });
 
         setBusiness(result);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -32,6 +36,7 @@ export const useBusiness = (): IUseBusiness => {
   }, []);
 
   const requestBusinessById = async (businessId: string) => {
+    setLoading(true);
     const snapshot = await db
       .collection(BUSINESS_COLLECTION)
       .doc(businessId)
@@ -39,6 +44,7 @@ export const useBusiness = (): IUseBusiness => {
 
     if (snapshot) {
       console.error('doc.data()doc.data()', snapshot.data());
+      setLoading(false);
       return { businessId: snapshot.id, ...snapshot.data() } as IBusiness;
     }
   };
@@ -84,7 +90,8 @@ export const useBusiness = (): IUseBusiness => {
     updateBusiness,
     requestBusinessById,
     requestBusiness,
-    addBusiness
+    addBusiness,
+    isLoading
   };
 };
 

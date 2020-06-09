@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@material-ui/core';
 
 interface ICustomSelect {
   defaultValue: string;
@@ -8,10 +8,12 @@ interface ICustomSelect {
   label: string;
   options: SelectOptions[];
   required: boolean;
+  error: boolean | undefined;
+  helperText: string | undefined;
 }
-export const CustomSelect = ({ defaultValue, handleChange, name, label, options, required }: ICustomSelect) => {
+export const CustomSelect = ({ defaultValue, handleChange, name, label, options, required, error, helperText }: ICustomSelect) => {
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth error={error}>
       <InputLabel id={name} required={required}>
         {label}
       </InputLabel>
@@ -22,6 +24,7 @@ export const CustomSelect = ({ defaultValue, handleChange, name, label, options,
           </MenuItem>
         ))}
       </Select>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 };
