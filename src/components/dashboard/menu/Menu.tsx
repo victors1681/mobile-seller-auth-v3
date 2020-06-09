@@ -12,7 +12,7 @@ export const MainListItems = () => {
   const history = useHistory();
   const goTo = (to) => history.push(to);
   const { currentUser } = useMainApp();
-  const businessId = currentUser?.business.businessId;
+  const businessId = currentUser?.business;
   return (
     <div>
       <ListItem button>
