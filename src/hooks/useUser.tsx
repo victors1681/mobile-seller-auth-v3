@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { db, firebase } from 'root/firebaseConnection';
+import { db, firebase, functions } from 'root/firebaseConnection';
 import { useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -81,25 +81,23 @@ export const useUser = (): IUseUser => {
   );
 
   const requestUserById = async (userId: string) => {
-    const snapshot = await db
-      .collection(USER_COLLECTION)
-      .doc(userId)
-      .get();
+    const userById = functions.httpsCallable('userById');
+    const { data } = await userById(userId);
 
-    if (snapshot) {
-      console.error('doc.data()doc.data()', snapshot.data());
-      return { userId: snapshot.id, ...snapshot.data() } as IUser;
+    if (data) {
+      return data as IUser;
     }
   };
 
   const updateUser = async (userData: IUser, businessId: string) => {
     try {
-      await db
-        .collection(USER_COLLECTION)
-        .doc(userData.userId)
-        .update({ ...userData, business: businessId });
-
-      toast('User Updated');
+      const updateUser = functions.httpsCallable('updateUser');
+      const payload = { ...userData, businessId };
+      console.log(payload);
+      const response = await updateUser(payload);
+      if (response) {
+        toast('User Updated');
+      }
 
       return true;
     } catch (error) {
@@ -110,22 +108,10 @@ export const useUser = (): IUseUser => {
 
   const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
     try {
-      const password = userData.password;
-
-      const newUser = await firebase.auth().createUserWithEmailAndPassword(userData.email, password);
-      const uid = newUser.user?.uid;
-      if (uid) {
-        const performData = { ...userData, business: businessId };
-        delete performData.password;
-        const newUserConfig = db
-          .collection(USER_COLLECTION)
-          .doc(uid)
-          .set({ ...performData, business: businessId });
-
-        if (newUserConfig) {
-          toast('User Created');
-          return true;
-        }
+      const addNewUser = functions.httpsCallable('addUser');
+      const response = await addNewUser({ ...userData, businessId });
+      if (response) {
+        toast('User Created');
       }
     } catch (error) {
       // Handle Errors here.

@@ -1,9 +1,5 @@
 import * as React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import { Paper, Avatar } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Checkbox, Button, Paper, Avatar, TextField, Typography, Grid, FormControlLabel } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useHistory, useParams } from 'react-router-dom';
@@ -94,6 +90,7 @@ const formInit = {
   type: '',
   userLevel: '',
   warehouse: '',
+  disabled: false,
   ...defaultFieldValues.reduce((acc, current) => ({ ...acc, [current.name]: current.value }), {})
 };
 
@@ -297,10 +294,13 @@ export const UserForm = () => {
               helperText={formik.errors.userLevel}
             />
           </Grid>
-          <SwitchConfig formik={formik} />
+          {!loading && <SwitchConfig formik={formik} />}
         </Grid>
 
         <Grid container spacing={6}>
+          <Grid item xs={12} sm={12}>
+            <FormControlLabel control={<Checkbox name="disabled" onChange={formik.handleChange} checked={formik.values.disabled} />} label="Disabled" />
+          </Grid>
           <Grid item xs={12} sm={3}>
             {userAction === Actions.edit && (
               <Tooltip title="Crea un nuevo usuario utilizando las configuraciones de este usuario" aria-label="">

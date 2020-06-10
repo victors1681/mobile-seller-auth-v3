@@ -24,4 +24,5 @@ interface IUser {
     defaultClientByRoute: boolean;
     updateBankList: boolean;
     warehouse: string;
+    disabled: boolean
   }
