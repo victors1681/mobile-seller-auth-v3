@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Checkbox, Button, Paper, Avatar, TextField, Typography, Grid, FormControlLabel } from '@material-ui/core';
+import { Checkbox, Button, Paper, Avatar, TextField, Typography, Grid, FormControlLabel, IconButton } from '@material-ui/core';
+import { Delete, FileCopy } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useHistory, useParams } from 'react-router-dom';
@@ -7,14 +8,26 @@ import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import Tooltip from '@material-ui/core/Tooltip';
-import { CustomSelect, Loader } from 'common';
+import { CustomSelect, Loader, AlertDialog } from 'common';
 import SwitchConfig, { fields as defaultFieldValues } from './SwitchConfig';
 
 const AvatarProfile = styled(Avatar)`
   width: ${({ theme }) => theme.spacing(7)};
   height: ${({ theme }) => theme.spacing(7)};
 `;
-const Wrapper = styled(Paper)`
+
+const PrimaryTopWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-bottom: 19px;
+  justify-content: flex-end;
+`;
+
+const Wrapper = styled.div`
+  padding: 19px;
+`;
+const FormInnerWrapper = styled(Paper)`
   padding: 19px;
 `;
 
@@ -98,11 +111,11 @@ export const UserForm = () => {
   const [userData, setUserData] = React.useState((formInit as unknown) as IUser);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [userAction, setUserAction] = React.useState<Actions>(Actions.new);
-
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
   const history = useHistory();
   const { userId, businessId, duplicate } = useParams();
   const {
-    userHook: { requestUserById, addUser, isSellerCodeExist, updateUser }
+    userHook: { requestUserById, addUser, isSellerCodeExist, updateUser, removeUser }
   } = useMainApp();
 
   const getUserData = React.useCallback(async () => {
@@ -184,140 +197,180 @@ export const UserForm = () => {
     history.push(`/user/edit/${userId}/${businessId}/true`);
   }, [userId, businessId]);
 
+  const handleDeleteAccount = React.useCallback(async () => {
+    if (userId) {
+      const response = await removeUser(userId);
+      if (response) {
+        setDeleteConfirmOpen(false);
+        history.goBack();
+      }
+    }
+  }, [userId]);
+
+  const handleConfirmationDialog = (state: boolean) => {
+    setDeleteConfirmOpen(state);
+  };
   return (
     <Wrapper>
       <Loader isLoading={loading} />
+      <AlertDialog
+        open={deleteConfirmOpen}
+        title="Eliminar Usuario"
+        content="Seguro que deseas eliminar este usuario?"
+        acceptCallback={handleDeleteAccount}
+        cancelCallback={() => handleConfirmationDialog(false)}
+        acceptTitle="Si"
+        cancelTitle="No"
+      />
       <form onSubmit={formik.handleSubmit}>
-        <Header>
-          <Typography variant="h6" gutterBottom>
+        <PrimaryTopWrapper>
+          <Button type="submit" variant="contained" color="primary">
             {getLabel()}
-          </Typography>
-          <AvatarProfile src={formik.values.photoURL} />
-        </Header>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="firstName"
-              name="firstName"
-              label="Nombre"
-              fullWidth
-              onChange={formik.handleChange}
-              value={formik.values.firstName}
-              error={!!formik.errors.firstName && formik.touched.firstName}
-              helperText={formik.errors.firstName}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="lastName"
-              name="lastName"
-              label="Apellido"
-              fullWidth
-              onChange={formik.handleChange}
-              value={formik.values.lastName}
-              error={!!formik.errors.lastName && formik.touched.lastName}
-              helperText={formik.errors.lastName}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="email"
-              name="email"
-              label="Correo"
-              fullWidth
-              autoComplete="new-password"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              error={!!formik.errors.email && formik.touched.email}
-              helperText={formik.errors.email}
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              type="password"
-              disabled={userAction === Actions.edit}
-              required={userAction !== Actions.edit}
-              id="password"
-              name="password"
-              label="Clave"
-              fullWidth
-              error={!!formik.errors.password && formik.touched.password}
-              helperText={formik.errors.password}
-              autoComplete="new-password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              required
-              id="sellerCode"
-              name="sellerCode"
-              label="Código"
-              fullWidth
-              onChange={formik.handleChange}
-              value={formik.values.sellerCode}
-              error={!!formik.errors.sellerCode && formik.touched.sellerCode}
-              helperText={formik.errors.sellerCode}
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField type="number" required id="warehouse" name="warehouse" label="No. Almacén" fullWidth onChange={formik.handleChange} value={formik.values.warehouse} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <CustomSelect
-              required
-              name="type"
-              label="Tipo Usuario"
-              options={userType}
-              handleChange={formik.handleChange}
-              defaultValue={formik.values.type}
-              error={!!formik.errors.type && formik.touched.type}
-              helperText={formik.errors.type}
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <CustomSelect
-              required
-              name="userLevel"
-              label="Nivel de Usuario"
-              options={userRole}
-              handleChange={formik.handleChange}
-              defaultValue={formik.values.userLevel}
-              error={!!formik.errors.userLevel && formik.touched.userLevel}
-              helperText={formik.errors.userLevel}
-            />
-          </Grid>
-          {!loading && <SwitchConfig formik={formik} />}
-        </Grid>
-
-        <Grid container spacing={6}>
-          <Grid item xs={12} sm={12}>
-            <FormControlLabel control={<Checkbox name="disabled" onChange={formik.handleChange} checked={formik.values.disabled} />} label="Disabled" />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            {userAction === Actions.edit && (
-              <Tooltip title="Crea un nuevo usuario utilizando las configuraciones de este usuario" aria-label="">
-                <Button fullWidth color="primary" onClick={handleDuplication} variant="outlined">
-                  Duplicar Usuario
-                </Button>
-              </Tooltip>
-            )}
-          </Grid>
-          <Grid item xs={12} sm={3} />
-          <Grid item xs={12} sm={3} />
-          <Grid item xs={12} sm={3}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
+          </Button>
+        </PrimaryTopWrapper>
+        <FormInnerWrapper>
+          <Header>
+            <Typography variant="h6" gutterBottom>
               {getLabel()}
-            </Button>
+            </Typography>
+            <AvatarProfile src={formik.values.photoURL} />
+          </Header>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="firstName"
+                name="firstName"
+                label="Nombre"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.firstName}
+                error={!!formik.errors.firstName && formik.touched.firstName}
+                helperText={formik.errors.firstName}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="lastName"
+                name="lastName"
+                label="Apellido"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.lastName}
+                error={!!formik.errors.lastName && formik.touched.lastName}
+                helperText={formik.errors.lastName}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="email"
+                name="email"
+                label="Correo"
+                fullWidth
+                autoComplete="new-password"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                error={!!formik.errors.email && formik.touched.email}
+                helperText={formik.errors.email}
+              />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField
+                type="password"
+                disabled={userAction === Actions.edit}
+                required={userAction !== Actions.edit}
+                id="password"
+                name="password"
+                label="Clave"
+                fullWidth
+                error={!!formik.errors.password && formik.touched.password}
+                helperText={formik.errors.password}
+                autoComplete="new-password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField
+                required
+                id="sellerCode"
+                name="sellerCode"
+                label="Código"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.sellerCode}
+                error={!!formik.errors.sellerCode && formik.touched.sellerCode}
+                helperText={formik.errors.sellerCode}
+              />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField type="number" required id="warehouse" name="warehouse" label="No. Almacén" fullWidth onChange={formik.handleChange} value={formik.values.warehouse} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <CustomSelect
+                required
+                name="type"
+                label="Tipo Usuario"
+                options={userType}
+                handleChange={formik.handleChange}
+                defaultValue={formik.values.type}
+                error={!!formik.errors.type && formik.touched.type}
+                helperText={formik.errors.type}
+              />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <CustomSelect
+                required
+                name="userLevel"
+                label="Nivel de Usuario"
+                options={userRole}
+                handleChange={formik.handleChange}
+                defaultValue={formik.values.userLevel}
+                error={!!formik.errors.userLevel && formik.touched.userLevel}
+                helperText={formik.errors.userLevel}
+              />
+            </Grid>
+            {!loading && <SwitchConfig formik={formik} />}
           </Grid>
-        </Grid>
+
+          <Grid container spacing={6}>
+            <Grid item xs={12} sm={12}>
+              <FormControlLabel control={<Checkbox name="disabled" onChange={formik.handleChange} checked={formik.values.disabled} />} label="Disabled" />
+            </Grid>
+            <Grid item xs={12} sm={1}>
+              {userAction === Actions.edit && (
+                <Tooltip title="Eliminar usuario" aria-label="">
+                  <IconButton color="secondary" onClick={() => handleConfirmationDialog(true)}>
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={1}>
+              {userAction === Actions.edit && (
+                <Tooltip title="Crea un nuevo usuario utilizando las configuraciones de este usuario" aria-label="">
+                  <IconButton color="primary" onClick={handleDuplication}>
+                    <FileCopy />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Grid>
+
+            <Grid item xs={12} sm={8} />
+            <Grid item xs={12} sm={2}>
+              {userAction === Actions.edit && (
+                <Button onClick={() => history.goBack()} variant="outlined">
+                  Cancelar
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+        </FormInnerWrapper>
       </form>
     </Wrapper>
   );

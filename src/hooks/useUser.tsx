@@ -14,6 +14,7 @@ export interface IUseUser {
   addUser: (dataUser: IUser, businessId: string) => Promise<boolean | undefined>;
   isLogged: boolean;
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
+  removeUser: (userId: string) => Promise<boolean | undefined>;
 }
 
 export const USER_COLLECTION = 'users';
@@ -123,6 +124,24 @@ export const useUser = (): IUseUser => {
     }
   };
 
+  const removeUser = async (userId: string): Promise<boolean | undefined> => {
+    try {
+      const deleteUser = functions.httpsCallable('addUser');
+      const response = await deleteUser(userId);
+      if (response) {
+        toast('User Removed');
+      }
+      return true;
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, ' ', errorMessage);
+      toast.error(errorMessage);
+      return;
+    }
+  };
+
   const isSellerCodeExist = async (sellerCode: string, businessId?: string, userId?: string): Promise<boolean> => {
     const snapshot = await db
       .collection('users')
@@ -148,7 +167,8 @@ export const useUser = (): IUseUser => {
     performLogin,
     isSellerCodeExist,
     isLogged,
-    setLogged
+    setLogged,
+    removeUser
   };
 };
 

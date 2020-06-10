@@ -10,8 +10,8 @@ interface IAlertDialog {
   open: boolean;
   title: string;
   content: string;
-  cancelCallback?: () => {};
-  acceptCallback?: () => {};
+  cancelCallback?: () => void;
+  acceptCallback?: () => void;
   cancelTitle?: string;
   acceptTitle?: string;
 }
