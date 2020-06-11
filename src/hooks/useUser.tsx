@@ -15,6 +15,8 @@ export interface IUseUser {
   isLogged: boolean;
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
   removeUser: (userId: string) => Promise<boolean | undefined>;
+  changePassword: (userId: string, password: string) => Promise<boolean | undefined>;
+  sendEmailToResetPassword: (email: string) => Promise<boolean | undefined>;
 }
 
 export const USER_COLLECTION = 'users';
@@ -126,11 +128,45 @@ export const useUser = (): IUseUser => {
 
   const removeUser = async (userId: string): Promise<boolean | undefined> => {
     try {
-      const deleteUser = functions.httpsCallable('addUser');
+      const deleteUser = functions.httpsCallable('deleteUser');
       const response = await deleteUser(userId);
       if (response) {
         toast('User Removed');
       }
+      return true;
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, ' ', errorMessage);
+      toast.error(errorMessage);
+      return;
+    }
+  };
+  const changePassword = async (userId: string, password: string): Promise<boolean | undefined> => {
+    try {
+      const updatePassword = functions.httpsCallable('updatePassword');
+      const response = await updatePassword({ userId, password });
+      if (response) {
+        toast('password Changed');
+      }
+      return true;
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, ' ', errorMessage);
+      toast.error(errorMessage);
+      return;
+    }
+  };
+
+  const sendEmailToResetPassword = async (email: string): Promise<boolean | undefined> => {
+    try {
+      await firebase.auth().sendPasswordResetEmail(email);
+
+      toast('password Changed');
+
       return true;
     } catch (error) {
       // Handle Errors here.
@@ -168,7 +204,9 @@ export const useUser = (): IUseUser => {
     isSellerCodeExist,
     isLogged,
     setLogged,
-    removeUser
+    removeUser,
+    changePassword,
+    sendEmailToResetPassword
   };
 };
 

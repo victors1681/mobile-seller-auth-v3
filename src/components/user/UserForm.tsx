@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Tooltip from '@material-ui/core/Tooltip';
 import { CustomSelect, Loader, AlertDialog } from 'common';
 import SwitchConfig, { fields as defaultFieldValues } from './SwitchConfig';
+import { ChangePassword, SendPasswordReset } from './changePassword';
 
 const AvatarProfile = styled(Avatar)`
   width: ${({ theme }) => theme.spacing(7)};
@@ -22,6 +23,12 @@ const PrimaryTopWrapper = styled.div`
   justify-content: flex-end;
   padding-bottom: 19px;
   justify-content: flex-end;
+`;
+
+const PasswordResetWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
 const Wrapper = styled.div`
@@ -128,7 +135,6 @@ export const UserForm = () => {
       setUserData(result as IUser);
     }
     setLoading(false);
-    console.error('Result Promise', result);
   }, [userId, duplicate]);
 
   React.useEffect(() => {
@@ -147,6 +153,7 @@ export const UserForm = () => {
   const handleSubmission = React.useCallback(
     async (values: IUser, resetForm: any) => {
       if (isSellerCodeExist) {
+        setLoading(true);
         const sellerCode = (values && values.sellerCode) || '';
         const exist = await isSellerCodeExist(sellerCode, businessId, userId);
 
@@ -170,6 +177,7 @@ export const UserForm = () => {
           }
         }
       }
+      setLoading(false);
     },
     [businessId, userId, userAction]
   );
@@ -187,7 +195,6 @@ export const UserForm = () => {
     enableReinitialize: true,
     initialValues: { ...userData },
     onSubmit: (values, { resetForm }) => {
-      console.error(values, userData);
       handleSubmission(values, resetForm);
     },
     validationSchema: Yup.object().shape(userAction === Actions.new ? UserSchema : UserSchemaNoPassword)
@@ -198,10 +205,12 @@ export const UserForm = () => {
   }, [userId, businessId]);
 
   const handleDeleteAccount = React.useCallback(async () => {
+    setLoading(true);
     if (userId) {
       const response = await removeUser(userId);
       if (response) {
         setDeleteConfirmOpen(false);
+        setLoading(false);
         history.goBack();
       }
     }
@@ -269,7 +278,7 @@ export const UserForm = () => {
                 name="email"
                 label="Correo"
                 fullWidth
-                autoComplete="new-password"
+                autoComplete="new-email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
                 error={!!formik.errors.email && formik.touched.email}
@@ -277,20 +286,25 @@ export const UserForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                type="password"
-                disabled={userAction === Actions.edit}
-                required={userAction !== Actions.edit}
-                id="password"
-                name="password"
-                label="Clave"
-                fullWidth
-                error={!!formik.errors.password && formik.touched.password}
-                helperText={formik.errors.password}
-                autoComplete="new-password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
+              {userAction === Actions.edit && userId ? (
+                <PasswordResetWrapper>
+                  <ChangePassword userId={userId} />
+                  <SendPasswordReset email={formik.values.email} />
+                </PasswordResetWrapper>
+              ) : (
+                <TextField
+                  type="password"
+                  id="password"
+                  name="password"
+                  label="Contraseña"
+                  fullWidth
+                  error={!!formik.errors.password && formik.touched.password}
+                  helperText={formik.errors.password}
+                  autoComplete="new-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                />
+              )}
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />

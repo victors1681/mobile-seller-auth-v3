@@ -65,7 +65,6 @@ const Business = (): React.ReactElement => {
     (_, rowMeta: any) => {
       if (users) {
         const userSelected = users[rowMeta.rowIndex] as IUser;
-        console.error('userSelected', userSelected);
         history.push(`/user/edit/${userSelected.userId}/${businessId}`);
       }
     },
