@@ -74,6 +74,24 @@ const userType: SelectOptions[] = [
   }
 ];
 
+const powerUserTypeList: SelectOptions[] = [
+  {
+    name: 'seller',
+    label: 'Vendedor',
+    value: 'seller'
+  },
+  {
+    name: 'administrator',
+    label: 'Administrador',
+    value: 'administrator'
+  },
+  {
+    name: 'poweruser',
+    label: 'Power User',
+    value: 'poweruser'
+  }
+];
+
 const userRole: SelectOptions[] = [
   {
     name: 'normal',
@@ -122,7 +140,8 @@ export const UserForm = () => {
   const history = useHistory();
   const { userId, businessId, duplicate } = useParams();
   const {
-    userHook: { requestUserById, addUser, isSellerCodeExist, updateUser, removeUser }
+    userHook: { requestUserById, addUser, isSellerCodeExist, updateUser, removeUser },
+    currentUser
   } = useMainApp();
 
   const getUserData = React.useCallback(async () => {
@@ -330,7 +349,7 @@ export const UserForm = () => {
                 required
                 name="type"
                 label="Tipo Usuario"
-                options={userType}
+                options={currentUser?.type === 'superuser' ? powerUserTypeList : userType}
                 handleChange={formik.handleChange}
                 defaultValue={formik.values.type}
                 error={!!formik.errors.type && formik.touched.type}

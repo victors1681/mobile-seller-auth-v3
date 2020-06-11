@@ -165,7 +165,7 @@ export const useUser = (): IUseUser => {
     try {
       await firebase.auth().sendPasswordResetEmail(email);
 
-      toast('password Changed');
+      toast('Email sent');
 
       return true;
     } catch (error) {

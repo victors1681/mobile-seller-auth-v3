@@ -19,10 +19,11 @@ interface IUser {
     restoreIpad: boolean;
     sellerCode: string;
     testMode: boolean;
-    type: string;
+    type: "seller" | "administrator" | "superuser";
     userLevel: string;
     defaultClientByRoute: boolean;
     updateBankList: boolean;
     warehouse: string;
-    disabled: boolean
+    disabled: boolean;
+    fcmToken: string;
   }

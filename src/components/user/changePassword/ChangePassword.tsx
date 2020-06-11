@@ -47,7 +47,7 @@ export const ChangePassword = ({ userId }: { userId: string }) => {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Change Password
+        Cambiar Contraseña
       </Button>
       <Dialog open={currentOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
         <form onSubmit={formik.handleSubmit}>
