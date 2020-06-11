@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Login, Business, User, Dashboard, UserEdit, BusinessEdit } from 'layouts';
+import { Login, Business, User, Dashboard, UserEdit, BusinessEdit, Main } from 'layouts';
 import NotFound from 'components/notFound';
-import { useMainApp } from 'hooks';
+import { useMainApp, UserTypeEnum } from 'hooks';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ children, ...rest }): React.ReactElement => {
@@ -25,6 +25,28 @@ const PrivateRoute = ({ children, ...rest }): React.ReactElement => {
   );
 };
 
+const SuperUserRoutes = ({ children, ...rest }): React.ReactElement => {
+  const { isLogged, currentUser } = useMainApp();
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isLogged && currentUser?.type === UserTypeEnum.superuser ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/main',
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+};
+
 export const CommonLayout = ({ component: Component }: { component: React.FunctionComponent }): React.ReactElement => {
   return (
     <Dashboard>
@@ -38,12 +60,15 @@ const Router: React.FunctionComponent = (): React.ReactElement => {
     <Switch>
       <Route path="/" component={Login} exact />
       <Route path="/login" component={Login} />
-      <PrivateRoute exact path="/business">
+      <PrivateRoute path="/main">
+        <CommonLayout component={Main} />
+      </PrivateRoute>
+      <SuperUserRoutes exact path="/business">
         <CommonLayout component={Business} />
-      </PrivateRoute>
-      <PrivateRoute path="/business/edit/:businessId?">
+      </SuperUserRoutes>
+      <SuperUserRoutes path="/business/edit/:businessId?">
         <CommonLayout component={BusinessEdit} />
-      </PrivateRoute>
+      </SuperUserRoutes>
       <PrivateRoute path="/users/:businessId?">
         <CommonLayout component={User} />
       </PrivateRoute>

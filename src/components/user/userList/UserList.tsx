@@ -1,6 +1,6 @@
 import * as React from 'react';
 import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
-import { useMainApp } from 'hooks';
+import { useMainApp, UserTypeEnum } from 'hooks';
 import { useHistory, useParams } from 'react-router-dom';
 import { CustomToolbar } from 'common';
 
@@ -49,17 +49,25 @@ const columns = [
 
 const Business = (): React.ReactElement => {
   const {
-    userHook: { requestUsers, users }
+    userHook: { requestUsers, users },
+    currentUser
   } = useMainApp();
   const { businessId } = useParams();
 
   const history = useHistory();
 
   React.useEffect(() => {
-    if (businessId && requestUsers) {
+    if (UserTypeEnum.superuser !== currentUser?.type) {
+      //Regular admin user only can query the business tied to the current user
+      const currentBusinessId = currentUser?.business.businessId;
+      if (currentBusinessId) {
+        requestUsers(currentBusinessId);
+      }
+    }
+    if (businessId && requestUsers && currentUser?.type === UserTypeEnum.superuser) {
       requestUsers(businessId || '');
     }
-  }, [requestUsers, businessId]);
+  }, [requestUsers, businessId, currentUser]);
 
   const handleClick = React.useCallback(
     (_, rowMeta: any) => {

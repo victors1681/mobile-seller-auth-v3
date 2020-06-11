@@ -6,27 +6,30 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import LayersIcon from '@material-ui/icons/Layers';
 import { useHistory } from 'react-router-dom';
-import { useMainApp } from 'hooks';
+import { useMainApp, UserTypeEnum } from 'hooks';
 
 export const MainListItems = () => {
   const history = useHistory();
   const goTo = (to) => history.push(to);
   const { currentUser } = useMainApp();
   const businessId = currentUser?.business;
+
   return (
     <div>
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="Dashboard" onClick={() => goTo('/main')} />
       </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Negocios" onClick={() => goTo('/business')} />
-      </ListItem>
+      {currentUser?.type === UserTypeEnum.superuser && (
+        <ListItem button>
+          <ListItemIcon>
+            <LayersIcon />
+          </ListItemIcon>
+          <ListItemText primary="Negocios" onClick={() => goTo('/business')} />
+        </ListItem>
+      )}
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />

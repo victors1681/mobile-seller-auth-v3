@@ -7,7 +7,7 @@ export interface IUseUser {
   user?: IUser;
   users?: IUser[];
   isSellerCodeExist: (sellerCode: string, businessId?: string, userId?: string) => Promise<boolean>;
-  requestUsers?: (businessId?: string) => void;
+  requestUsers: (businessId?: string) => void;
   requestUserById: (userId: string) => Promise<IUser | undefined>;
   performLogin: (uid: string, email: string, photoURL: string) => void;
   updateUser: (dataUser: IUser, businessId: string) => Promise<boolean>;
@@ -17,6 +17,12 @@ export interface IUseUser {
   removeUser: (userId: string) => Promise<boolean | undefined>;
   changePassword: (userId: string, password: string) => Promise<boolean | undefined>;
   sendEmailToResetPassword: (email: string) => Promise<boolean | undefined>;
+}
+
+export enum UserTypeEnum {
+  seller = 'seller',
+  administrator = 'administrator',
+  superuser = 'superuser'
 }
 
 export const USER_COLLECTION = 'users';
