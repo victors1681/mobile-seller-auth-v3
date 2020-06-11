@@ -396,11 +396,9 @@ export const UserForm = () => {
 
             <Grid item xs={12} sm={8} />
             <Grid item xs={12} sm={2}>
-              {userAction === Actions.edit && (
-                <Button onClick={() => history.goBack()} variant="outlined">
-                  Cancelar
-                </Button>
-              )}
+              <Button onClick={() => history.goBack()} variant="outlined">
+                Cancelar
+              </Button>
             </Grid>
           </Grid>
         </FormInnerWrapper>
