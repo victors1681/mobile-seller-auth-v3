@@ -100,7 +100,7 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
         required
         fullWidth
         id="email"
-        label="Email Address"
+        label="Correo Electrónico"
         name="email"
         autoComplete="email"
         autoFocus
@@ -115,7 +115,7 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
         required
         fullWidth
         name="password"
-        label="Password"
+        label="Contraseña"
         type="password"
         id="password"
         autoComplete="current-password"
@@ -126,18 +126,18 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
       />
       <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
       <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} disabled={requesting}>
-        Sign In
+        Proceder
       </Button>
       <Grid container>
         <Grid item xs>
           <Link href="#" variant="body2">
-            Forgot password?
+            Olvidó su contraseña?
           </Link>
         </Grid>
         <Grid item>
-          <Link href="#" variant="body2">
+          {/* <Link href="#" variant="body2">
             Don't have an account? Sign Up
-          </Link>
+          </Link> */}
         </Grid>
       </Grid>
       <Box mt={5}>

@@ -84,10 +84,10 @@ const Business = (): React.ReactElement => {
   const options = {
     filter: false,
     onRowClick: handleClick,
+    responsive: 'vertical',
     print: false,
     download: false,
-    viewColumns: false,
-    responsive: 'stacked',
+    viewColumns: false, 
     selectableRows: 'none',
     customToolbar: getCustomToolBarWithId
   } as MUIDataTableOptions;
