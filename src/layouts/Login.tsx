@@ -46,7 +46,7 @@ const Login = (): React.ReactElement => {
         <div className={classes.paper}>
           <LogoContainer src={Logo} />
           <Typography component="h1" variant="h5">
-          Iniciar sesión
+            Iniciar sesión
           </Typography>
           <LoginForm />
         </div>

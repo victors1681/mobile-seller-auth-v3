@@ -134,11 +134,7 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
             Olvidó su contraseña?
           </Link>
         </Grid>
-        <Grid item>
-          {/* <Link href="#" variant="body2">
-            Don't have an account? Sign Up
-          </Link> */}
-        </Grid>
+        <Grid item />
       </Grid>
       <Box mt={5}>
         <Copyright />

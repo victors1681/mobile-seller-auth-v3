@@ -115,11 +115,10 @@ const BusinessList = (): React.ReactElement => {
 
   const options = {
     filter: false,
-    // onRowClick: handleClick,
     print: false,
     download: false,
     viewColumns: false,
-    responsive: 'stacked',
+    responsive: 'vertical',
     selectableRows: 'none',
     customToolbar: getCustomToolBarWithId
   } as MUIDataTableOptions;
