@@ -2,3 +2,5 @@ node_modules/
 .cache-loader/
 firebasekey.json
 firebasekey.js
+dist/
+*.cache
