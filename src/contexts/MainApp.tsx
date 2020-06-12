@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 export interface UseMainInterface {
   firebase?: object;
-  handleLogin?: (email: string, password: string) => void;
+  handleLogin?: (email: string, password: string) => Promise<boolean | undefined>;
   isLogged: boolean;
   logOut: () => void;
   currentUser?: IUser;
@@ -59,27 +59,28 @@ export const useMainAppContext = (): UseMainInterface => {
       });
   };
   const handleLogin = React.useCallback(
-    (email: string, password: string) => {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(({ user: { photoURL, email, uid } }: any) => {
-          firebase
-            .auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            .then(function() {
-              return firebase.auth().signInWithEmailAndPassword(email, password);
-            })
-            .catch(function(error) {
-              console.error('Error', error);
-            });
+    async (email: string, password: string) => {
+      try {
+        const userLogged = await firebase.auth().signInWithEmailAndPassword(email, password);
+
+        if (userLogged) {
+          const uid = userLogged.user?.uid || '';
+          const photoURL = userLogged.user?.photoURL || '';
+
+          if (uid === '') {
+            throw new Error('uid invalid');
+          }
+
+          await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
           userHook.performLogin(uid, email, photoURL);
-        })
-        .catch(function(error) {
-          userHook.setLogged(false);
-          console.error('Error', error);
-        });
+          return true;
+        }
+      } catch (error) {
+        userHook.setLogged(false);
+        return false;
+      }
+      return false;
     },
     [userHook]
   );

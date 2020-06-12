@@ -38,7 +38,7 @@ export const useUser = (): IUseUser => {
   const { from }: any = location.state || { from: { pathname: '/business' } };
 
   const performLogin = React.useCallback(
-    (uid: string, email: string, photoURL: string) => {
+    async (uid: string, email: string, photoURL: string) => {
       db.collection(USER_COLLECTION)
         .doc(uid)
         .get()

@@ -8,8 +8,12 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
 import { useMainApp } from 'hooks';
 import { useFormik } from 'formik';
+import CloseIcon from '@material-ui/icons/Close';
 import * as Yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,6 +49,8 @@ const SigInSchema = Yup.object().shape({
 
 const LoginForm: React.FunctionComponent = (): React.ReactElement => {
   const classes = useStyles();
+  const [requesting, setRequesting] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const { handleLogin } = useMainApp();
 
@@ -53,9 +59,15 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
       email: '',
       password: ''
     },
-    onSubmit: ({ email, password }) => {
+    onSubmit: async ({ email, password }) => {
       if (handleLogin) {
-        handleLogin(email, password);
+        setRequesting(true);
+        setError(false);
+        const success = await handleLogin(email, password);
+        if (!success) {
+          setRequesting(false);
+          setError(true);
+        }
       }
     },
     validationSchema: SigInSchema
@@ -63,6 +75,25 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
+      <Collapse in={error}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setError(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          Usuario o contraseña incorrectas
+        </Alert>
+      </Collapse>
       <TextField
         variant="outlined"
         margin="normal"
@@ -75,6 +106,8 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
         autoFocus
         onChange={formik.handleChange}
         value={formik.values.email}
+        error={!!formik.errors.email && formik.touched.email}
+        helperText={formik.errors.email}
       />
       <TextField
         variant="outlined"
@@ -88,9 +121,11 @@ const LoginForm: React.FunctionComponent = (): React.ReactElement => {
         autoComplete="current-password"
         onChange={formik.handleChange}
         value={formik.values.password}
+        error={!!formik.errors.password && formik.touched.password}
+        helperText={formik.errors.password}
       />
       <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-      <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+      <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} disabled={requesting}>
         Sign In
       </Button>
       <Grid container>
