@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack.config.js --env.NODE_ENV=development",
-    "build": "webpack --config webpack.config.js --env.NODE_ENV=production",
+    "dist": "webpack --config webpack.config.js --env.NODE_ENV=production && firebase deploy",
     "lint": "eslint --ext .js,.tsx ./src --fix",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "format": "prettier-eslint —eslint-config-path ./.eslintrc.js  --write \"src/**/*.tsx\"",

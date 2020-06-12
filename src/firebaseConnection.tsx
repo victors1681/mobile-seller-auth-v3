@@ -7,6 +7,16 @@ import firebaseConfig from './firebasekey';
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const functions = firebase.app().functions('us-east1');
-functions.useFunctionsEmulator('http://localhost:9999');
+const functions = firebase.app().functions('us-central1');
+
+if (process.env.NODE_ENV === 'development') {
+  //   db.settings({
+  //     host: 'localhost:8081',
+  //     ssl: false
+  //   });
+  functions.useFunctionsEmulator('http://localhost:9999');
+
+  console.log('FIREBASE MODE: ', process.env.NODE_ENV);
+}
+
 export { db, firebase, functions };

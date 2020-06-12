@@ -51,10 +51,10 @@ export const useUser = (): IUseUser => {
               const businessData: any = { ...snapshot.data(), businessId: userData.business };
               setUser({ ...userData, business: businessData });
 
-              const auth = firebase.auth();
-              if (auth) {
-                auth.currentUser?.getIdToken().then((data) => console.error('datadata', data));
-              }
+              // const auth = firebase.auth();
+              // if (auth) {
+              //   auth.currentUser?.getIdToken().then((data) => console.error('datadata', data));
+              // }
               setLogged(true);
 
               if (location.pathname && !['/', '/login'].includes(location.pathname)) {
