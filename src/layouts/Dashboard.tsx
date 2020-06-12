@@ -19,6 +19,7 @@ import mseller from 'assets/images/logo/Logo.png';
 import styled from 'styled-components';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Notifications from 'components/notifications';
+import UserProfile from 'components/userProfile';
 
 function Copyright() {
   return (
@@ -150,6 +151,7 @@ const Dashboard = ({ children }) => {
             Dashboard
           </Typography>
           <Notifications />
+          <UserProfile />
         </Toolbar>
       </AppBar>
       <Drawer

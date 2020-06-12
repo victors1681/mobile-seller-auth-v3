@@ -2,11 +2,13 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { IUseUser, useUser, useBusiness, IUseBusiness } from 'hooks';
 import { firebase } from 'root/firebaseConnection';
+import { toast } from 'react-toastify';
 
 export interface UseMainInterface {
   firebase?: object;
   handleLogin?: (email: string, password: string) => void;
   isLogged: boolean;
+  logOut: () => void;
   currentUser?: IUser;
   userHook: IUseUser;
   businessHook: IUseBusiness;
@@ -44,6 +46,18 @@ export const useMainAppContext = (): UseMainInterface => {
     performActiveSession();
   }, []);
 
+  const logOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        // Sign-out successful.
+      })
+      .catch(function(error) {
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
   const handleLogin = React.useCallback(
     (email: string, password: string) => {
       firebase
@@ -76,7 +90,8 @@ export const useMainAppContext = (): UseMainInterface => {
     firebase,
     currentUser,
     userHook,
-    businessHook
+    businessHook,
+    logOut
   };
 };
 
