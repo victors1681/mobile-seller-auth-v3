@@ -57,7 +57,7 @@ const Business = (): React.ReactElement => {
   const history = useHistory();
 
   React.useEffect(() => {
-    if (UserTypeEnum.superuser !== currentUser?.type) {
+    if (UserTypeEnum.superuser !== currentUser?.type || !businessId) {
       //Regular admin user only can query the business tied to the current user
       const currentBusinessId = currentUser?.business.businessId;
       if (currentBusinessId) {

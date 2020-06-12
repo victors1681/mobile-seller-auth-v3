@@ -12,29 +12,28 @@ export const MainListItems = () => {
   const history = useHistory();
   const goTo = (to) => history.push(to);
   const { currentUser } = useMainApp();
-  const businessId = currentUser?.business;
 
   return (
     <div>
-      <ListItem button>
+      <ListItem button onClick={() => goTo('/main')}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" onClick={() => goTo('/main')} />
+        <ListItemText primary="Dashboard" />
       </ListItem>
       {currentUser?.type === UserTypeEnum.superuser && (
-        <ListItem button>
+        <ListItem button onClick={() => goTo('/business')}>
           <ListItemIcon>
             <LayersIcon />
           </ListItemIcon>
-          <ListItemText primary="Negocios" onClick={() => goTo('/business')} />
+          <ListItemText primary="Negocios" />
         </ListItem>
       )}
-      <ListItem button>
+      <ListItem button onClick={() => goTo(`/users/`)}>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Usuarios" onClick={() => goTo(`/users/${businessId}`)} />
+        <ListItemText primary="Usuarios" />
       </ListItem>
     </div>
   );
