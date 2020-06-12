@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { db, firebase } from 'root/firebaseConnection';
 import { toast } from 'react-toastify';
+import { testServerConnectionApi } from './api';
 
 export interface IUseBusiness {
   business?: IBusiness[];
@@ -9,6 +10,7 @@ export interface IUseBusiness {
   updateBusiness: (businessData: IBusiness, businessId: string) => Promise<boolean>;
   addBusiness: (businessData: IBusiness) => Promise<boolean | undefined>;
   isLoading: boolean;
+  testServerConnection: (host: string, port: string) => Promise<boolean | undefined>;
 }
 
 export const BUSINESS_COLLECTION = 'business';
@@ -85,13 +87,27 @@ export const useBusiness = (): IUseBusiness => {
     }
   };
 
+  const testServerConnection = async (host: string, port: string): Promise<boolean | undefined> => {
+    try {
+      const response = await testServerConnectionApi(host, port);
+      if (response) {
+        toast.success('Connection Success');
+        return true;
+      }
+    } catch (error) {
+      toast.error('Connection Error');
+      return false;
+    }
+  };
+
   return {
     business,
     updateBusiness,
     requestBusinessById,
     requestBusiness,
     addBusiness,
-    isLoading
+    isLoading,
+    testServerConnection
   };
 };
 

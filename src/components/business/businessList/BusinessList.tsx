@@ -3,12 +3,12 @@ import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import { useMainApp } from 'hooks';
 import { useHistory } from 'react-router-dom';
 import { CustomToolbar, Loader } from 'common';
-import { IconButton } from '@material-ui/core';
-import { Edit, People } from '@material-ui/icons';
+import { IconButton, Tooltip } from '@material-ui/core';
+import { Edit, People, SettingsEthernet } from '@material-ui/icons';
 
 const BusinessList = (): React.ReactElement => {
   const {
-    businessHook: { requestBusiness, business, isLoading }
+    businessHook: { requestBusiness, business, isLoading, testServerConnection }
   } = useMainApp();
   const history = useHistory();
 
@@ -33,6 +33,16 @@ const BusinessList = (): React.ReactElement => {
       if (business) {
         const dataBusiness = business[rowIndex] as IBusiness;
         history.push(`business/edit/${dataBusiness.businessId}`);
+      }
+    },
+    [business]
+  );
+
+  const handleTestServer = React.useCallback(
+    async (_, { rowIndex }: { rowIndex: number }) => {
+      if (business) {
+        const dataBusiness = business[rowIndex] as IBusiness;
+        testServerConnection(dataBusiness.config.serverUrl, dataBusiness.config.serverPort);
       }
     },
     [business]
@@ -87,9 +97,11 @@ const BusinessList = (): React.ReactElement => {
         empty: true,
         customBodyRender: (_, tableMeta) => {
           return (
-            <IconButton aria-label="edit" color="primary" size="small" onClick={(e) => handleEdit(e, tableMeta)}>
-              <Edit fontSize="inherit" />
-            </IconButton>
+            <Tooltip title="Editar" aria-label="">
+              <IconButton aria-label="edit" color="primary" size="small" onClick={(e) => handleEdit(e, tableMeta)}>
+                <Edit fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
           );
         }
       }
@@ -102,9 +114,28 @@ const BusinessList = (): React.ReactElement => {
         empty: true,
         customBodyRender: (_, tableMeta) => {
           return (
-            <IconButton aria-label="view users" color="primary" size="small" onClick={(e) => handleClick(e, tableMeta)}>
-              <People fontSize="inherit" />
-            </IconButton>
+            <Tooltip title="Usuarios de esta empresa" aria-label="">
+              <IconButton aria-label="view users" color="primary" size="small" onClick={(e) => handleClick(e, tableMeta)}>
+                <People fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+          );
+        }
+      }
+    },
+    {
+      name: 'ver',
+      options: {
+        filter: false,
+        sort: false,
+        empty: true,
+        customBodyRender: (_, tableMeta) => {
+          return (
+            <Tooltip title="Probar conexión con el servidor" aria-label="">
+              <IconButton aria-label="view users" color="primary" size="small" onClick={(e) => handleTestServer(e, tableMeta)}>
+                <SettingsEthernet fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
           );
         }
       }
