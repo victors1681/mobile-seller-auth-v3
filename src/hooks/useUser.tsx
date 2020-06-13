@@ -118,7 +118,7 @@ export const useUser = (): IUseUser => {
   const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
     try {
       const addNewUser = functions.httpsCallable('addUser');
-      const response = await addNewUser({ ...userData, businessId });
+      const response = await addNewUser({ ...userData, business: businessId });
       if (response) {
         toast('User Created');
       }
