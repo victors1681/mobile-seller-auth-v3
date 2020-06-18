@@ -7,7 +7,7 @@ import firebaseConfig from './firebasekey';
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const functions = firebase.app().functions('us-east1');
+const functions = firebase.app().functions('us-central1');
 
 if (process.env.NODE_ENV === 'development') {
   //   db.settings({
