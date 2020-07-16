@@ -32,17 +32,10 @@ export const fields: Field[] = [
     icon: 'WifiIcon'
   },
   {
-    name: 'filterClients',
-    label: 'Filtrar Cliente',
-    value: false,
-    note: '',
-    icon: 'WifiIcon'
-  },
-  {
     name: 'firstTimeLogin',
     label: 'Primer inicio de sesión',
     value: false,
-    note: '',
+    note: 'Opción no disponible. no utilizada',
     icon: 'WifiIcon'
   },
   {
@@ -55,7 +48,7 @@ export const fields: Field[] = [
   {
     name: 'initialConfig',
     label: 'Configuración Inicial',
-    value: false,
+    value: true,
     note: '',
     icon: 'WifiIcon'
   },

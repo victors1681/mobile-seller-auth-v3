@@ -148,7 +148,7 @@ export const UserForm = () => {
     const result = await requestUserById(userId || '');
 
     if (duplicate) {
-      const user = { ...result, email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '' } as IUser;
+      const user = { ...result, email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '', initialConfig: true } as IUser;
       setUserData(user);
     } else {
       setUserData(result as IUser);
