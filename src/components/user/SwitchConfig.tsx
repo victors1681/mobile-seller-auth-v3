@@ -105,7 +105,7 @@ export const fields: Field[] = [
   {
     name: 'updateBankList',
     label: 'Actualizar Lista de Bancos',
-    value: false,
+    value: true,
     note: 'Forza el ipad a actualizar la lista de bancos',
     icon: 'WifiIcon'
   }

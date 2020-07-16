@@ -86,9 +86,9 @@ const powerUserTypeList: SelectOptions[] = [
     value: 'administrator'
   },
   {
-    name: 'poweruser',
-    label: 'Power User',
-    value: 'poweruser'
+    name: 'superuser',
+    label: 'Super User',
+    value: 'superuser'
   }
 ];
 
@@ -148,7 +148,7 @@ export const UserForm = () => {
     const result = await requestUserById(userId || '');
 
     if (duplicate) {
-      const user = { ...result, email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '', initialConfig: true } as IUser;
+      const user = { ...result, userId: '', email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '', photoURL: '', initialConfig: true, updateBankList: true } as IUser;
       setUserData(user);
     } else {
       setUserData(result as IUser);
@@ -171,6 +171,11 @@ export const UserForm = () => {
 
   const handleSubmission = React.useCallback(
     async (values: IUser, resetForm: any) => {
+      if (!businessId || businessId === 'undefined') {
+        toast.error('Id de la empresa no existe en la url');
+        return;
+      }
+
       if (isSellerCodeExist) {
         setLoading(true);
         const sellerCode = (values && values.sellerCode) || '';
@@ -190,9 +195,6 @@ export const UserForm = () => {
         } else {
           if (exist) {
             toast.error('El código de vendedor ya existe');
-          }
-          if (!businessId) {
-            toast.error('Id de la empresa no existe en la url');
           }
         }
       }

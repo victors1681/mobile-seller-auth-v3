@@ -28,7 +28,7 @@ npm install
 Run the local webpack-dev-server on http://localhost:9000/
 
 ```
-npm run start
+npm run dev
 ```
 
 ## Deployment
