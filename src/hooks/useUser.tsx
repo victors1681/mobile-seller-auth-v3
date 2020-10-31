@@ -118,7 +118,10 @@ export const useUser = (): IUseUser => {
   const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
     try {
       const addNewUser = functions.httpsCallable('addUser');
-      const response = await addNewUser({ ...userData, business: businessId });
+      //if photoURL is empty create placeholder link
+      const photoURL = userData.photoURL ? userData.photoURL : 'https://storage.cloud.google.com/it_soluclick/user-temporal-placeholder.jpeg'
+
+      const response = await addNewUser({ ...userData, photoURL, business: businessId });
       if (response) {
         toast('User Created');
       }
