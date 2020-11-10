@@ -181,22 +181,22 @@ export const UserForm = () => {
         const sellerCode = (values && values.sellerCode) || '';
         const exist = await isSellerCodeExist(sellerCode, businessId, userId);
 
-        if (!exist && businessId) {
-          if (userAction === Actions.edit) {
+        if (businessId) {
+          if (userAction === Actions.edit && exist) {
             updateUser(values, businessId);
-          } else {
+          } else if(!exist){
             //new or duplicate add new user
             const isCreated = await addUser(values, businessId);
             if (isCreated) {
               //reset form
               resetForm();
             }
-          }
-        } else {
-          if (exist) {
+          }else{
             toast.error('El código de vendedor ya existe');
           }
-        }
+        }else{
+          toast.error('ID de la empresa no existe');
+        } 
       }
       setLoading(false);
     },
