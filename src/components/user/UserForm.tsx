@@ -184,19 +184,19 @@ export const UserForm = () => {
         if (businessId) {
           if (userAction === Actions.edit && exist) {
             updateUser(values, businessId);
-          } else if(!exist){
+          } else if (!exist) {
             //new or duplicate add new user
             const isCreated = await addUser(values, businessId);
             if (isCreated) {
               //reset form
               resetForm();
             }
-          }else{
+          } else {
             toast.error('El código de vendedor ya existe');
           }
-        }else{
+        } else {
           toast.error('ID de la empresa no existe');
-        } 
+        }
       }
       setLoading(false);
     },

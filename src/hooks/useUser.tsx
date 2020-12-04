@@ -119,7 +119,7 @@ export const useUser = (): IUseUser => {
     try {
       const addNewUser = functions.httpsCallable('addUser');
       //if photoURL is empty create placeholder link
-      const photoURL = userData.photoURL ? userData.photoURL : 'https://storage.cloud.google.com/it_soluclick/user-temporal-placeholder.jpeg'
+      const photoURL = userData.photoURL ? userData.photoURL : 'https://storage.cloud.google.com/it_soluclick/user-temporal-placeholder.jpeg';
 
       const response = await addNewUser({ ...userData, photoURL, business: businessId });
       if (response) {
@@ -191,12 +191,12 @@ export const useUser = (): IUseUser => {
     const snapshot = await db
       .collection('users')
       .where('sellerCode', '==', sellerCode)
-      .where('business', '==', businessId && businessId)
+      .where('business', '==', businessId)
       .get();
 
     if (!snapshot.empty) {
       const currentData = snapshot.docs[0].id;
-      return currentData !== userId; //if the user is editing and is the same keep ediging
+      return currentData === userId; //if the user is editing and is the same keep editing
     }
 
     return !!snapshot.docs.length;

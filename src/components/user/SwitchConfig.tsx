@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from '@material-ui/core/Tooltip';
 import { FormikValues } from 'formik';
 
 const useStyles = makeStyles((theme) => ({
@@ -116,32 +116,35 @@ export const fields: Field[] = [
     value: true,
     note: 'Los vendedores deberán actualizar los productos diariamente para poder iniciar con la creación de pedidos.',
     icon: 'WifiIcon'
-  },  {
+  },
+  {
     name: 'createClient',
     label: 'Crear Clientes',
     value: false,
     note: 'Permite al vendedor crear nuevo cliente y usarlo para facturar.',
     icon: 'WifiIcon'
-  },  {
+  },
+  {
     name: 'allowDiscount',
     label: 'Permitir Descuento en Cobro',
     value: true,
     note: 'Permite al vendedor aplicar descuento al cobrar una factura',
     icon: 'WifiIcon'
-  },{
+  },
+  {
     name: 'allowBankDeposit',
     label: 'Permitir Depositar Cobros en el banco',
     value: true,
     note: 'Permite al vendedor depositar cobros directamente en el banco y enviar el comporbante de deposito',
     icon: 'WifiIcon'
-  }
-  ,{
+  },
+  {
     name: 'allowChat',
     label: 'Sistema de Mensajería (Chat)',
     value: true,
     note: 'Permite a los vendedores enviar mensajes entre ellos, por medio de chat.',
     icon: 'WifiIcon'
-  }  
+  }
 ];
 
 export default function SwitchConfig({ formik }: { formik: FormikValues }) {
@@ -185,10 +188,14 @@ export default function SwitchConfig({ formik }: { formik: FormikValues }) {
 
     return fieldSelected.map((field) => (
       <ListItem key={field.name}>
-        <FormControlLabel control={
-        <Tooltip title={field.note} aria-label={field.note}>
-        <Switch name={field.name} onChange={handleToggle(field.name)} checked={checked.indexOf(field.name) !== -1} />
-        </Tooltip>} label={field.label} />
+        <FormControlLabel
+          control={
+            <Tooltip title={field.note} aria-label={field.note}>
+              <Switch name={field.name} onChange={handleToggle(field.name)} checked={checked.indexOf(field.name) !== -1} />
+            </Tooltip>
+          }
+          label={field.label}
+        />
       </ListItem>
     ));
   };

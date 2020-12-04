@@ -14,7 +14,8 @@ if (process.env.NODE_ENV === 'development') {
   //     host: 'localhost:8081',
   //     ssl: false
   //   });
-  functions.useFunctionsEmulator('http://192.168.1.210:9999');
+  //Usar emmulador
+  //functions.useFunctionsEmulator('http://192.168.1.210:9999');
 
   console.error('FIREBASE MODE: ', process.env.NODE_ENV, ' Functions: http://192.168.1.210:9999');
 }
