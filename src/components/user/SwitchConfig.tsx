@@ -144,6 +144,13 @@ export const fields: Field[] = [
     value: true,
     note: 'Permite a los vendedores enviar mensajes entre ellos, por medio de chat.',
     icon: 'WifiIcon'
+  },
+  {
+    name: 'demoMode',
+    label: 'Usuario tipo demo',
+    value: true,
+    note: 'Usuario con los privilegios limitados y auto desactivado.',
+    icon: 'WifiIcon'
   }
 ];
 
