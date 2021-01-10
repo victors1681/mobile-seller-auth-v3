@@ -190,8 +190,8 @@ export default function SwitchConfig({ formik }: { formik: FormikValues }) {
   }
 
   const renderSwitch = (column: Column) => {
-    const totalItems = Math.ceil(fields.length / 2);
-    const fieldSelected = column === 0 ? fields.slice(0, totalItems) : fields.slice(totalItems + 1, fields.length);
+    const totalItems = Math.floor(fields.length / 2);
+    const fieldSelected = column === 0 ? fields.slice(0, totalItems) : fields.slice(totalItems, fields.length);
 
     return fieldSelected.map((field) => (
       <ListItem key={field.name}>
