@@ -132,13 +132,19 @@ const formInit = {
   ...defaultFieldValues.reduce((acc, current) => ({ ...acc, [current.name]: current.value }), {})
 };
 
+interface Parameters {
+  userId: string;
+  businessId: string | undefined;
+  duplicate: string | undefined;
+}
+
 export const UserForm = () => {
   const [userData, setUserData] = React.useState((formInit as unknown) as IUser);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [userAction, setUserAction] = React.useState<Actions>(Actions.new);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
   const history = useHistory();
-  const { userId, businessId, duplicate } = useParams();
+  const { userId, businessId, duplicate } = useParams<Parameters>();
   const {
     userHook: { requestUserById, addUser, isSellerCodeExist, updateUser, removeUser },
     currentUser
