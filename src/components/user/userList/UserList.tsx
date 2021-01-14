@@ -6,6 +6,14 @@ import { CustomToolbar } from 'common';
 
 const columns = [
   {
+    name: 'sellerCode',
+    label: 'Codigo',
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
     name: 'firstName',
     label: 'Nombre',
     options: {
@@ -72,8 +80,8 @@ const Business = (): React.ReactElement => {
   const handleClick = React.useCallback(
     (_, rowMeta: any) => {
       if (users) {
-        const userSelected = users[rowMeta.rowIndex] as IUser;
-        history.push(`/user/edit/${userSelected.userId}/${businessId}`);
+        const userSelected = users[rowMeta.dataIndex] as IUser;
+        history.push(`/user/edit/${userSelected.userId}/${userSelected.business}`);
       }
     },
     [users]
