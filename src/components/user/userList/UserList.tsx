@@ -60,7 +60,7 @@ const Business = (): React.ReactElement => {
     userHook: { requestUsers, users },
     currentUser
   } = useMainApp();
-  const { businessId } = useParams();
+  const { businessId } = useParams<{ businessId: string | undefined }>();
 
   const history = useHistory();
 

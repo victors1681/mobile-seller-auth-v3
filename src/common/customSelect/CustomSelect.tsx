@@ -7,13 +7,14 @@ interface ICustomSelect {
   name: string;
   label: string;
   options: SelectOptions[];
-  required: boolean;
+  required?: boolean;
   error: boolean | undefined;
   helperText: string | undefined;
+  disabled?: boolean;
 }
-export const CustomSelect = ({ defaultValue, handleChange, name, label, options, required, error, helperText }: ICustomSelect) => {
+export const CustomSelect = ({ disabled, defaultValue, handleChange, name, label, options, required, error, helperText }: ICustomSelect) => {
   return (
-    <FormControl fullWidth error={error}>
+    <FormControl fullWidth error={error} disabled={disabled}>
       <InputLabel id={name} required={required}>
         {label}
       </InputLabel>

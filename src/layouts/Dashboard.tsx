@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Notifications from 'components/notifications';
 import UserProfile from 'components/userProfile';
+import Messaging from 'components/messaging';
 
 function Copyright() {
   return (
@@ -150,6 +151,7 @@ const Dashboard = ({ children }) => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
+          <Messaging />
           <Notifications />
           <UserProfile />
         </Toolbar>

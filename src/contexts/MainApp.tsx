@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { IUseUser, useUser, useBusiness, IUseBusiness } from 'hooks';
-import { firebase } from 'root/firebaseConnection';
+import { firebase, functions } from 'root/firebaseConnection';
 import { toast } from 'react-toastify';
 
 export interface UseMainInterface {
@@ -12,6 +12,8 @@ export interface UseMainInterface {
   currentUser?: IUser;
   userHook: IUseUser;
   businessHook: IUseBusiness;
+  sendMessageAll: (title: string, body: string) => Promise<boolean>;
+  sendMessageToUser: (targetUserId: string, title: string, body: string) => Promise<boolean>;
 }
 
 export const useMainAppContext = (): UseMainInterface => {
@@ -85,6 +87,28 @@ export const useMainAppContext = (): UseMainInterface => {
     [userHook]
   );
 
+  const sendMessageAll = async (title: string, body: string): Promise<boolean> => {
+    try {
+      const send = functions.httpsCallable('notifyAllUsers');
+      await send({ title, body });
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
+  const sendMessageToUser = async (targetUserId: string, title: string, body: string): Promise<boolean> => {
+    try {
+      const send = functions.httpsCallable('sendSimpleNotificationToUserById');
+      await send({ targetUserId, title, body });
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
   return {
     isLogged: userHook.isLogged,
     handleLogin,
@@ -92,7 +116,9 @@ export const useMainAppContext = (): UseMainInterface => {
     currentUser,
     userHook,
     businessHook,
-    logOut
+    logOut,
+    sendMessageAll,
+    sendMessageToUser
   };
 };
 

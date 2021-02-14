@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Login, Business, User, Dashboard, UserEdit, BusinessEdit, Main } from 'layouts';
+import { Login, Business, User, Dashboard, UserEdit, BusinessEdit, Main, Messaging } from 'layouts';
 import NotFound from 'components/notFound';
 import { useMainApp, UserTypeEnum } from 'hooks';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -74,6 +74,9 @@ const Router: React.FunctionComponent = (): React.ReactElement => {
       </PrivateRoute>
       <PrivateRoute path="/user/edit/:userId/:businessId/:duplicate?">
         <CommonLayout component={UserEdit} />
+      </PrivateRoute>
+      <PrivateRoute path="/messaging">
+        <CommonLayout component={Messaging} />
       </PrivateRoute>
       <Route component={NotFound} />
     </Switch>

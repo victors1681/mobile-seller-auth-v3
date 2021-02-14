@@ -4,6 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
+import Mail from '@material-ui/icons/Mail';
 import LayersIcon from '@material-ui/icons/Layers';
 import { useHistory } from 'react-router-dom';
 import { useMainApp, UserTypeEnum } from 'hooks';
@@ -34,6 +35,12 @@ export const MainListItems = () => {
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Usuarios" />
+      </ListItem>
+      <ListItem button onClick={() => goTo(`/messaging/`)}>
+        <ListItemIcon>
+          <Mail />
+        </ListItemIcon>
+        <ListItemText primary="Mensagería" />
       </ListItem>
     </div>
   );
