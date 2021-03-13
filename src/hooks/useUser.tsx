@@ -116,10 +116,10 @@ export const useUser = (): IUseUser => {
     }
   };
 
-  const transferUser = async (userSource: string, userTarget: string) => {
+  const transferUser = async (sellerSource: string, sellerTarget: string) => {
     try {
       const updateUser = functions.httpsCallable('transferUser');
-      const payload = { userSource, userTarget };
+      const payload = { sellerSource, sellerTarget };
       console.log(payload);
       const response = await updateUser(payload);
       if (response) {
