@@ -18,7 +18,7 @@ import { MainListItems } from 'components/dashboard/menu';
 import mseller from 'assets/images/logo/Logo.png';
 import styled from 'styled-components';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Notifications from 'components/notifications';
+//import Notifications from 'components/notifications';
 import UserProfile from 'components/userProfile';
 import Messaging from 'components/messaging';
 
@@ -152,7 +152,7 @@ const Dashboard = ({ children }) => {
             Dashboard
           </Typography>
           <Messaging />
-          <Notifications />
+          {/* <Notifications /> */}
           <UserProfile />
         </Toolbar>
       </AppBar>
