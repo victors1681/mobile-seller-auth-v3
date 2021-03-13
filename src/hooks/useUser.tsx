@@ -11,6 +11,7 @@ export interface IUseUser {
   requestUserById: (userId: string) => Promise<IUser | undefined>;
   performLogin: (uid: string, email: string, photoURL: string) => void;
   updateUser: (dataUser: IUser, businessId: string) => Promise<boolean>;
+  transferUser: (sellerSource: string, sellerTarget: string) => Promise<boolean>;
   addUser: (dataUser: IUser, businessId: string) => Promise<boolean | undefined>;
   isLogged: boolean;
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
@@ -115,6 +116,23 @@ export const useUser = (): IUseUser => {
     }
   };
 
+  const transferUser = async (userSource: string, userTarget: string) => {
+    try {
+      const updateUser = functions.httpsCallable('transferUser');
+      const payload = { userSource, userTarget };
+      console.log(payload);
+      const response = await updateUser(payload);
+      if (response) {
+        toast('Código de vendedor transferidos');
+      }
+
+      return true;
+    } catch (error) {
+      toast.error(error.message);
+      return false;
+    }
+  };
+
   const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
     try {
       const addNewUser = functions.httpsCallable('addUser');
@@ -206,6 +224,7 @@ export const useUser = (): IUseUser => {
     user,
     users,
     updateUser,
+    transferUser,
     requestUserById,
     requestUsers,
     addUser,

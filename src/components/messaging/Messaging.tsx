@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { toast } from 'react-toastify';
 import { Loader } from 'common';
+import { createSellerOptions } from 'common/utils/createSellerOptions';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Requerido'),
@@ -47,17 +48,7 @@ export default function Messaging() {
   }, [open]);
 
   React.useEffect(() => {
-    const options =
-      users?.map(
-        (user) =>
-          ({
-            name: `${user.firstName} ${user.lastName}`,
-            label: `${user.firstName} ${user.lastName}`,
-            value: user.userId
-          } as SelectOptions)
-      ) || ([] as SelectOptions[]);
-
-    options.sort((a: any, b: any) => (a.name.toUpperCase() < b.name.toUpperCase() ? 0 : 0));
+    const options = createSellerOptions(users);
     setSellerOption(options);
   }, [open, users && users.length]);
 
