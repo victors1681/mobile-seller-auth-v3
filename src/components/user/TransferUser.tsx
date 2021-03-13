@@ -46,7 +46,9 @@ export const TransferUser: React.FC<TransferUserProps> = ({ open, handleClose })
 
   React.useEffect(() => {
     if (open && users && users?.length == 0) {
-      requestUsers(currentUser?.business.businessId);
+      (async () => {
+        await requestUsers(currentUser?.business.businessId);
+      })();
     }
   }, [open]);
 
@@ -59,7 +61,7 @@ export const TransferUser: React.FC<TransferUserProps> = ({ open, handleClose })
     console.log(values);
 
     const result = await transferUser(values.sellerSource, values.sellerTarget);
-    requestUsers(currentUser?.business.businessId);
+
     if (result) {
       resetForm();
       handleClose();
@@ -80,7 +82,7 @@ export const TransferUser: React.FC<TransferUserProps> = ({ open, handleClose })
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <form onSubmit={formik.handleSubmit}>
-        <Loader isLoading={formik.isSubmitting} />
+          <Loader isLoading={formik.isSubmitting} />
           <DialogTitle id="form-dialog-title">Cambio de código entre vendedores</DialogTitle>
           <DialogContent>
             <DialogContentText>

@@ -69,7 +69,9 @@ const Business = (): React.ReactElement => {
       //Regular admin user only can query the business tied to the current user
       const currentBusinessId = currentUser?.business.businessId;
       if (currentBusinessId) {
-        requestUsers(currentBusinessId);
+        (async () => {
+          await requestUsers(currentBusinessId);
+        })();
       }
     }
     if (businessId && requestUsers && currentUser?.type === UserTypeEnum.superuser) {

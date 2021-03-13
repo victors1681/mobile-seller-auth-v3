@@ -32,4 +32,5 @@ interface SelectOptions {
     name: string;
     label: string;
     value: string;
+    code?: number;
   }

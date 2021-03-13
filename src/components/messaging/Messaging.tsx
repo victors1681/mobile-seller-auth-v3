@@ -43,7 +43,9 @@ export default function Messaging() {
 
   React.useEffect(() => {
     if (open && users && users?.length == 0) {
-      requestUsers(currentUser?.business.businessId);
+      (async () => {
+        await requestUsers(currentUser?.business.businessId);
+      })();
     }
   }, [open]);
 

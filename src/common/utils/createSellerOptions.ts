@@ -5,11 +5,12 @@ export const createSellerOptions = (users: IUser[] | undefined) => {
         ({
           name: `${user.firstName} ${user.lastName}`,
           label: `${user.sellerCode}-${user.firstName} ${user.lastName}`,
-          value: user.userId
+          value: user.userId,
+          code: parseInt(user.sellerCode)
         } as SelectOptions)
     ) || ([] as SelectOptions[]);
 
-  options.sort((a: any, b: any) => (a.name.toUpperCase() < b.name.toUpperCase() ? 0 : 0));
+  options.sort((a: any, b: any) => a?.code - b?.code);
 
   return options;
 };

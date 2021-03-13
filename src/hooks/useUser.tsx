@@ -7,7 +7,7 @@ export interface IUseUser {
   user?: IUser;
   users?: IUser[];
   isSellerCodeExist: (sellerCode: string, businessId?: string, userId?: string) => Promise<boolean>;
-  requestUsers: (businessId?: string) => void;
+  requestUsers: (businessId?: string) => Promise<void>;
   requestUserById: (userId: string) => Promise<IUser | undefined>;
   performLogin: (uid: string, email: string, photoURL: string) => void;
   updateUser: (dataUser: IUser, businessId: string) => Promise<boolean>;
@@ -70,9 +70,10 @@ export const useUser = (): IUseUser => {
   );
 
   const requestUsers = React.useCallback(
-    (businessId?: string) => {
+    (businessId?: string): Promise<void> => {
       const bID = businessId ? businessId : user?.business.businessId || '';
-      db.collection(USER_COLLECTION)
+      const promise = db
+        .collection(USER_COLLECTION)
         .where('business', '==', bID)
         .get()
         .then((snapshot: firebase.firestore.QuerySnapshot) => {
@@ -80,12 +81,13 @@ export const useUser = (): IUseUser => {
           snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
             result.push({ userId: doc.id, ...doc.data() } as IUser);
           });
-
           setUsers(result);
         })
         .catch((error) => {
           console.error(error);
         });
+
+      return promise;
     },
     [user]
   );
