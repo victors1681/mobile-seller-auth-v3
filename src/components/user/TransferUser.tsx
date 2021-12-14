@@ -61,6 +61,7 @@ export const TransferUser: React.FC<TransferUserProps> = ({ open, handleClose })
     console.log(values);
 
     const result = await transferUser(values.sellerSource, values.sellerTarget);
+    await requestUsers(currentUser?.business.businessId);
 
     if (result) {
       resetForm();
