@@ -68,6 +68,11 @@ const userType: SelectOptions[] = [
     value: 'seller'
   },
   {
+    name: 'driver',
+    label: 'Chofer',
+    value: 'driver'
+  },
+  {
     name: 'administrator',
     label: 'Administrador',
     value: 'administrator'
@@ -79,6 +84,11 @@ const powerUserTypeList: SelectOptions[] = [
     name: 'seller',
     label: 'Vendedor',
     value: 'seller'
+  },
+  {
+    name: 'driver',
+    label: 'Chofer',
+    value: 'driver'
   },
   {
     name: 'administrator',

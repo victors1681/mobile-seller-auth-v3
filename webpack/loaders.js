@@ -10,7 +10,7 @@ const getBabelLoader = () => ({
 
 const getCssLoader = (env) => ({
   test: /\.(sc|c)ss$/,
-  use: [isDev(env) ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+  use: [isDev(env) ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader']
 });
 
 const getFileLoader = () => ({
