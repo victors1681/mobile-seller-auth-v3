@@ -11,6 +11,7 @@ interface IBusiness {
       serverPort: string;
       serverUrl: string;
       testMode: boolean;
+      displayPriceWithTax: boolean;
     };
     contact: string;
     contactPhone: string;

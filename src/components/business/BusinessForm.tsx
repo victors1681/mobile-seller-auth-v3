@@ -68,7 +68,8 @@ const formInit = {
     serverPort: '',
     sandboxUrl: '',
     sandboxPort: '',
-    testMode: false
+    testMode: false,
+    displayPriceWithTax: false,
   },
   status: true,
   sellingPackaging: false
@@ -241,6 +242,11 @@ export const UserForm = () => {
           <Grid item xs={12} sm={4}>
             <ListItem>
               <FormControlLabel control={<Switch name="config.testMode" onChange={formik.handleChange} checked={formik.values.config.testMode} />} label="Modo de prueba" />
+            </ListItem>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <ListItem>
+              <FormControlLabel control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={formik.values.config.displayPriceWithTax} />} label="Muestra Precio con impuesto" />
             </ListItem>
           </Grid>
           <Grid item xs={12} sm={4}>
