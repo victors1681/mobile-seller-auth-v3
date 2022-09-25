@@ -74,7 +74,8 @@ const formInit = {
     displayPriceWithTax: false,
     allowPriceBelowMinimum: false,
     orderEmailTemplateID: '',
-    paymentEmailTemplateID: ''
+    paymentEmailTemplateID: '',
+    allowQuote: false
   },
   status: true,
   sellingPackaging: false
@@ -309,6 +310,11 @@ export const UserForm = () => {
           <Grid item xs={12} sm={4}>
             <ListItem>
               <FormControlLabel control={<Switch name="status" onChange={formik.handleChange} checked={formik.values.status} />} label="Status" />
+            </ListItem>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <ListItem>
+              <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={formik.values.config.allowQuote} />} label="Permitir crear cotizaciones" />
             </ListItem>
           </Grid>
         </Grid>

@@ -15,6 +15,7 @@ interface IBusiness {
       allowPriceBelowMinimum: boolean;
       orderEmailTemplateID: number;
       paymentEmailTemplateID: number;
+      allowQuote: boolean;
     };
     contact: string;
     contactPhone: string;
