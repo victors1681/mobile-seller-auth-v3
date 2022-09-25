@@ -12,6 +12,9 @@ interface IBusiness {
       serverUrl: string;
       testMode: boolean;
       displayPriceWithTax: boolean;
+      allowPriceBelowMinimum: boolean;
+      orderEmailTemplateID: number;
+      paymentEmailTemplateID: number;
     };
     contact: string;
     contactPhone: string;

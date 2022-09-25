@@ -2,7 +2,7 @@ import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Paper, Avatar, Switch, ListItem, FormControlLabel, ListItemText, Divider } from '@material-ui/core';
+import { Paper, Avatar, Switch, ListItem, FormControlLabel, ListItemText, Divider, Link } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -34,7 +34,9 @@ const BusinessSchema = {
   sellerLicenses: Yup.string().required('Requerido'),
   config: Yup.object().shape({
     serverUrl: Yup.string().required('Requerido'),
-    serverPort: Yup.number().required('Requerido')
+    serverPort: Yup.number().required('Requerido'),
+    orderEmailTemplateID: Yup.number(),
+    paymentEmailTemplateID: Yup.number()
   })
 };
 
@@ -70,6 +72,9 @@ const formInit = {
     sandboxPort: '',
     testMode: false,
     displayPriceWithTax: false,
+    allowPriceBelowMinimum: false,
+    orderEmailTemplateID: '',
+    paymentEmailTemplateID: ''
   },
   status: true,
   sellingPackaging: false
@@ -181,6 +186,9 @@ export const UserForm = () => {
             <TextField id="website" name="website" label="Página web" fullWidth onChange={formik.handleChange} value={formik.values.website} />
           </Grid>
           <Grid item xs={12} sm={12}>
+            <TextField id="logoUrl" name="logoUrl" label="Logo Url" fullWidth onChange={formik.handleChange} value={formik.values.logoUrl} />
+          </Grid>
+          <Grid item xs={12} sm={12}>
             <ListItem>
               <ListItemText primary="Contactos" />
             </ListItem>
@@ -238,6 +246,39 @@ export const UserForm = () => {
             <TextField type="textarea" id="footerReceipt" name="footerReceipt" label="Mensaje pie recibo" fullWidth onChange={formik.handleChange} value={formik.values.footerReceipt} />
           </Grid>
 
+          <Grid item xs={12} sm={12}>
+            <ListItem>
+              <ListItemText primary="Email Template" />
+            </ListItem>
+            <Divider component="div" />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              type="number"
+              id="orderEmailTemplateID"
+              name="config.orderEmailTemplateID"
+              label="ID email template pedido"
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values.config.orderEmailTemplateID}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              type="number"
+              id="paymentEmailTemplateID"
+              name="config.paymentEmailTemplateID"
+              label="ID email template cobros"
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values.config.paymentEmailTemplateID}
+            />
+          </Grid>
+          <Link target="_blank" href="https://app.mailjet.com/dashboard" style={{ paddingLeft: '11px' }}>
+            Configurar Email Template
+          </Link>
+
           <Grid item xs={12} sm={12} />
           <Grid item xs={12} sm={4}>
             <ListItem>
@@ -246,7 +287,18 @@ export const UserForm = () => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <ListItem>
-              <FormControlLabel control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={formik.values.config.displayPriceWithTax} />} label="Muestra Precio con impuesto" />
+              <FormControlLabel
+                control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={formik.values.config.displayPriceWithTax} />}
+                label="Muestra Precio con impuesto"
+              />
+            </ListItem>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <ListItem>
+              <FormControlLabel
+                control={<Switch name="config.allowPriceBelowMinimum" onChange={formik.handleChange} checked={formik.values.config.allowPriceBelowMinimum} />}
+                label="Permitir precio por debajo del mínimo"
+              />
             </ListItem>
           </Grid>
           <Grid item xs={12} sm={4}>
