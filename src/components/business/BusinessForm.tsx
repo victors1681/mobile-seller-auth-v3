@@ -314,7 +314,7 @@ export const UserForm = () => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <ListItem>
-              <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={formik.values.config.allowQuote} />} label="Permitir crear cotizaciones" />
+              <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={formik.values.config.allowQuote || false} />} label="Permitir crear cotizaciones" />
             </ListItem>
           </Grid>
         </Grid>
