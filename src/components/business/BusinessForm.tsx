@@ -2,15 +2,17 @@ import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Paper, Avatar, Switch, ListItem, FormControlLabel, ListItemText, Divider, Link } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+
+import { Paper, Avatar, Switch, ListItem, FormControlLabel, ListItemText, Divider, Link, IconButton } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { useFormik } from 'formik';
+import { FieldArray, useFormik, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import { useHistory, useParams } from 'react-router-dom';
 import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Loader } from 'common';
+import { Loader, InputText } from 'common';
 
 const AvatarProfile = styled(Avatar)`
   width: ${({ theme }) => theme.spacing(7)};
@@ -36,7 +38,17 @@ const BusinessSchema = {
     serverUrl: Yup.string().required('Requerido'),
     serverPort: Yup.number().required('Requerido'),
     orderEmailTemplateID: Yup.number(),
-    paymentEmailTemplateID: Yup.number()
+    paymentEmailTemplateID: Yup.number(),
+    metadata: Yup.array().of(
+      Yup.object().shape({
+        key: Yup.string()
+          .required('Key requerida')
+          .trim('No se permiten espacios en blanco'),
+        value: Yup.string()
+          .required('Valor requerida')
+          .trim('No se permiten espacios en blanco')
+      })
+    )
   })
 };
 
@@ -75,10 +87,67 @@ const formInit = {
     allowPriceBelowMinimum: false,
     orderEmailTemplateID: '',
     paymentEmailTemplateID: '',
-    allowQuote: false
+    allowQuote: false,
+    metadata: []
   },
   status: true,
   sellingPackaging: false
+};
+
+interface MetadataProp {
+  values: IBusiness;
+}
+
+const Metadata = ({ values }: MetadataProp) => {
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={12}>
+        <ListItem>
+          <ListItemText primary="Configuraciones Especiales" />
+        </ListItem>
+        <Divider component="div" />
+      </Grid>
+      <FieldArray name="config.metadata">
+        {({ remove, push }) => (
+          <>
+            {values.config &&
+              values.config.metadata &&
+              values.config.metadata.length > 0 &&
+              values.config.metadata.map((_, index) => {
+                return (
+                  <Grid container spacing={3} key={index}>
+                    <Grid item xs={5} sm={5}>
+                      <ListItem>
+                        <InputText name={`config.metadata.${index}.key`} label="Key" />
+                      </ListItem>
+                    </Grid>
+                    <Grid item xs={5} sm={5}>
+                      <ListItem>
+                        <InputText name={`config.metadata.${index}.value`} label="Value" />
+                      </ListItem>
+                    </Grid>
+                    <Grid item xs={2} sm={2}>
+                      <ListItem>
+                        <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => remove(index)}>
+                          <CloseIcon />
+                        </IconButton>
+                      </ListItem>
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            <Grid item xs={12} sm={12}>
+              <ListItem>
+                <Button fullWidth color="primary" variant="outlined" onClick={() => push({ key: '', value: '' })}>
+                  Agregar Metadata
+                </Button>
+              </ListItem>
+            </Grid>
+          </>
+        )}
+      </FieldArray>
+    </Grid>
+  );
 };
 
 export const UserForm = () => {
@@ -86,7 +155,7 @@ export const UserForm = () => {
   const [userAction, setUserAction] = React.useState<Actions>(Actions.new);
 
   const history = useHistory();
-  const { businessId } = useParams();
+  const { businessId } = useParams<any>();
   const {
     businessHook: { isLoading, addBusiness, updateBusiness, requestBusinessById }
   } = useMainApp();
@@ -148,196 +217,199 @@ export const UserForm = () => {
 
   return (
     <Wrapper>
-      <Loader isLoading={isLoading} />
-      <form onSubmit={formik.handleSubmit}>
-        <Header>
-          <Typography variant="h6" gutterBottom>
-            {getLabel()}
-          </Typography>
-          <AvatarProfile src={formik.values.logoUrl} />
-        </Header>
-
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12}>
-            <ListItem>
-              <ListItemText primary="Infomaciones" />
-            </ListItem>
-            <Divider component="div" />
-          </Grid>
-          <Grid item xs={12} sm={7}>
-            <TextField required id="name" name="name" label="Nombre" fullWidth onChange={formik.handleChange} value={formik.values.name} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField id="rnc" name="rnc" label="RNC" fullWidth onChange={formik.handleChange} value={formik.values.rnc} />
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <TextField type="number" required id="sellerLicenses" name="sellerLicenses" label="Licencias" fullWidth onChange={formik.handleChange} value={formik.values.sellerLicenses} />
-          </Grid>
-
-          <Grid item xs={12} sm={3}>
-            <TextField id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField id="fax" name="fax" label="Fax" fullWidth onChange={formik.handleChange} value={formik.values.fax} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField id="email" name="email" label="Email" fullWidth onChange={formik.handleChange} value={formik.values.email} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField id="website" name="website" label="Página web" fullWidth onChange={formik.handleChange} value={formik.values.website} />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <TextField id="logoUrl" name="logoUrl" label="Logo Url" fullWidth onChange={formik.handleChange} value={formik.values.logoUrl} />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <ListItem>
-              <ListItemText primary="Contactos" />
-            </ListItem>
-            <Divider component="div" />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField required id="contact" name="contact" label="Contácto" fullWidth onChange={formik.handleChange} value={formik.values.contact} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField id="contactPhone" name="contactPhone" label="Teléfono Contácto" fullWidth onChange={formik.handleChange} value={formik.values.contactPhone} />
-          </Grid>
-
-          <Grid item xs={12} sm={12}>
-            <ListItem>
-              <ListItemText primary="Dirección" />
-            </ListItem>
-            <Divider component="div" />
-          </Grid>
-
-          <Grid item xs={12} sm={12}>
-            <TextField id="address.street" name="address.street" label="Calle" fullWidth onChange={formik.handleChange} value={formik.values.address.street} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField id="address.city" name="address.city" label="Ciudad" fullWidth onChange={formik.handleChange} value={formik.values.address.city} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField id="address.country" name="address.country" label="País" fullWidth onChange={formik.handleChange} value={formik.values.address.country} />
-          </Grid>
-
-          <Grid item xs={12} sm={12}>
-            <ListItem>
-              <ListItemText primary="Configuraciones" />
-            </ListItem>
-            <Divider component="div" />
-          </Grid>
-
-          <Grid item xs={12} sm={9}>
-            <TextField required id="config.serverUrl" name="config.serverUrl" label="Url Servidor" fullWidth onChange={formik.handleChange} value={formik.values.config.serverUrl} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField required type="number" id="config.serverPort" name="config.serverPort" label="Puerto" fullWidth onChange={formik.handleChange} value={formik.values.config.serverPort} />
-          </Grid>
-
-          <Grid item xs={12} sm={9}>
-            <TextField id="config.sandboxUrl" name="config.sandboxUrl" label="Url Servidor Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxUrl} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField type="number" id="config.sandboxPort" name="config.sandboxPort" label="Puerto Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxPort} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField type="textarea" id="footerMessage" name="footerMessage" label="Mensaje pie factura" fullWidth onChange={formik.handleChange} value={formik.values.footerMessage} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField type="textarea" id="footerReceipt" name="footerReceipt" label="Mensaje pie recibo" fullWidth onChange={formik.handleChange} value={formik.values.footerReceipt} />
-          </Grid>
-
-          <Grid item xs={12} sm={12}>
-            <ListItem>
-              <ListItemText primary="Email Template" />
-            </ListItem>
-            <Divider component="div" />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              type="number"
-              id="orderEmailTemplateID"
-              name="config.orderEmailTemplateID"
-              label="ID email template pedido"
-              fullWidth
-              onChange={formik.handleChange}
-              value={formik.values.config.orderEmailTemplateID}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              type="number"
-              id="paymentEmailTemplateID"
-              name="config.paymentEmailTemplateID"
-              label="ID email template cobros"
-              fullWidth
-              onChange={formik.handleChange}
-              value={formik.values.config.paymentEmailTemplateID}
-            />
-          </Grid>
-          <Link target="_blank" href="https://app.mailjet.com/dashboard" style={{ paddingLeft: '11px' }}>
-            Configurar Email Template
-          </Link>
-
-          <Grid item xs={12} sm={12} />
-          <Grid item xs={12} sm={4}>
-            <ListItem>
-              <FormControlLabel control={<Switch name="config.testMode" onChange={formik.handleChange} checked={formik.values.config.testMode} />} label="Modo de prueba" />
-            </ListItem>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <ListItem>
-              <FormControlLabel
-                control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={formik.values.config.displayPriceWithTax} />}
-                label="Muestra Precio con impuesto"
-              />
-            </ListItem>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <ListItem>
-              <FormControlLabel
-                control={<Switch name="config.allowPriceBelowMinimum" onChange={formik.handleChange} checked={formik.values.config.allowPriceBelowMinimum} />}
-                label="Permitir precio por debajo del mínimo"
-              />
-            </ListItem>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <ListItem>
-              <FormControlLabel control={<Switch name="sellingPackaging" onChange={formik.handleChange} checked={formik.values.sellingPackaging} />} label="Compra Empase UI" />
-            </ListItem>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <ListItem>
-              <FormControlLabel control={<Switch name="status" onChange={formik.handleChange} checked={formik.values.status} />} label="Status" />
-            </ListItem>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <ListItem>
-              <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={formik.values.config.allowQuote || false} />} label="Permitir crear cotizaciones" />
-            </ListItem>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={6}>
-          <Grid item xs={12} sm={3}>
-            {userAction === Actions.edit && (
-              <Tooltip title="Crea un nuevo usuario utilizando las configuraciones de este usuario" aria-label="">
-                <Button fullWidth color="primary" onClick={handleDuplication} variant="outlined">
-                  Duplicar Empresa
-                </Button>
-              </Tooltip>
-            )}
-          </Grid>
-          <Grid item xs={12} sm={3} />
-          <Grid item xs={12} sm={3} />
-          <Grid item xs={12} sm={3}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
+      <FormikProvider value={formik}>
+        <Loader isLoading={isLoading} />
+        <form onSubmit={formik.handleSubmit}>
+          <Header>
+            <Typography variant="h6" gutterBottom>
               {getLabel()}
-            </Button>
+            </Typography>
+            <AvatarProfile src={formik.values.logoUrl} />
+          </Header>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+              <ListItem>
+                <ListItemText primary="Infomaciones" />
+              </ListItem>
+              <Divider component="div" />
+            </Grid>
+            <Grid item xs={12} sm={7}>
+              <TextField required id="name" name="name" label="Nombre" fullWidth onChange={formik.handleChange} value={formik.values.name} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField id="rnc" name="rnc" label="RNC" fullWidth onChange={formik.handleChange} value={formik.values.rnc} />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <TextField type="number" required id="sellerLicenses" name="sellerLicenses" label="Licencias" fullWidth onChange={formik.handleChange} value={formik.values.sellerLicenses} />
+            </Grid>
+
+            <Grid item xs={12} sm={3}>
+              <TextField id="phone" name="phone" label="Teléfono" fullWidth onChange={formik.handleChange} value={formik.values.phone} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField id="fax" name="fax" label="Fax" fullWidth onChange={formik.handleChange} value={formik.values.fax} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField id="email" name="email" label="Email" fullWidth onChange={formik.handleChange} value={formik.values.email} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField id="website" name="website" label="Página web" fullWidth onChange={formik.handleChange} value={formik.values.website} />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField id="logoUrl" name="logoUrl" label="Logo Url" fullWidth onChange={formik.handleChange} value={formik.values.logoUrl} />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <ListItem>
+                <ListItemText primary="Contactos" />
+              </ListItem>
+              <Divider component="div" />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField required id="contact" name="contact" label="Contácto" fullWidth onChange={formik.handleChange} value={formik.values.contact} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField id="contactPhone" name="contactPhone" label="Teléfono Contácto" fullWidth onChange={formik.handleChange} value={formik.values.contactPhone} />
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <ListItem>
+                <ListItemText primary="Dirección" />
+              </ListItem>
+              <Divider component="div" />
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <TextField id="address.street" name="address.street" label="Calle" fullWidth onChange={formik.handleChange} value={formik.values.address.street} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField id="address.city" name="address.city" label="Ciudad" fullWidth onChange={formik.handleChange} value={formik.values.address.city} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField id="address.country" name="address.country" label="País" fullWidth onChange={formik.handleChange} value={formik.values.address.country} />
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <ListItem>
+                <ListItemText primary="Configuraciones" />
+              </ListItem>
+              <Divider component="div" />
+            </Grid>
+
+            <Grid item xs={12} sm={9}>
+              <TextField required id="config.serverUrl" name="config.serverUrl" label="Url Servidor" fullWidth onChange={formik.handleChange} value={formik.values.config.serverUrl} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField required type="number" id="config.serverPort" name="config.serverPort" label="Puerto" fullWidth onChange={formik.handleChange} value={formik.values.config.serverPort} />
+            </Grid>
+
+            <Grid item xs={12} sm={9}>
+              <TextField id="config.sandboxUrl" name="config.sandboxUrl" label="Url Servidor Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxUrl} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField type="number" id="config.sandboxPort" name="config.sandboxPort" label="Puerto Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxPort} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField type="textarea" id="footerMessage" name="footerMessage" label="Mensaje pie factura" fullWidth onChange={formik.handleChange} value={formik.values.footerMessage} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField type="textarea" id="footerReceipt" name="footerReceipt" label="Mensaje pie recibo" fullWidth onChange={formik.handleChange} value={formik.values.footerReceipt} />
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <ListItem>
+                <ListItemText primary="Email Template" />
+              </ListItem>
+              <Divider component="div" />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                type="number"
+                id="orderEmailTemplateID"
+                name="config.orderEmailTemplateID"
+                label="ID email template pedido"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.config.orderEmailTemplateID}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                type="number"
+                id="paymentEmailTemplateID"
+                name="config.paymentEmailTemplateID"
+                label="ID email template cobros"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.config.paymentEmailTemplateID}
+              />
+            </Grid>
+            <Link target="_blank" href="https://app.mailjet.com/dashboard" style={{ paddingLeft: '11px' }}>
+              Configurar Email Template
+            </Link>
+
+            <Grid item xs={12} sm={12} />
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel control={<Switch name="config.testMode" onChange={formik.handleChange} checked={formik.values.config.testMode} />} label="Modo de prueba" />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={formik.values.config.displayPriceWithTax} />}
+                  label="Muestra Precio con impuesto"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.allowPriceBelowMinimum" onChange={formik.handleChange} checked={formik.values.config.allowPriceBelowMinimum} />}
+                  label="Permitir precio por debajo del mínimo"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel control={<Switch name="sellingPackaging" onChange={formik.handleChange} checked={formik.values.sellingPackaging} />} label="Compra Empase UI" />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel control={<Switch name="status" onChange={formik.handleChange} checked={formik.values.status} />} label="Status" />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={formik.values.config.allowQuote || false} />} label="Permitir crear cotizaciones" />
+              </ListItem>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
+          <Metadata values={formik.values} />
+
+          <Grid container spacing={6}>
+            <Grid item xs={12} sm={3}>
+              {userAction === Actions.edit && (
+                <Tooltip title="Crea un nuevo usuario utilizando las configuraciones de este usuario" aria-label="">
+                  <Button fullWidth color="primary" onClick={handleDuplication} variant="outlined">
+                    Duplicar Empresa
+                  </Button>
+                </Tooltip>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={3} />
+            <Grid item xs={12} sm={3} />
+            <Grid item xs={12} sm={3}>
+              <Button type="submit" fullWidth variant="contained" color="primary">
+                {getLabel()}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </FormikProvider>
     </Wrapper>
   );
 };

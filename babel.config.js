@@ -5,7 +5,6 @@ module.exports = (api) => ({
       {
         loose: true,
         modules: false,
-        useBuiltIns: 'entry',
         forceAllTransforms: api.env('production'),
         targets: {
           browsers: ['last 2 versions']

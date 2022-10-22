@@ -50,11 +50,11 @@ const getEslintLoader = (env) => {
 };
 
 const getTsLoader = () => ({
-  test: /\.ts(x?)$/,
+  test: /\.(tsx|ts)$/,
   exclude: /node_modules/,
   use: [
     {
-      loader: 'ts-loader'
+      loader: 'babel-loader'
     }
   ]
 });

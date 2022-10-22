@@ -18,9 +18,7 @@ module.exports = {
     }
   },
   settings: {
-    react: {
-      version: '16.8'
-    },
+    "react": { "version": "detect" },
     'import/extensions': ['.ts', '.tsx', '.js', 'jsx'],
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx']
@@ -62,7 +60,8 @@ module.exports = {
     'react/style-prop-object': 'off',
     'react/no-unescaped-entities': 'off',
     'react/button-has-type': 'off',
-    'no-unused-vars': 'off'
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-use-before-define': 'off'
   },
   overrides: [
     {
@@ -76,6 +75,8 @@ module.exports = {
       rules: {
         'react/prop-types': 'off',
         'import/named': 'off',
+        "@typescript-eslint/no-use-before-define": "off",
+        "react/jsx-no-bind": "off",
         '@typescript-eslint/adjacent-overload-signatures': 'error',
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/ban-types': 'error',
@@ -90,14 +91,18 @@ module.exports = {
         '@typescript-eslint/no-parameter-properties': 'error',
         '@typescript-eslint/no-triple-slash-reference': 'error',
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+        '@typescript-eslint/no-unused-vars': ['warning', { ignoreRestSiblings: true }],
         '@typescript-eslint/no-var-requires': 'error',
         '@typescript-eslint/prefer-namespace-keyword': 'error',
         '@typescript-eslint/type-annotation-spacing': 'error',
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
         '@typescript-eslint/no-triple-slash-reference': 'off',
         "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/interface-name-prefix": "off"
+        "@typescript-eslint/interface-name-prefix": "off",
+        "react/no-array-index-key": "off",
+        "react/require-default-props": "off",
+        "no-undef": "off",
+        "react/no-unused-prop-types": "off"
       }
     }
   ]

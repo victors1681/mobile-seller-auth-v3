@@ -45,9 +45,18 @@ export const useBusiness = (): IUseBusiness => {
       .get();
 
     if (snapshot) {
-      console.error('doc.data()doc.data()', snapshot.data());
+      console.info('business data: ', snapshot.data());
       setLoading(false);
-      return { businessId: snapshot.id, ...snapshot.data() } as IBusiness;
+
+      const data = snapshot.data() as any;
+
+      const dataTransformed = {
+        businessId: snapshot.id,
+        ...data,
+        config: { metadata: [], ...data.config }
+      } as IBusiness;
+
+      return dataTransformed;
     }
   };
 
