@@ -9,7 +9,7 @@ import theme from 'common/theme/theme';
 import { MainWrapper } from 'common/styles/common.styled';
 import './common/theme/fontFace.scss';
 import { MainAppProvider } from 'contexts/MainApp';
-import Router from './Router';
+import RouteBase from './Router';
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -18,7 +18,7 @@ ReactDOM.render(
       <BrowserRouter>
         <MainWrapper>
           <MainAppProvider>
-            <Router />
+            <RouteBase />
           </MainAppProvider>
         </MainWrapper>
       </BrowserRouter>

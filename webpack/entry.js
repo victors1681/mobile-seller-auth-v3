@@ -1,8 +1,5 @@
 const path = require('path');
 
-const getEntry = () => ({
-  app: ['@babel/polyfill', path.join(__dirname, '..', 'src', 'index.tsx')],
-  vendors: ['react', 'react-dom']
-});
+const getEntry = () => ['whatwg-fetch', path.join(__dirname, '..', 'src', 'index.tsx')];
 
 module.exports.getEntry = getEntry;

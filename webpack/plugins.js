@@ -12,8 +12,7 @@ const getHtmlWebpackPlugin = (env) =>
       {
         filename: 'index.html',
         template: path.join(__dirname, '..', 'public', 'index.html'),
-        inject: true,
-        chunks: ['app', 'vendors']
+        inject: true
       },
       isProd(env) && {
         minify: {
@@ -31,7 +30,8 @@ const getBundleAnalyzerPlugin = (env) => {
 const getMiniCssExtractPlugin = (env) => {
   if (isProd(env)) {
     return new MiniCssExtractPlugin({
-      filename: 'css/[name].[chunkhash:8].css'
+      filename: 'css/[name].[contenthash].css',
+      chunkFilename: '[id].css'
     });
   }
 };

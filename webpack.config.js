@@ -18,8 +18,15 @@ module.exports = (env) => {
     module: {
       rules: getLoaders(env)
     },
-    optimization: getOptimization(),
-    devtool: isDev(env) && '#cheap-module-eval-source-map'
+    optimization: isDev(env) ? undefined : getOptimization(),
+    performance: isDev(env)
+      ? undefined
+      : {
+          hints: false,
+          maxEntrypointSize: 512000,
+          maxAssetSize: 512000
+        },
+    devtool: isDev(env) && 'inline-source-map'
   };
   return config;
 };
