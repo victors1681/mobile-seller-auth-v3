@@ -16,6 +16,7 @@ interface IBusiness {
       orderEmailTemplateID: number;
       paymentEmailTemplateID: number;
       allowQuote: boolean;
+      trackingLocation: boolean;
       metadata: Array<{[key as string]: any}>;
     };
     contact: string;
