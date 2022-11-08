@@ -105,7 +105,7 @@ export const useUser = (): IUseUser => {
     try {
       const updateUser = functions.httpsCallable('updateUser');
       const payload = { ...userData, businessId };
-      console.log(payload);
+
       const response = await updateUser(payload);
       if (response) {
         toast('User Updated');
@@ -122,7 +122,7 @@ export const useUser = (): IUseUser => {
     try {
       const updateUser = functions.httpsCallable('transferUser');
       const payload = { sellerSource, sellerTarget };
-      console.log(payload);
+
       const response = await updateUser(payload);
       if (response) {
         toast('Código de vendedor transferidos');

@@ -208,7 +208,6 @@ export const UserForm = () => {
     enableReinitialize: true,
     initialValues: { ...businessData },
     onSubmit: (values, { resetForm }) => {
-      console.error(values, businessData);
       handleSubmission(values, resetForm);
     },
     validationSchema: Yup.object().shape(BusinessSchema)

@@ -63,7 +63,6 @@ export default function Messaging() {
   };
 
   const handleSubmission = async (values: IMessage, resetForm: any) => {
-    console.log(values);
     if (values.all) {
       const result = await sendMessageAll(values.title, values.message);
       if (result) {

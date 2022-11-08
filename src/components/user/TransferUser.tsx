@@ -58,8 +58,6 @@ export const TransferUser: React.FC<TransferUserProps> = ({ open, handleClose })
   }, [open, users && users.length]);
 
   const handleSubmission = async (values: IMessage, resetForm: any) => {
-    console.log(values);
-
     const result = await transferUser(values.sellerSource, values.sellerTarget);
     await requestUsers(currentUser?.business.businessId);
 

@@ -2,10 +2,14 @@ import { Grid, ListItem, ListItemText } from '@material-ui/core';
 import React from 'react';
 
 import { InputText, SwitchInput } from 'common/form/inputs';
-import { useFormikContext } from 'formik';
+import { Field, useFormikContext } from 'formik';
 
 export const Whatsapp = () => {
-  const { values } = useFormikContext<IBusiness>();
+  const { values, setFieldValue } = useFormikContext<IBusiness>();
+
+  React.useEffect(() => {
+    setFieldValue('config.integrations[0].provider', 'whatsapp');
+  }, [values.config]);
 
   const whatsappIntegration = values.config.integrations && values.config.integrations[0] && values.config.integrations[0];
   const isDevelopment = whatsappIntegration?.isDevelopment;
@@ -28,6 +32,7 @@ export const Whatsapp = () => {
 
         {isEnabled && (
           <>
+            <Field type="hidden" value="whatsapp" name="config.integrations[0].provider" />
             <Grid item xs={6} sm={6}>
               <InputText name="config.integrations[0].token" label="Access Token" />
             </Grid>

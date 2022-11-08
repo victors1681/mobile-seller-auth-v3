@@ -45,7 +45,6 @@ export const useBusiness = (): IUseBusiness => {
       .get();
 
     if (snapshot) {
-      console.info('business data: ', snapshot.data());
       setLoading(false);
 
       const data = snapshot.data() as any;
