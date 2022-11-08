@@ -13,6 +13,7 @@ import { useMainApp } from 'hooks';
 import styled from 'styled-components';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Loader, InputText } from 'common';
+import { Integrations } from './integrations';
 
 const AvatarProfile = styled(Avatar)`
   width: ${({ theme }) => theme.spacing(7)};
@@ -89,6 +90,7 @@ const formInit = {
     paymentEmailTemplateID: '',
     allowQuote: false,
     trackingLocation: false,
+    integrations: [],
     metadata: []
   },
   status: true,
@@ -354,13 +356,13 @@ export const UserForm = () => {
             <Grid item xs={12} sm={12} />
             <Grid item xs={12} sm={4}>
               <ListItem>
-                <FormControlLabel control={<Switch name="config.testMode" onChange={formik.handleChange} checked={formik.values.config.testMode} />} label="Modo de prueba" />
+                <FormControlLabel control={<Switch name="config.testMode" onChange={formik.handleChange} checked={!!formik.values.config.testMode} />} label="Modo de prueba" />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
                 <FormControlLabel
-                  control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={formik.values.config.displayPriceWithTax} />}
+                  control={<Switch name="config.displayPriceWithTax" onChange={formik.handleChange} checked={!!formik.values.config.displayPriceWithTax} />}
                   label="Muestra Precio con impuesto"
                 />
               </ListItem>
@@ -368,35 +370,37 @@ export const UserForm = () => {
             <Grid item xs={12} sm={4}>
               <ListItem>
                 <FormControlLabel
-                  control={<Switch name="config.allowPriceBelowMinimum" onChange={formik.handleChange} checked={formik.values.config.allowPriceBelowMinimum} />}
+                  control={<Switch name="config.allowPriceBelowMinimum" onChange={formik.handleChange} checked={!!formik.values.config.allowPriceBelowMinimum} />}
                   label="Permitir precio por debajo del mínimo"
                 />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
-                <FormControlLabel control={<Switch name="sellingPackaging" onChange={formik.handleChange} checked={formik.values.sellingPackaging} />} label="Compra Empase UI" />
+                <FormControlLabel control={<Switch name="sellingPackaging" onChange={formik.handleChange} checked={!!formik.values.sellingPackaging} />} label="Compra Empase UI" />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
-                <FormControlLabel control={<Switch name="status" onChange={formik.handleChange} checked={formik.values.status} />} label="Status" />
+                <FormControlLabel control={<Switch name="status" onChange={formik.handleChange} checked={!!formik.values.status} />} label="Status" />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
-                <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={formik.values.config.allowQuote || false} />} label="Permitir crear cotizaciones" />
+                <FormControlLabel control={<Switch name="config.allowQuote" onChange={formik.handleChange} checked={!!formik.values.config.allowQuote} />} label="Permitir crear cotizaciones" />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
                 <FormControlLabel
-                  control={<Switch name="config.trackingLocation" onChange={formik.handleChange} checked={formik.values.config.trackingLocation || false} />}
+                  control={<Switch name="config.trackingLocation" onChange={formik.handleChange} checked={!!formik.values.config.trackingLocation} />}
                   label="Reastreo en tiempo real"
                 />
               </ListItem>
             </Grid>
           </Grid>
+
+          <Integrations />
           <Metadata values={formik.values} />
 
           <Grid container spacing={6}>

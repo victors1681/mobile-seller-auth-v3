@@ -1,3 +1,15 @@
+type IntegrationProvider = "whatsapp"
+
+interface IIntegration {
+  provider: IntegrationProvider,
+  enabled: boolean,
+  isDevelopment: boolean,
+  token?: string,
+  phoneNumberId?: string, 
+  devToken?: string,
+  devPhoneNumberId?: string
+}
+ 
 interface IBusiness {
     businessId: string;
     address: {
@@ -18,6 +30,7 @@ interface IBusiness {
       allowQuote: boolean;
       trackingLocation: boolean;
       metadata: Array<{[key as string]: any}>;
+      integrations:  IIntegration[];
     };
     contact: string;
     contactPhone: string;

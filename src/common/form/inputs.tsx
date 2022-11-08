@@ -1,5 +1,5 @@
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { FormControlLabel, FormGroup, ListItemText } from '@material-ui/core';
+import { FormControlLabel, FormGroup, ListItemText, Switch } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
@@ -31,6 +31,7 @@ export interface Props {
   options?: SelectOption[];
   disabled?: boolean;
   multiple?: boolean;
+  tooltip?: string;
 }
 
 interface InputHeaderProps {
@@ -215,6 +216,26 @@ export const CheckboxInput = ({ name, label, disabled }: Props): JSX.Element => 
       <FormControlLabel
         control={<Checkbox name={name} checked={field.value} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />}
         disabled={disabled || isSubmitting}
+        label={label}
+      />
+    </FormGroup>
+  );
+};
+
+export const SwitchInput = ({ name, label, disabled, tooltip }: Props): JSX.Element => {
+  const [field, , helpers] = useField({ name });
+  const { isSubmitting } = useFormikContext();
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    helpers.setValue(!!event.target.checked);
+  };
+  return (
+    <FormGroup>
+      <FormControlLabel
+        control={
+          <Tooltip title={tooltip || ''}>
+            <Switch name={name} onChange={handleChange} disabled={disabled || isSubmitting} checked={!!field.value} />
+          </Tooltip>
+        }
         label={label}
       />
     </FormGroup>
