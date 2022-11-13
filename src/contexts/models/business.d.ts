@@ -1,9 +1,9 @@
 type IntegrationProvider = "whatsapp"
 
 interface IIntegration {
-  provider: IntegrationProvider,
-  enabled: boolean,
-  isDevelopment: boolean,
+  provider?: IntegrationProvider,
+  enabled?: boolean,
+  isDevelopment?: boolean,
   token?: string,
   phoneNumberId?: string, 
   devToken?: string,
@@ -29,8 +29,8 @@ interface IBusiness {
       paymentEmailTemplateID: number;
       allowQuote: boolean;
       trackingLocation: boolean;
-      metadata: Array<{[key as string]: any}>;
-      integrations:  IIntegration[];
+      metadata: Array<{[key: string]: any}>;
+      integrations?:  IIntegration[];
     };
     contact: string;
     contactPhone: string;
