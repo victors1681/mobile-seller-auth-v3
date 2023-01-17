@@ -216,10 +216,15 @@ export const useUser = (): IUseUser => {
 
     if (!snapshot.empty) {
       const currentData = snapshot.docs[0].id;
-      return currentData === userId; //if the user is editing and is the same keep editing
+
+      if (currentData === userId) {
+        // if the user is editing and is the same keep editing
+        // if th user that we're editing is the same one that we skip evaluating
+        return false;
+      }
     }
 
-    return !!snapshot.docs.length;
+    return snapshot.docs.length > 0;
   };
 
   return {

@@ -198,7 +198,8 @@ export const UserForm = () => {
         const exist = await isSellerCodeExist(sellerCode, businessId, userId);
 
         if (businessId) {
-          if (userAction === Actions.edit && !exist) { //is seller code is not duplicate allow to edit
+          if (userAction === Actions.edit && !exist) {
+            //is seller code is not duplicate allow to edit
             updateUser(values, businessId);
           } else if (!exist) {
             //new or duplicate add new user
