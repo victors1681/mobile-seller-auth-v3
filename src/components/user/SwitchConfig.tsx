@@ -29,7 +29,21 @@ export const fields: Field[] = [
     name: 'editPrice',
     label: 'Editar Precio',
     value: false,
-    note: 'Permite al vendedor editar los precios',
+    note: 'Permite al vendedor editar los precios manualmente en el input',
+    icon: 'WifiIcon'
+  },
+  {
+    name: 'priceCondition',
+    label: 'Condición de precio',
+    value: false,
+    note: 'Habilitar condición de precios, seleccionando el precio proveniente de ws_clientes CondicionPrecio y desactiva el selector de los precios por debajo',
+    icon: 'WifiIcon'
+  },
+  {
+    name: 'selectHighestPrice',
+    label: 'Seleccionar precio mayor',
+    value: false,
+    note: 'Si la condición de precio está activada, en vez de seleccionar el precio de la condición por defecto el iPad seleccionará el precio más alto',
     icon: 'WifiIcon'
   },
   {
@@ -65,13 +79,6 @@ export const fields: Field[] = [
     label: 'Filtrar Productos',
     value: false,
     note: 'Filtra solo los productos disponible para venta',
-    icon: 'WifiIcon'
-  },
-  {
-    name: 'priceCondition',
-    label: 'Condición de precio',
-    value: false,
-    note: 'Habilitar condición de precios',
     icon: 'WifiIcon'
   },
   {
