@@ -47,13 +47,6 @@ export const fields: Field[] = [
     icon: 'WifiIcon'
   },
   {
-    name: 'allowPriceLessMinimum',
-    label: 'Permitir precio menor al minimo',
-    value: false,
-    note: 'Cuando esta opción está activa permitirá al vendedor registrar precio por debajo del precio mínimo precio (5), debe activar la opción (Editar Precio)',
-    icon: 'WifiIcon'
-  },
-  {
     name: 'firstTimeLogin',
     label: 'Primer inicio de sesión',
     value: false,
