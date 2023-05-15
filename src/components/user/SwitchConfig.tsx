@@ -139,6 +139,13 @@ export const fields: Field[] = [
     icon: 'WifiIcon'
   },
   {
+    name: 'allowDiscountSoonPayment',
+    label: 'Limita el descuento pronto pago.',
+    value: true,
+    note: 'Esta opción limita el porcentaje de descuento que se puede aplicar al cliente al momento del pago, en el campo clientes debe indicar DescuentoProntoPago, si este tiene definido un 10,20, este será el monto máximo que se puede permitir, de lo contrario no se permitirá aplicar el porcentaje',
+    icon: 'WifiIcon'
+  },
+  {
     name: 'allowBankDeposit',
     label: 'Permitir Depositar Cobros en el banco',
     value: true,
