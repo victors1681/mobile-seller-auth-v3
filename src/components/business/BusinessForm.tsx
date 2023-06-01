@@ -378,7 +378,7 @@ export const UserForm = () => {
             <Grid item xs={12} sm={4}>
               <ListItem>
                 <FormControlLabel
-                  control={<Switch name="config.allowOrderAboveCreditLimit" onChange={formik.handleChange} checked={!!formik.values.config.allowPriceBelowMinimum} />}
+                  control={<Switch name="config.allowOrderAboveCreditLimit" onChange={formik.handleChange} checked={!!formik.values.config.allowOrderAboveCreditLimit} />}
                   label="Permitir realizar pedido por arriba del límite de crédito"
                 />
               </ListItem>

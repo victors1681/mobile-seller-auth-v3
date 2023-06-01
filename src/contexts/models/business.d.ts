@@ -25,6 +25,7 @@ interface IBusiness {
       testMode: boolean;
       displayPriceWithTax: boolean;
       allowPriceBelowMinimum: boolean;
+      allowOrderAboveCreditLimit: boolean;
       orderEmailTemplateID: number;
       paymentEmailTemplateID: number;
       allowQuote: boolean;
