@@ -86,6 +86,7 @@ const formInit = {
     testMode: false,
     displayPriceWithTax: false,
     allowPriceBelowMinimum: false,
+    allowOrderAboveCreditLimit: false,
     orderEmailTemplateID: '',
     paymentEmailTemplateID: '',
     allowQuote: false,
@@ -371,6 +372,14 @@ export const UserForm = () => {
                 <FormControlLabel
                   control={<Switch name="config.allowPriceBelowMinimum" onChange={formik.handleChange} checked={!!formik.values.config.allowPriceBelowMinimum} />}
                   label="Permitir precio por debajo del mínimo"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.allowOrderAboveCreditLimit" onChange={formik.handleChange} checked={!!formik.values.config.allowPriceBelowMinimum} />}
+                  label="Permitir realizar pedido por arriba del límite de crédito"
                 />
               </ListItem>
             </Grid>
