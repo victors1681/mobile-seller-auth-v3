@@ -2,7 +2,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/functions';
 import * as firebase from 'firebase/app';
-import firebaseConfig from './firebasekey';
+import firebaseConfig from './firebasekey.json';
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
