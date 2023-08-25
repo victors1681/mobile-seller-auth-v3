@@ -88,6 +88,7 @@ const formInit = {
     allowPriceBelowMinimum: false,
     allowOrderAboveCreditLimit: false,
     allowLoadLastOrders: false,
+    allowLoadLastPrices: false,
     orderEmailTemplateID: '',
     paymentEmailTemplateID: '',
     allowQuote: false,
@@ -389,6 +390,14 @@ export const UserForm = () => {
                 <FormControlLabel
                   control={<Switch name="config.allowLoadLastOrders" onChange={formik.handleChange} checked={!!formik.values.config.allowLoadLastOrders} />}
                   label="Permite cargar últimos documentos"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.allowLoadLastPrices" onChange={formik.handleChange} checked={!!formik.values.config.allowLoadLastPrices} />}
+                  label="Premite cargar los precios anteriores"
                 />
               </ListItem>
             </Grid>

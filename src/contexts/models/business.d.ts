@@ -27,6 +27,7 @@ interface IBusiness {
       allowPriceBelowMinimum: boolean;
       allowOrderAboveCreditLimit: boolean;
       allowLoadLastOrders: boolean;
+      allowLoadLastPrices: boolean;
       orderEmailTemplateID: number;
       paymentEmailTemplateID: number;
       allowQuote: boolean;
