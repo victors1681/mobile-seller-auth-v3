@@ -397,7 +397,7 @@ export const UserForm = () => {
               <ListItem>
                 <FormControlLabel
                   control={<Switch name="config.allowLoadLastPrices" onChange={formik.handleChange} checked={!!formik.values.config.allowLoadLastPrices} />}
-                  label="Premite cargar los precios anteriores"
+                  label="Permitir cargar los precios anteriores"
                 />
               </ListItem>
             </Grid>
