@@ -166,6 +166,13 @@ export const fields: Field[] = [
     value: true,
     note: 'Usuario con los privilegios limitados y auto desactivado.',
     icon: 'WifiIcon'
+  },
+  {
+    name: 'allowSellerStats',
+    label: 'Estádisticas de venta',
+    value: false,
+    note: 'Permite al usuario ver las estadisticas de ventas.',
+    icon: 'WifiIcon'
   }
 ];
 
