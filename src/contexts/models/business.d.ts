@@ -28,6 +28,7 @@ interface IBusiness {
       allowOrderAboveCreditLimit: boolean;
       allowLoadLastOrders: boolean;
       allowLoadLastPrices: boolean;
+      showProducInfoPanel: boolean;
       orderEmailTemplateID: number;
       paymentEmailTemplateID: number;
       allowQuote: boolean;
