@@ -90,6 +90,7 @@ const formInit = {
     allowLoadLastOrders: false,
     allowLoadLastPrices: false,
     showProducInfoPanel: false,
+    temporalOrder: false,
     orderEmailTemplateID: '',
     paymentEmailTemplateID: '',
     allowQuote: false,
@@ -407,6 +408,14 @@ export const UserForm = () => {
                 <FormControlLabel
                   control={<Switch name="config.showProducInfoPanel" onChange={formik.handleChange} checked={!!formik.values.config.showProducInfoPanel} />}
                   label="Mostrar panel en producto, para calcular la diferencia de la condiciones de precios"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.captureTemporalDoc" onChange={formik.handleChange} checked={!!formik.values.config.captureTemporalDoc} />}
+                  label="Capturar documento temporal"
                 />
               </ListItem>
             </Grid>
