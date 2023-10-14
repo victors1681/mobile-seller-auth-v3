@@ -442,6 +442,14 @@ export const UserForm = () => {
                 />
               </ListItem>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.v4" onChange={formik.handleChange} checked={!!formik.values.config.v4} />}
+                  label="MSeller V4"
+                />
+              </ListItem>
+            </Grid>
           </Grid>
 
           <Integrations />

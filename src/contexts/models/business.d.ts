@@ -33,6 +33,7 @@ interface IBusiness {
       orderEmailTemplateID: number;
       paymentEmailTemplateID: number;
       allowQuote: boolean;
+      v4: boolean;
       trackingLocation: boolean;
       metadata: Array<{[key: string]: any}>;
       integrations?:  IIntegration[];
