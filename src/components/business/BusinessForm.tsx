@@ -450,6 +450,22 @@ export const UserForm = () => {
                 />
               </ListItem>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.promocion" onChange={formik.handleChange} checked={!!formik.values.config.promocion} />}
+                  label="Permite agregar artículos promoción sin costo"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.proximaOrden" onChange={formik.handleChange} checked={!!formik.values.config.proximaOrden} />}
+                  label="Artículos para próxima orden"
+                />
+              </ListItem>
+            </Grid>
           </Grid>
 
           <Integrations />

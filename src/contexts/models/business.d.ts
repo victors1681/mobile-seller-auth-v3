@@ -34,6 +34,8 @@ interface IBusiness {
       paymentEmailTemplateID: number;
       allowQuote: boolean;
       v4: boolean;
+      promocion: boolean;
+      proximaOrden: boolean;
       trackingLocation: boolean;
       metadata: Array<{[key: string]: any}>;
       integrations?:  IIntegration[];
