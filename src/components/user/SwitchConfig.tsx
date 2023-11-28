@@ -27,14 +27,14 @@ export interface Field {
 export const fields: Field[] = [
   {
     name: 'editPrice',
-    label: 'Editar Precio',
+    label: 'Editar precio',
     value: false,
     note: 'Permite al vendedor editar los precios manualmente en el input',
     icon: 'WifiIcon'
   },
   {
     name: 'disablePriceSelector',
-    label: 'Desactivar Selector',
+    label: 'Desactivar selector de srecios',
     value: false,
     note: 'Forza la desactivación del selector de precios sin tomar en cuenta la condicion de precio del cliente, o lo activa sin importar la condicieon de precio',
     icon: 'WifiIcon'
