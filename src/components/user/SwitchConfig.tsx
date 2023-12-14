@@ -34,7 +34,7 @@ export const fields: Field[] = [
   },
   {
     name: 'disablePriceSelector',
-    label: 'Desactivar selector de srecios',
+    label: 'Desactivar selector de precios',
     value: false,
     note: 'Forza la desactivación del selector de precios sin tomar en cuenta la condicion de precio del cliente, o lo activa sin importar la condicieon de precio',
     icon: 'WifiIcon'
