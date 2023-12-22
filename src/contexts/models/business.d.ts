@@ -37,6 +37,7 @@ interface IBusiness {
       promocion: boolean;
       proximaOrden: boolean;
       trackingLocation: boolean;
+      enableConfirmSelector: boolean;
       metadata: Array<{[key: string]: any}>;
       integrations?:  IIntegration[];
     };

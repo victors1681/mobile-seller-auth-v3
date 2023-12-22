@@ -466,6 +466,14 @@ export const UserForm = () => {
                 />
               </ListItem>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.enableConfirmSelector" onChange={formik.handleChange} checked={!!formik.values.config.enableConfirmSelector} />}
+                  label="Activar selector de clientes confirmados"
+                />
+              </ListItem>
+            </Grid>
           </Grid>
 
           <Integrations />
