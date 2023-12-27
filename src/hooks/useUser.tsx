@@ -23,7 +23,9 @@ export interface IUseUser {
 export enum UserTypeEnum {
   seller = 'seller',
   administrator = 'administrator',
-  superuser = 'superuser'
+  superuser = 'superuser',
+  driver = 'driver',
+  office = 'office',
 }
 
 export const USER_COLLECTION = 'users';

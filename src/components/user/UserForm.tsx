@@ -76,6 +76,11 @@ const userType: SelectOptions[] = [
     name: 'administrator',
     label: 'Administrador',
     value: 'administrator'
+  },
+  {
+    name: 'office',
+    label: 'Oficina',
+    value: 'office'
   }
 ];
 
@@ -99,6 +104,11 @@ const powerUserTypeList: SelectOptions[] = [
     name: 'superuser',
     label: 'Super User',
     value: 'superuser'
+  },
+  {
+    name: 'office',
+    label: 'Oficina',
+    value: 'office'
   }
 ];
 
