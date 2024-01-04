@@ -1,5 +1,6 @@
 {
   "projects": {
+    "site": "mobile-seller-v3",
     "default": "mobile-seller-v3"
   }
 }
