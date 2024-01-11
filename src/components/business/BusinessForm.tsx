@@ -444,10 +444,7 @@ export const UserForm = () => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
-                <FormControlLabel
-                  control={<Switch name="config.v4" onChange={formik.handleChange} checked={!!formik.values.config.v4} />}
-                  label="MSeller V4"
-                />
+                <FormControlLabel control={<Switch name="config.v4" onChange={formik.handleChange} checked={!!formik.values.config.v4} />} label="MSeller V4" />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -460,10 +457,7 @@ export const UserForm = () => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <ListItem>
-                <FormControlLabel
-                  control={<Switch name="config.proximaOrden" onChange={formik.handleChange} checked={!!formik.values.config.proximaOrden} />}
-                  label="Artículos para próxima orden"
-                />
+                <FormControlLabel control={<Switch name="config.proximaOrden" onChange={formik.handleChange} checked={!!formik.values.config.proximaOrden} />} label="Artículos para próxima orden" />
               </ListItem>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -471,6 +465,14 @@ export const UserForm = () => {
                 <FormControlLabel
                   control={<Switch name="config.enableConfirmSelector" onChange={formik.handleChange} checked={!!formik.values.config.enableConfirmSelector} />}
                   label="Activar selector de clientes confirmados/no confirmados"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={<Switch name="config.defaultUnitSelectorBox" onChange={formik.handleChange} checked={!!formik.values.config.defaultUnitSelectorBox} />}
+                  label="Seleccionar la segunda unidad de venta en producto por defecto"
                 />
               </ListItem>
             </Grid>
