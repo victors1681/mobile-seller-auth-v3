@@ -22,6 +22,12 @@ interface IBusiness {
     sandboxUrl: string;
     serverPort: string;
     serverUrl: string;
+
+    portalSandboxPort: string;
+    portalSandboxUrl: string;
+    portalServerPort: string;
+    portalServerUrl: string;
+
     testMode: boolean;
     displayPriceWithTax: boolean;
     allowPriceBelowMinimum: boolean;

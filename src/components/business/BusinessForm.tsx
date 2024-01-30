@@ -317,6 +317,37 @@ export const UserForm = () => {
             <Grid item xs={12} sm={3}>
               <TextField type="number" id="config.sandboxPort" name="config.sandboxPort" label="Puerto Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxPort} />
             </Grid>
+
+            <Grid item xs={12} sm={9}>
+              <TextField id="config.portalServerUrl" name="config.portalServerUrl" label="Url Portal" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxUrl} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField
+                type="number"
+                id="config.portalServerPort"
+                name="config.portalServerPort"
+                label="Portal Puerto"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.config.sandboxPort}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={9}>
+              <TextField id="config.portalSandboxUrl" name="config.portalSandboxUrl" label="Url Portal Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxUrl} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField
+                type="number"
+                id="config.portalSandboxPort"
+                name="config.portalSandboxPort"
+                label="Portal Puerto Prueba"
+                fullWidth
+                onChange={formik.handleChange}
+                value={formik.values.config.sandboxPort}
+              />
+            </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField type="textarea" id="footerMessage" name="footerMessage" label="Mensaje pie factura" fullWidth onChange={formik.handleChange} value={formik.values.footerMessage} />
             </Grid>
