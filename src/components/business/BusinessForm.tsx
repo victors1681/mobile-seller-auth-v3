@@ -319,7 +319,7 @@ export const UserForm = () => {
             </Grid>
 
             <Grid item xs={12} sm={9}>
-              <TextField id="config.portalServerUrl" name="config.portalServerUrl" label="Url Portal" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxUrl} />
+              <TextField id="config.portalServerUrl" name="config.portalServerUrl" label="Url Portal" fullWidth onChange={formik.handleChange} value={formik.values.config.portalServerUrl} />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
@@ -329,12 +329,12 @@ export const UserForm = () => {
                 label="Portal Puerto"
                 fullWidth
                 onChange={formik.handleChange}
-                value={formik.values.config.sandboxPort}
+                value={formik.values.config.portalServerPort}
               />
             </Grid>
 
             <Grid item xs={12} sm={9}>
-              <TextField id="config.portalSandboxUrl" name="config.portalSandboxUrl" label="Url Portal Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.sandboxUrl} />
+              <TextField id="config.portalSandboxUrl" name="config.portalSandboxUrl" label="Url Portal Prueba" fullWidth onChange={formik.handleChange} value={formik.values.config.portalSandboxUrl} />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
@@ -344,7 +344,7 @@ export const UserForm = () => {
                 label="Portal Puerto Prueba"
                 fullWidth
                 onChange={formik.handleChange}
-                value={formik.values.config.sandboxPort}
+                value={formik.values.config.portalSandboxPort}
               />
             </Grid>
 
