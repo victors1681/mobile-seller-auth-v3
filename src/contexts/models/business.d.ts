@@ -34,6 +34,8 @@ interface IBusiness {
     allowOrderAboveCreditLimit: boolean;
     allowLoadLastOrders: boolean;
     allowLoadLastPrices: boolean;
+    allowConfirmProductStock: boolean;
+    allowCaptureCustomerGeolocation: boolean;
     showProducInfoPanel: boolean;
     captureTemporalDoc: boolean;
     orderEmailTemplateID: number;

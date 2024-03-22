@@ -180,20 +180,6 @@ export const fields: Field[] = [
     value: false,
     note: 'Permite al usuario ver las estadisticas de ventas.',
     icon: 'WifiIcon'
-  },
-  {
-    name: 'allowConfirmStock',
-    label: 'Confirmar Existencia',
-    value: true,
-    note: 'Permitir confirmar la existencia de los productos, si no existe inventario se le informa al vendedor que confirme',
-    icon: 'WifiIcon'
-  },
-  {
-    name: 'allowCaptureCustomerGeolocation',
-    label: 'Capturar localización Cliente',
-    value: true,
-    note: 'Permitir capturar la geolocalización de los clientes al seleccionarlo.',
-    icon: 'WifiIcon'
   }
 ];
 

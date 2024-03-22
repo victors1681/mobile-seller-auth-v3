@@ -89,6 +89,8 @@ const formInit = {
     allowOrderAboveCreditLimit: false,
     allowLoadLastOrders: false,
     allowLoadLastPrices: false,
+    allowConfirmProductStock: false,
+    allowCaptureCustomerGeolocation: false,
     showProducInfoPanel: false,
     temporalOrder: false,
     orderEmailTemplateID: '',
@@ -502,8 +504,36 @@ export const UserForm = () => {
             <Grid item xs={12} sm={4}>
               <ListItem>
                 <FormControlLabel
-                  control={<Switch name="config.defaultUnitSelectorBox" onChange={formik.handleChange} checked={!!formik.values.config.defaultUnitSelectorBox} />}
-                  label="Seleccionar la segunda unidad de venta en producto por defecto"
+                  control={
+                    <Tooltip title="Seleccionar la segunda opción en el selector de unidad en la vista de selección de producto y pedido">
+                      <Switch name="config.defaultUnitSelectorBox" onChange={formik.handleChange} checked={!!formik.values.config.defaultUnitSelectorBox} />
+                    </Tooltip>
+                  }
+                  label="Selecciona segunda opción selector unidad"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={
+                    <Tooltip title="Permitir capturar la geolocalización de los clientes al seleccionarlo.">
+                      <Switch name="config.allowConfirmProductStock" onChange={formik.handleChange} checked={!!formik.values.config.allowConfirmProductStock} />
+                    </Tooltip>
+                  }
+                  label="Confirmar existencia de productos"
+                />
+              </ListItem>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={
+                    <Tooltip title="Permitir confirmar la existencia de los productos, si no existe inventario se le informa al vendedor que confirme">
+                      <Switch name="config.allowCaptureCustomerGeolocation" onChange={formik.handleChange} checked={!!formik.values.config.allowCaptureCustomerGeolocation} />
+                    </Tooltip>
+                  }
+                  label="Capturar Geolocalización Clientes"
                 />
               </ListItem>
             </Grid>
