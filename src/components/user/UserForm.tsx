@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { CustomSelect, Loader, AlertDialog } from 'common';
 import SwitchConfig, { fields as defaultFieldValues } from './SwitchConfig';
 import { ChangePassword, SendPasswordReset } from './changePassword';
+import CloudSwitchConfig, { cloudModules } from './CloudSwitchConfig';
 
 const AvatarProfile = styled(Avatar)`
   width: ${({ theme }) => theme.spacing(7)};
@@ -149,7 +150,22 @@ const formInit = {
   userLevel: '',
   warehouse: '',
   disabled: false,
-  ...defaultFieldValues.reduce((acc, current) => ({ ...acc, [current.name]: current.value }), {})
+  ...defaultFieldValues.reduce((acc, current) => ({ ...acc, [current.name]: current.value }), {}),
+  cloudAccess: {
+    ...cloudModules.reduce(
+      (acc, cur) => ({
+        ...acc,
+        [cur.name]: cur.access.reduce(
+          (acc2, curr2) => ({
+            ...acc2,
+            [curr2.name]: curr2.value
+          }),
+          {}
+        )
+      }),
+      {}
+    )
+  }
 };
 
 interface Parameters {
@@ -403,6 +419,7 @@ export const UserForm = () => {
               />
             </Grid>
             {!loading && <SwitchConfig formik={formik} />}
+            {!loading && <CloudSwitchConfig formik={formik} />}
           </Grid>
 
           <Grid container spacing={6}>

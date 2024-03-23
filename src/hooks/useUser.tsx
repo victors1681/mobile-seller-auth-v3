@@ -110,7 +110,7 @@ export const useUser = (): IUseUser => {
 
   const updateUser = async (userData: IUser, businessId: string) => {
     try {
-      const updateUser = functions.httpsCallable('updateUser');
+      const updateUser = functions.httpsCallable('updateUserV2');
       const payload = { ...userData, businessId };
 
       const response = await updateUser(payload);
@@ -127,7 +127,7 @@ export const useUser = (): IUseUser => {
 
   const transferUser = async (sellerSource: string, sellerTarget: string) => {
     try {
-      const updateUser = functions.httpsCallable('transferUser');
+      const updateUser = functions.httpsCallable('transferUserV2');
       const payload = { sellerSource, sellerTarget };
 
       const response = await updateUser(payload);
@@ -144,7 +144,7 @@ export const useUser = (): IUseUser => {
 
   const addUser = async (userData: IUser, businessId: string): Promise<boolean | undefined> => {
     try {
-      const addNewUser = functions.httpsCallable('addUser');
+      const addNewUser = functions.httpsCallable('addUserV2');
       //if photoURL is empty create placeholder link
       const photoURL = userData.photoURL ? userData.photoURL : 'https://storage.cloud.google.com/it_soluclick/user-temporal-placeholder.jpeg';
 
@@ -164,7 +164,7 @@ export const useUser = (): IUseUser => {
 
   const removeUser = async (userId: string): Promise<boolean | undefined> => {
     try {
-      const deleteUser = functions.httpsCallable('deleteUser');
+      const deleteUser = functions.httpsCallable('deleteUserV2');
       const response = await deleteUser(userId);
       if (response) {
         toast('User Removed');
@@ -181,7 +181,7 @@ export const useUser = (): IUseUser => {
   };
   const changePassword = async (userId: string, password: string): Promise<boolean | undefined> => {
     try {
-      const updatePassword = functions.httpsCallable('updatePassword');
+      const updatePassword = functions.httpsCallable('updatePasswordV2');
       const response = await updatePassword({ userId, password });
       if (response) {
         toast('password Changed');
