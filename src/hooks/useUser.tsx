@@ -25,7 +25,7 @@ export enum UserTypeEnum {
   administrator = 'administrator',
   superuser = 'superuser',
   driver = 'driver',
-  office = 'office',
+  office = 'office'
 }
 
 export const USER_COLLECTION = 'users';
@@ -95,11 +95,16 @@ export const useUser = (): IUseUser => {
   );
 
   const requestUserById = async (userId: string) => {
-    const userById = functions.httpsCallable('userById');
-    const { data } = await userById(userId);
+    try {
+      const userById = functions.httpsCallable('userByIdV2');
+      const { data } = await userById(userId);
 
-    if (data) {
-      return data as IUser;
+      if (data) {
+        return data as IUser;
+      }
+    } catch (error) {
+      toast.error(`Error al cargar este usuario: ${error?.message}`);
+      throw Error(error?.message);
     }
   };
 

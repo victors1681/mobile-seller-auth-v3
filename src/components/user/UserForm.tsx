@@ -171,15 +171,20 @@ export const UserForm = () => {
   } = useMainApp();
 
   const getUserData = React.useCallback(async () => {
-    const result = await requestUserById(userId || '');
+    try {
+      const result = await requestUserById(userId || '');
 
-    if (duplicate) {
-      const user = { ...result, userId: '', email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '', photoURL: '', initialConfig: true, updateBankList: true } as IUser;
-      setUserData(user);
-    } else {
-      setUserData(result as IUser);
+      if (duplicate) {
+        const user = { ...result, userId: '', email: '', password: '', firstName: '', lastName: '', sellerCode: '', phone: '', photoURL: '', initialConfig: true, updateBankList: true } as IUser;
+        setUserData(user);
+      } else {
+        setUserData(result as IUser);
+      }
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      history.goBack();
     }
-    setLoading(false);
   }, [userId, duplicate]);
 
   React.useEffect(() => {
