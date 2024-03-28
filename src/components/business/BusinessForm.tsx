@@ -83,6 +83,10 @@ const formInit = {
     serverPort: '',
     sandboxUrl: '',
     sandboxPort: '',
+    portalServerUrl: '',
+    portalServerPort: '',
+    portalSandboxUrl: '',
+    portalSandboxPort: '',
     testMode: false,
     displayPriceWithTax: false,
     allowPriceBelowMinimum: false,
@@ -239,7 +243,7 @@ export const UserForm = () => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
               <ListItem>
-                <ListItemText primary="Infomaciones" />
+                <ListItemText primary="Infomaciones" secondary={`ID: ${businessId}`} />
               </ListItem>
               <Divider component="div" />
             </Grid>

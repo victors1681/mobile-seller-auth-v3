@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Checkbox, Button, Paper, Avatar, TextField, Typography, Grid, FormControlLabel, IconButton } from '@material-ui/core';
+import { Checkbox, Button, Paper, Avatar, TextField, Typography, Grid, FormControlLabel, IconButton, Box } from '@material-ui/core';
 import { Delete, FileCopy } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -313,6 +313,7 @@ export const UserForm = () => {
             </Typography>
             <AvatarProfile src={formik.values.photoURL} />
           </Header>
+          <Typography variant="caption">ID: {userId}</Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -445,11 +446,17 @@ export const UserForm = () => {
               )}
             </Grid>
 
-            <Grid item xs={12} sm={8} />
-            <Grid item xs={12} sm={2}>
-              <Button onClick={() => history.goBack()} variant="outlined">
-                Cancelar
-              </Button>
+            <Grid item xs={12} sm={6} />
+            <Grid item xs={12} sm={4}>
+              <Box style={{ display: 'flex', gap: '12px', justifyContent: 'end' }}>
+                <Button onClick={() => history.goBack()} variant="outlined">
+                  Cancelar
+                </Button>
+
+                <Button type="submit" variant="contained" color="primary">
+                  {getLabel()}
+                </Button>
+              </Box>
             </Grid>
           </Grid>
         </FormInnerWrapper>
