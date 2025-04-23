@@ -64,5 +64,7 @@ interface IBusiness {
   status: boolean;
   website: string;
   logoUrl: string;
-  sellingPackaging: false;
+  sellingPackaging: boolean;
+  startDate?: string;
+  fromPortal?: boolean;
 }

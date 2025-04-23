@@ -3,6 +3,7 @@ interface IUser {
   password: string;
   email: string;
   photoURL: string;
+  businessId?: string;
   business: IBusiness;
   editPrice: boolean;
   filterClients: boolean;

@@ -180,6 +180,13 @@ export const fields: Field[] = [
     value: false,
     note: 'Permite al usuario ver las estadisticas de ventas.',
     icon: 'WifiIcon'
+  },
+  {
+    name: 'ecfEnabled',
+    label: 'Habilitar eCF',
+    value: false,
+    note: 'Permite al los distribuidores usar los comprobantes electronicos de venta.',
+    icon: 'WifiIcon'
   }
 ];
 
