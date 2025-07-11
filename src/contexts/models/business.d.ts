@@ -42,6 +42,7 @@ interface IBusiness {
     paymentEmailTemplateID: number;
     defaultUnitSelectorBox: boolean;
     allowQuote: boolean;
+    isLegacyOfferEnabled: boolean;
     v4: boolean;
     promocion: boolean;
     proximaOrden: boolean;

@@ -541,6 +541,18 @@ export const UserForm = () => {
                 />
               </ListItem>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <ListItem>
+                <FormControlLabel
+                  control={
+                    <Tooltip title="Activa las ofertas legacy en el sistema, desactivar si no se usan. Caridom">
+                      <Switch name="config.isLegacyOfferEnabled" onChange={formik.handleChange} checked={!!formik.values.config.isLegacyOfferEnabled} />
+                    </Tooltip>
+                  }
+                  label="Activar Ofertas Legacy (Caridom)"
+                />
+              </ListItem>
+            </Grid>
           </Grid>
 
           <Integrations />
