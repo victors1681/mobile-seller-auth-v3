@@ -52,22 +52,29 @@ export interface Field {
 export const cloudModules = [
   {
     name: 'orders',
-    label: 'Ordenes',
+    label: 'Documentos',
     description: 'Módulo de pedidos y ventas',
     visible: true,
     access: [
       {
         name: 'allowApprove',
-        label: 'Aprobar Orden',
+        label: 'Aprobar Documento',
         value: false,
-        note: 'Permite al usuario ver las estadisticas de ventas.',
+        note: 'Permite al usuario aprobar un documento.',
         icon: 'WifiIcon'
       },
       {
         name: 'allowEdit',
         label: 'Permitir Editar',
         value: false,
-        note: 'Permite al usuario ver las estadisticas de ventas.',
+        note: 'Permite al usuario editar un documento.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowCreate',
+        label: 'Permitir Crear',
+        value: false,
+        note: 'Permite al usuario ver crear nuevos documentos.',
         icon: 'WifiIcon'
       }
     ]
@@ -90,6 +97,70 @@ export const cloudModules = [
         label: 'Cambiar Estado',
         value: false,
         note: 'Permite al usuario ver las estadisticas de ventas.',
+        icon: 'WifiIcon'
+      }
+    ]
+  },
+  {
+    name: 'pos',
+    label: 'Punto de Venta',
+    description: 'Módulo de punto de venta y caja',
+    visible: true,
+    access: [
+      {
+        name: 'allowCashierAccess',
+        label: 'Acceso a Caja',
+        value: false,
+        note: 'Permite al usuario acceder al módulo de caja.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowOpenCashDrawer',
+        label: 'Abrir Cajón',
+        value: false,
+        note: 'Permite al usuario abrir el cajón de dinero.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowVoidTransaction',
+        label: 'Anular Transacción',
+        value: false,
+        note: 'Permite al usuario anular transacciones completadas.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowRefund',
+        label: 'Procesar Devoluciones',
+        value: false,
+        note: 'Permite al usuario procesar devoluciones y reembolsos.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowDiscounts',
+        label: 'Aplicar Descuentos',
+        value: false,
+        note: 'Permite al usuario aplicar descuentos a productos.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowCashControl',
+        label: 'Control de Efectivo',
+        value: false,
+        note: 'Permite al usuario realizar arqueos y control de caja.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowReports',
+        label: 'Ver Reportes',
+        value: false,
+        note: 'Permite al usuario ver reportes de ventas y caja.',
+        icon: 'WifiIcon'
+      },
+      {
+        name: 'allowPriceOverride',
+        label: 'Modificar Precios',
+        value: false,
+        note: 'Permite al usuario modificar precios de productos.',
         icon: 'WifiIcon'
       }
     ]
